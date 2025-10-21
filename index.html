@@ -2488,7 +2488,9 @@
         };
 
         // Product images (shortened for space - add all 50+ products)
+                // COMPLETE Product images for ALL products
         const productImages = {
+            // Stressed mood products
             'Chamomile Calm Tea': 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=500&h=500&fit=crop',
             'Lavender Dream Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=500&fit=crop',
             'Stress Relief Herbal Blend': 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=500&h=500&fit=crop',
@@ -2498,6 +2500,8 @@
             'Soft Cotton Lounge Set': 'https://images.unsplash.com/photo-1578102718171-ec1f91680562?w=500&h=500&fit=crop',
             'Bamboo Comfort Pajamas': 'https://images.unsplash.com/photo-1584293648398-9e52f5bef8f8?w=500&h=500&fit=crop',
             'Relaxed Fit Hoodie': 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&h=500&fit=crop',
+            
+            // Tired mood products
             'Energy Boost Green Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=500&fit=crop',
             'Ginseng Vitality Tea': 'https://images.unsplash.com/photo-1597318121031-6c0c0e9b5571?w=500&h=500&fit=crop',
             'Matcha Power Blend': 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=500&h=500&fit=crop',
@@ -2507,9 +2511,51 @@
             'Breathable Athleisure Set': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=500&fit=crop',
             'Cooling Fabric T-Shirt': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&h=500&fit=crop',
             'Comfy Joggers': 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&h=500&fit=crop',
-            // Add all other products similarly...
+            
+            // Anxious mood products
+            'Peaceful Mind Tea': 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=500&h=500&fit=crop',
+            'Anxiety Relief Herbal Mix': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=500&fit=crop',
+            'Calming Passionflower Tea': 'https://images.unsplash.com/photo-1558642891-54be180ea339?w=500&h=500&fit=crop',
+            'Gentle Soothing Cleanser': 'https://images.unsplash.com/photo-1556228852-80a39606bd3c?w=500&h=500&fit=crop',
+            'Calming CBD Cream': 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500&h=500&fit=crop',
+            'Stress-Relief Face Oil': 'https://images.unsplash.com/photo-1570554886111-e80fcca6a029?w=500&h=500&fit=crop',
+            'Weighted Comfort Blanket': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=500&fit=crop',
+            'Ultra-Soft Robe': 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&h=500&fit=crop',
+            'Cozy Knit Sweater': 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500&h=500&fit=crop',
+            
+            // Happy mood products
+            'Tropical Fruit Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=500&fit=crop',
+            'Citrus Burst Green Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=500&fit=crop',
+            'Berry Bliss Herbal Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=500&fit=crop',
+            'Radiant Glow Serum': 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500&h=500&fit=crop',
+            'Brightening Day Cream': 'https://images.unsplash.com/photo-1556228578-dd5e5f7ead12?w=500&h=500&fit=crop',
+            'Luminous Face Mask': 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=500&h=500&fit=crop',
+            'Vibrant Summer Dress': 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=500&h=500&fit=crop',
+            'Colorful Casual Outfit': 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500&h=500&fit=crop',
+            'Stylish Comfort Set': 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&h=500&fit=crop',
+            
+            // Sad mood products
+            'Mood Lift Herbal Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=500&fit=crop',
+            'Comforting Vanilla Chai': 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=500&h=500&fit=crop',
+            'Uplifting Lemon Balm Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=500&fit=crop',
+            'Self-Care Face Mask Set': 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=500&h=500&fit=crop',
+            'Nurturing Night Cream': 'https://images.unsplash.com/photo-1556228578-dd5e5f7ead12?w=500&h=500&fit=crop',
+            'Comforting Body Butter': 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&h=500&fit=crop',
+            'Cozy Fleece Blanket Set': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=500&fit=crop',
+            'Warm Comfort Sleepwear': 'https://images.unsplash.com/photo-1584293648398-9e52f5bef8f8?w=500&h=500&fit=crop',
+            'Snuggle-Soft Loungewear': 'https://images.unsplash.com/photo-1578102718171-ec1f91680562?w=500&h=500&fit=crop',
+            
+            // Energetic mood products
+            'Power Boost Black Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=500&fit=crop',
+            'Athletic Performance Tea': 'https://images.unsplash.com/photo-1597318121031-6c0c0e9b5571?w=500&h=500&fit=crop',
+            'Focus & Energy Blend': 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=500&h=500&fit=crop',
+            'Energizing Face Wash': 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&h=500&fit=crop',
+            'Active Hydration Gel': 'https://images.unsplash.com/photo-1556228578-dd5e5f7ead12?w=500&h=500&fit=crop',
+            'Sport Recovery Lotion': 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=500&h=500&fit=crop',
+            'Performance Activewear Set': 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&h=500&fit=crop',
+            'Dynamic Sports Outfit': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=500&fit=crop',
+            'Pro Athletic Gear': 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&h=500&fit=crop'
         };
-
         // Product database (shortened - include all 6 moods × 3 categories × 3 products)
         const moodProducts = {
             stressed: {
@@ -2546,9 +2592,75 @@
                     { name: 'Comfy Joggers', price: 1299, originalPrice: 1699, rating: 4.7, reviews: 345, description: 'Perfect for lounging' }
                 ]
             },
-            // Add anxious, happy, sad, energetic moods similarly...
+            anxious: {
+                teas: [
+                    { name: 'Peaceful Mind Tea', price: 329, originalPrice: 449, rating: 4.6, reviews: 189, description: 'Calms anxiety naturally' },
+                    { name: 'Anxiety Relief Herbal Mix', price: 399, originalPrice: 549, rating: 4.8, reviews: 267, description: 'Clinically studied herbs' },
+                    { name: 'Calming Passionflower Tea', price: 379, originalPrice: 499, rating: 4.5, reviews: 201, description: 'Traditional anxiety remedy' }
+                ],
+                skincare: [
+                    { name: 'Gentle Soothing Cleanser', price: 799, originalPrice: 999, rating: 4.6, reviews: 298, description: 'pH-balanced formula' },
+                    { name: 'Calming CBD Cream', price: 1499, originalPrice: 1999, rating: 4.7, reviews: 234, description: 'Full-spectrum CBD' },
+                    { name: 'Stress-Relief Face Oil', price: 1199, originalPrice: 1599, rating: 4.5, reviews: 189, description: 'Nourishing botanical oils' }
+                ],
+                outfits: [
+                    { name: 'Weighted Comfort Blanket', price: 2999, originalPrice: 3999, rating: 4.8, reviews: 412, description: 'Therapeutic weighted design' },
+                    { name: 'Ultra-Soft Robe', price: 1799, originalPrice: 2299, rating: 4.6, reviews: 298, description: 'Plush microfiber' },
+                    { name: 'Cozy Knit Sweater', price: 2199, originalPrice: 2799, rating: 4.7, reviews: 356, description: 'Hand-knitted comfort' }
+                ]
+            },
+            happy: {
+                teas: [
+                    { name: 'Tropical Fruit Tea', price: 299, originalPrice: 399, rating: 4.5, reviews: 178, description: 'Exotic fruit medley' },
+                    { name: 'Citrus Burst Green Tea', price: 329, originalPrice: 449, rating: 4.6, reviews: 223, description: 'Zesty and refreshing' },
+                    { name: 'Berry Bliss Herbal Tea', price: 349, originalPrice: 449, rating: 4.7, reviews: 267, description: 'Sweet berry fusion' }
+                ],
+                skincare: [
+                    { name: 'Radiant Glow Serum', price: 1299, originalPrice: 1699, rating: 4.8, reviews: 389, description: 'Instant luminosity' },
+                    { name: 'Brightening Day Cream', price: 999, originalPrice: 1299, rating: 4.6, reviews: 312, description: 'SPF 30 protection' },
+                    { name: 'Luminous Face Mask', price: 799, originalPrice: 999, rating: 4.5, reviews: 245, description: 'Golden glow treatment' }
+                ],
+                outfits: [
+                    { name: 'Vibrant Summer Dress', price: 2499, originalPrice: 2999, rating: 4.7, reviews: 356, description: 'Colorful floral pattern' },
+                    { name: 'Colorful Casual Outfit', price: 2199, originalPrice: 2699, rating: 4.6, reviews: 298, description: 'Mix and match set' },
+                    { name: 'Stylish Comfort Set', price: 2799, originalPrice: 3299, rating: 4.8, reviews: 423, description: 'Fashion meets comfort' }
+                ]
+            },
+            sad: {
+                teas: [
+                    { name: 'Mood Lift Herbal Tea', price: 349, originalPrice: 499, rating: 4.6, reviews: 198, description: 'St. Johns Wort blend' },
+                    { name: 'Comforting Vanilla Chai', price: 329, originalPrice: 449, rating: 4.7, reviews: 234, description: 'Warm spices and vanilla' },
+                    { name: 'Uplifting Lemon Balm Tea', price: 299, originalPrice: 399, rating: 4.5, reviews: 189, description: 'Natural mood booster' }
+                ],
+                skincare: [
+                    { name: 'Self-Care Face Mask Set', price: 1099, originalPrice: 1499, rating: 4.7, reviews: 312, description: '5-pack variety set' },
+                    { name: 'Nurturing Night Cream', price: 1299, originalPrice: 1699, rating: 4.6, reviews: 267, description: 'Deep hydration therapy' },
+                    { name: 'Comforting Body Butter', price: 899, originalPrice: 1199, rating: 4.5, reviews: 223, description: 'Shea and cocoa butter' }
+                ],
+                outfits: [
+                    { name: 'Cozy Fleece Blanket Set', price: 1999, originalPrice: 2499, rating: 4.8, reviews: 389, description: 'Ultra-soft fleece' },
+                    { name: 'Warm Comfort Sleepwear', price: 1799, originalPrice: 2299, rating: 4.6, reviews: 298, description: 'Thermal insulation' },
+                    { name: 'Snuggle-Soft Loungewear', price: 2199, originalPrice: 2699, rating: 4.7, reviews: 345, description: 'Cloud-like softness' }
+                ]
+            },
+            energetic: {
+                teas: [
+                    { name: 'Power Boost Black Tea', price: 279, originalPrice: 399, rating: 4.5, reviews: 167, description: 'Strong Assam blend' },
+                    { name: 'Athletic Performance Tea', price: 499, originalPrice: 649, rating: 4.7, reviews: 245, description: 'Pre-workout formula' },
+                    { name: 'Focus & Energy Blend', price: 399, originalPrice: 549, rating: 4.6, reviews: 201, description: 'Yerba mate base' }
+                ],
+                skincare: [
+                    { name: 'Energizing Face Wash', price: 699, originalPrice: 899, rating: 4.5, reviews: 289, description: 'Invigorating mint formula' },
+                    { name: 'Active Hydration Gel', price: 999, originalPrice: 1299, rating: 4.6, reviews: 312, description: 'Hyaluronic acid boost' },
+                    { name: 'Sport Recovery Lotion', price: 1199, originalPrice: 1599, rating: 4.7, reviews: 267, description: 'Muscle soothing blend' }
+                ],
+                outfits: [
+                    { name: 'Performance Activewear Set', price: 3499, originalPrice: 4499, rating: 4.8, reviews: 445, description: 'Pro-grade fabric' },
+                    { name: 'Dynamic Sports Outfit', price: 2999, originalPrice: 3799, rating: 4.7, reviews: 389, description: 'Full range of motion' },
+                    { name: 'Pro Athletic Gear', price: 3999, originalPrice: 4999, rating: 4.6, reviews: 356, description: 'Competition ready' }
+                ]
+            }
         };
-
         // Initialize
         window.onload = function() {
             loadFromLocalStorage();
