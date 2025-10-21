@@ -30,11 +30,19 @@
             background: #f5f5f5;
             min-height: 100vh;
             padding-bottom: var(--bottom-nav-height);
+            transition: all 0.3s;
         }
 
         body.dark-mode {
             background: var(--dark-bg);
             color: #fff;
+        }
+
+        /* Responsive Container */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
         }
 
         /* Top Header */
@@ -58,10 +66,16 @@
         .menu-icon {
             font-size: 1.5em;
             cursor: pointer;
+            padding: 8px;
+            transition: transform 0.2s;
+        }
+
+        .menu-icon:hover {
+            transform: scale(1.1);
         }
 
         .logo {
-            font-size: 1.3em;
+            font-size: clamp(1.2em, 3vw, 1.5em);
             font-weight: 700;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
@@ -79,35 +93,36 @@
             font-size: 1.3em;
             cursor: pointer;
             position: relative;
+            padding: 8px;
+            transition: transform 0.2s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
         }
 
         .badge {
             position: absolute;
-            top: -8px;
-            right: -8px;
+            top: 0;
+            right: 0;
             background: #e74c3c;
             color: white;
-            font-size: 0.6em;
-            padding: 2px 5px;
+            font-size: 0.55em;
+            padding: 3px 6px;
             border-radius: 10px;
             font-weight: 700;
-        }
-
-        .new-badge {
-            background: #2ecc71;
-            color: white;
-            font-size: 0.5em;
-            padding: 2px 5px;
-            border-radius: 3px;
-            position: absolute;
-            top: -5px;
-            right: -5px;
+            min-width: 18px;
+            text-align: center;
         }
 
         /* Banner Section */
         .banner {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px 15px;
+            padding: clamp(15px, 4vw, 25px);
             color: white;
             margin-bottom: 15px;
         }
@@ -117,24 +132,32 @@
         }
 
         .banner h2 {
-            font-size: 1.1em;
+            font-size: clamp(1em, 2.5vw, 1.3em);
             margin-bottom: 8px;
         }
 
         .banner p {
-            font-size: 0.9em;
+            font-size: clamp(0.85em, 2vw, 1em);
             opacity: 0.95;
+            line-height: 1.5;
         }
 
         .banner-cta {
             background: white;
             color: var(--primary-color);
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
             border: none;
             font-weight: 700;
             margin-top: 12px;
             cursor: pointer;
+            font-size: clamp(0.85em, 2vw, 1em);
+            transition: all 0.3s;
+        }
+
+        .banner-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         /* Category Grid */
@@ -150,8 +173,8 @@
 
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            gap: clamp(10px, 2vw, 15px);
             margin-top: 15px;
         }
 
@@ -162,6 +185,11 @@
             text-align: center;
             cursor: pointer;
             transition: transform 0.2s;
+            padding: 8px;
+        }
+
+        .category-item:hover {
+            transform: translateY(-5px);
         }
 
         .category-item:active {
@@ -169,20 +197,20 @@
         }
 
         .category-icon {
-            width: 50px;
-            height: 50px;
+            width: clamp(45px, 10vw, 55px);
+            height: clamp(45px, 10vw, 55px);
             background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5em;
+            font-size: clamp(1.2em, 3vw, 1.6em);
             margin-bottom: 8px;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
         .category-name {
-            font-size: 0.8em;
+            font-size: clamp(0.7em, 1.8vw, 0.85em);
             font-weight: 600;
             color: #333;
         }
@@ -198,7 +226,7 @@
         }
 
         .section-title {
-            font-size: 1.2em;
+            font-size: clamp(1.1em, 2.5vw, 1.3em);
             font-weight: 700;
             margin-bottom: 15px;
             color: #333;
@@ -225,7 +253,7 @@
         }
 
         .mood-card {
-            min-width: 120px;
+            min-width: clamp(100px, 20vw, 130px);
             padding: 15px;
             background: white;
             border-radius: 12px;
@@ -240,6 +268,11 @@
             background: #16213e;
         }
 
+        .mood-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
         .mood-card.active {
             border-color: var(--primary-color);
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
@@ -247,12 +280,12 @@
         }
 
         .mood-emoji {
-            font-size: 2em;
+            font-size: clamp(1.8em, 4vw, 2.2em);
             margin-bottom: 8px;
         }
 
         .mood-label {
-            font-size: 0.85em;
+            font-size: clamp(0.8em, 1.8vw, 0.9em);
             font-weight: 600;
             color: #333;
         }
@@ -266,10 +299,40 @@
             padding: 15px;
         }
 
+        .search-filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-input, .filter-select {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9em;
+            flex: 1;
+            min-width: 150px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
+        }
+
+        body.dark-mode .search-input,
+        body.dark-mode .filter-select {
+            background: #16213e;
+            border-color: #333;
+            color: #fff;
+        }
+
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
+            gap: clamp(10px, 2vw, 15px);
         }
 
         .product-card {
@@ -278,11 +341,16 @@
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s;
         }
 
         body.dark-mode .product-card {
             background: #16213e;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
         .product-card:active {
@@ -292,14 +360,23 @@
         .product-image-wrapper {
             position: relative;
             width: 100%;
-            height: 150px;
+            padding-top: 100%;
             overflow: hidden;
+            background: #f0f0f0;
         }
 
         .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
         }
 
         .wishlist-icon {
@@ -315,10 +392,23 @@
             justify-content: center;
             font-size: 1.2em;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .wishlist-icon:hover {
+            transform: scale(1.2);
         }
 
         .wishlist-icon.active {
             color: #e74c3c;
+            animation: heartBeat 0.5s;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1.1); }
         }
 
         .discount-badge {
@@ -329,7 +419,7 @@
             color: white;
             padding: 4px 8px;
             border-radius: 4px;
-            font-size: 0.7em;
+            font-size: clamp(0.65em, 1.5vw, 0.75em);
             font-weight: 700;
         }
 
@@ -338,7 +428,7 @@
         }
 
         .product-category {
-            font-size: 0.7em;
+            font-size: clamp(0.65em, 1.5vw, 0.75em);
             color: #764ba2;
             font-weight: 700;
             text-transform: uppercase;
@@ -346,7 +436,7 @@
         }
 
         .product-name {
-            font-size: 0.9em;
+            font-size: clamp(0.85em, 2vw, 0.95em);
             font-weight: 700;
             margin-bottom: 6px;
             color: #333;
@@ -354,6 +444,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            min-height: 2.4em;
         }
 
         body.dark-mode .product-name {
@@ -364,7 +455,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            font-size: 0.75em;
+            font-size: clamp(0.7em, 1.6vw, 0.8em);
             color: #f39c12;
             margin-bottom: 6px;
         }
@@ -374,31 +465,37 @@
             align-items: center;
             gap: 6px;
             margin-bottom: 8px;
+            flex-wrap: wrap;
         }
 
         .current-price {
-            font-size: 1em;
+            font-size: clamp(0.95em, 2.2vw, 1.1em);
             font-weight: 700;
             color: var(--primary-color);
         }
 
         .original-price {
-            font-size: 0.8em;
+            font-size: clamp(0.75em, 1.8vw, 0.85em);
             text-decoration: line-through;
             color: #999;
         }
 
         .add-to-cart-btn {
             width: 100%;
-            padding: 8px;
+            padding: clamp(8px, 2vw, 10px);
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
             border-radius: 6px;
             font-weight: 700;
-            font-size: 0.85em;
+            font-size: clamp(0.8em, 1.8vw, 0.9em);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
         .add-to-cart-btn:active {
@@ -420,9 +517,14 @@
 
         .view-all {
             color: var(--primary-color);
-            font-size: 0.9em;
+            font-size: clamp(0.85em, 2vw, 0.95em);
             font-weight: 700;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
         }
 
         .offers-tabs {
@@ -443,7 +545,7 @@
             background: white;
             border: 1px solid #ddd;
             border-radius: 20px;
-            font-size: 0.85em;
+            font-size: clamp(0.8em, 1.8vw, 0.9em);
             font-weight: 600;
             white-space: nowrap;
             cursor: pointer;
@@ -454,6 +556,10 @@
             background: #16213e;
             border-color: #333;
             color: #fff;
+        }
+
+        .tab-btn:hover {
+            transform: scale(1.05);
         }
 
         .tab-btn.active {
@@ -468,6 +574,13 @@
             padding: 20px;
             color: white;
             margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .offer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
 
         /* Bottom Navigation */
@@ -483,6 +596,8 @@
             padding: 8px 0;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             z-index: 1000;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         body.dark-mode .bottom-nav {
@@ -497,8 +612,13 @@
             justify-content: center;
             cursor: pointer;
             padding: 5px 12px;
-            transition: transform 0.2s;
+            transition: all 0.3s;
             flex: 1;
+            max-width: 80px;
+        }
+
+        .nav-item:hover {
+            transform: scale(1.1);
         }
 
         .nav-item:active {
@@ -506,9 +626,10 @@
         }
 
         .nav-icon {
-            font-size: 1.5em;
+            font-size: clamp(1.3em, 3vw, 1.6em);
             margin-bottom: 3px;
             color: #666;
+            position: relative;
         }
 
         body.dark-mode .nav-icon {
@@ -520,7 +641,7 @@
         }
 
         .nav-label {
-            font-size: 0.7em;
+            font-size: clamp(0.65em, 1.5vw, 0.75em);
             color: #666;
             font-weight: 600;
         }
@@ -533,7 +654,7 @@
             color: var(--primary-color);
         }
 
-        /* AI Chat Floating Button */
+        /* AI Chat Floating */
         .ai-chat-float {
             position: relative;
             display: flex;
@@ -542,14 +663,14 @@
         }
 
         .ai-avatar {
-            width: 45px;
-            height: 45px;
+            width: clamp(40px, 8vw, 50px);
+            height: clamp(40px, 8vw, 50px);
             background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3em;
+            font-size: clamp(1.2em, 3vw, 1.5em);
             color: white;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
             margin-bottom: 3px;
@@ -577,7 +698,7 @@
             }
         }
 
-        /* Modal/Page Containers */
+        /* Page Container */
         .page-container {
             display: none;
             position: fixed;
@@ -618,10 +739,20 @@
         .back-btn {
             font-size: 1.5em;
             cursor: pointer;
+            padding: 8px;
+            transition: transform 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .back-btn:active {
+            transform: scale(0.9);
         }
 
         .page-title {
-            font-size: 1.2em;
+            font-size: clamp(1.1em, 2.5vw, 1.3em);
             font-weight: 700;
         }
 
@@ -629,7 +760,7 @@
         .chat-container {
             display: flex;
             flex-direction: column;
-            height: calc(100vh - var(--bottom-nav-height) - 60px);
+            height: calc(100vh - var(--bottom-nav-height) - 70px);
             background: #f5f5f5;
         }
 
@@ -644,14 +775,35 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
         .message {
             margin-bottom: 12px;
             padding: 12px 15px;
             border-radius: 12px;
             max-width: 80%;
             word-wrap: break-word;
-            font-size: 0.9em;
+            font-size: clamp(0.85em, 2vw, 0.95em);
             line-height: 1.5;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .user-message {
@@ -698,7 +850,7 @@
             padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 25px;
-            font-size: 0.95em;
+            font-size: clamp(0.9em, 2vw, 1em);
             background: #f5f5f5;
         }
 
@@ -709,16 +861,16 @@
         }
 
         .voice-btn, .send-btn {
-            width: 40px;
-            height: 40px;
+            width: clamp(38px, 8vw, 44px);
+            height: clamp(38px, 8vw, 44px);
             border-radius: 50%;
             border: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2em;
+            font-size: clamp(1.1em, 2.5vw, 1.3em);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s;
         }
 
         .voice-btn {
@@ -731,13 +883,28 @@
             color: white;
         }
 
+        .voice-btn:hover, .send-btn:hover {
+            transform: scale(1.1);
+        }
+
         .voice-btn:active, .send-btn:active {
             transform: scale(0.9);
+        }
+
+        .voice-btn.listening {
+            background: #e74c3c;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         /* Cart Page */
         .cart-items {
             padding: 15px;
+            padding-bottom: 150px;
         }
 
         .cart-item {
@@ -755,8 +922,8 @@
         }
 
         .cart-item-image {
-            width: 80px;
-            height: 80px;
+            width: clamp(70px, 15vw, 90px);
+            height: clamp(70px, 15vw, 90px);
             border-radius: 8px;
             object-fit: cover;
         }
@@ -767,7 +934,7 @@
 
         .cart-item-name {
             font-weight: 700;
-            font-size: 0.95em;
+            font-size: clamp(0.9em, 2vw, 1em);
             margin-bottom: 5px;
         }
 
@@ -779,22 +946,37 @@
         }
 
         .qty-btn {
-            width: 28px;
-            height: 28px;
+            width: clamp(26px, 6vw, 32px);
+            height: clamp(26px, 6vw, 32px);
             border-radius: 50%;
             border: none;
             background: var(--primary-color);
             color: white;
             font-weight: 700;
             cursor: pointer;
+            font-size: clamp(0.9em, 2vw, 1.1em);
+            transition: all 0.3s;
+        }
+
+        .qty-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .qty-btn:active {
+            transform: scale(0.9);
         }
 
         .cart-total {
-            position: sticky;
-            bottom: 0;
+            position: fixed;
+            bottom: var(--bottom-nav-height);
+            left: 0;
+            right: 0;
             background: white;
             padding: 15px;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         body.dark-mode .cart-total {
@@ -803,27 +985,44 @@
 
         .checkout-btn {
             width: 100%;
-            padding: 14px;
+            padding: clamp(12px, 3vw, 16px);
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
             border-radius: 8px;
             font-weight: 700;
-            font-size: 1em;
+            font-size: clamp(0.95em, 2.2vw, 1.1em);
             cursor: pointer;
             margin-top: 10px;
+            transition: all 0.3s;
         }
 
-        /* Loading */
-        .loading {
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .checkout-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Loading & Empty States */
+        .loading, .empty-state {
             text-align: center;
-            padding: 20px;
-            color: var(--primary-color);
-            font-style: italic;
+            padding: 40px 20px;
+            color: #999;
+            font-size: clamp(0.9em, 2vw, 1em);
         }
 
-        .hidden {
-            display: none;
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .empty-icon {
+            font-size: clamp(3em, 8vw, 5em);
         }
 
         /* Notification */
@@ -837,9 +1036,10 @@
             border-radius: 8px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
             z-index: 2000;
-            font-size: 0.9em;
+            font-size: clamp(0.85em, 2vw, 0.95em);
             font-weight: 600;
             animation: slideDown 0.3s ease;
+            max-width: 90%;
         }
 
         @keyframes slideDown {
@@ -855,248 +1055,387 @@
             border-left: 4px solid #e74c3c;
         }
 
-        /* Responsive */
-        @media (min-width: 768px) {
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive Breakpoints */
+        @media (min-width: 480px) {
             .products-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding-bottom: 0;
+            }
+
+            .bottom-nav {
+                display: none;
+            }
+
+            .desktop-nav {
+                display: flex;
+                justify-content: space-around;
+                background: white;
+                padding: 15px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                position: sticky;
+                top: 60px;
+                z-index: 99;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            body.dark-mode .desktop-nav {
+                background: #16213e;
+            }
+
+            .desktop-nav-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 20px;
+                cursor: pointer;
+                border-radius: 8px;
+                transition: all 0.3s;
+                font-weight: 600;
+            }
+
+            .desktop-nav-item:hover {
+                background: #f0f0f0;
+            }
+
+            body.dark-mode .desktop-nav-item:hover {
+                background: #2d3748;
+            }
+
+            .desktop-nav-item.active {
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             }
 
             .categories-grid {
-                grid-template-columns: repeat(6, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            }
+
+            .page-container {
+                position: relative;
+                bottom: auto;
             }
         }
 
         @media (min-width: 1024px) {
             .products-grid {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
 
-            body {
-                max-width: 600px;
-                margin: 0 auto;
+            .app-container {
+                padding: 0 20px;
             }
+        }
 
-            .bottom-nav {
-                max-width: 600px;
-                left: 50%;
-                transform: translateX(-50%);
+        @media (min-width: 1440px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        /* Touch Device Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .icon-btn, .back-btn, .qty-btn, .voice-btn, .send-btn, .wishlist-icon {
+                min-width: 44px;
+                min-height: 44px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Top Header -->
-    <div class="top-header">
-        <div class="menu-icon">☰</div>
-        <div class="logo">🌸 Wellness</div>
-        <div class="top-icons">
-            <div class="icon-btn" onclick="toggleTheme()">🌙</div>
-            <div class="icon-btn" onclick="showWishlist()">
-                ❤️
-                <span class="badge" id="wishlistBadge">0</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Home Content -->
-    <div id="homePage">
-        <!-- Banner -->
-        <div class="banner">
-            <h2>Let's personalize your wellness journey!</h2>
-            <p>Tell us your mood to help us find perfect products for you</p>
-        </div>
-
-        <!-- Mood Selection -->
-        <div class="mood-section">
-            <div class="section-title">
-                <span>😊</span>
-                <span>How are you feeling?</span>
-            </div>
-            <div class="mood-scroll">
-                <div class="mood-card" onclick="selectMood('stressed')">
-                    <div class="mood-emoji">😰</div>
-                    <div class="mood-label">Stressed</div>
-                </div>
-                <div class="mood-card" onclick="selectMood('tired')">
-                    <div class="mood-emoji">😴</div>
-                    <div class="mood-label">Tired</div>
-                </div>
-                <div class="mood-card" onclick="selectMood('anxious')">
-                    <div class="mood-emoji">😟</div>
-                    <div class="mood-label">Anxious</div>
-                </div>
-                <div class="mood-card" onclick="selectMood('happy')">
-                    <div class="mood-emoji">😊</div>
-                    <div class="mood-label">Happy</div>
-                </div>
-                <div class="mood-card" onclick="selectMood('sad')">
-                    <div class="mood-emoji">😢</div>
-                    <div class="mood-label">Sad</div>
-                </div>
-                <div class="mood-card" onclick="selectMood('energetic')">
-                    <div class="mood-emoji">⚡</div>
-                    <div class="mood-label">Energetic</div>
+    <div class="app-container">
+        <!-- Top Header -->
+        <div class="top-header">
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+            <div class="logo">🌸 Wellness</div>
+            <div class="top-icons">
+                <div class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">🌙</div>
+                <div class="icon-btn" onclick="showWishlist()" title="Wishlist">
+                    ❤️
+                    <span class="badge" id="wishlistBadge">0</span>
                 </div>
             </div>
         </div>
 
-        <!-- Categories -->
-        <div class="categories-section">
-            <div class="section-title">Shop by Category</div>
-            <div class="categories-grid">
-                <div class="category-item" onclick="filterByCategory('Tea')">
-                    <div class="category-icon">🍵</div>
-                    <div class="category-name">Teas</div>
-                </div>
-                <div class="category-item" onclick="filterByCategory('Skincare')">
-                    <div class="category-icon">🧴</div>
-                    <div class="category-name">Skincare</div>
-                </div>
-                <div class="category-item" onclick="filterByCategory('Outfit')">
-                    <div class="category-icon">👕</div>
-                    <div class="category-name">Outfits</div>
-                </div>
-                <div class="category-item" onclick="showWishlist()">
-                    <div class="category-icon">❤️</div>
-                    <div class="category-name">Wishlist</div>
-                </div>
-                <div class="category-item" onclick="showOffers()">
-                    <div class="category-icon">🎁</div>
-                    <div class="category-name">Offers</div>
-                </div>
-                <div class="category-item" onclick="toggleTheme()">
-                    <div class="category-icon">🌙</div>
-                    <div class="category-name">Theme</div>
-                </div>
+        <!-- Desktop Navigation (visible on tablets/desktops) -->
+        <div class="desktop-nav hidden" id="desktopNav">
+            <div class="desktop-nav-item active" onclick="showHome()">
+                <span>🏠</span>
+                <span>Home</span>
+            </div>
+            <div class="desktop-nav-item" onclick="showCart()">
+                <span>🛒</span>
+                <span>Cart (<span id="desktopCartCount">0</span>)</span>
+            </div>
+            <div class="desktop-nav-item" onclick="showAIChat()">
+                <span>🤖</span>
+                <span>Aivora.AI</span>
+            </div>
+            <div class="desktop-nav-item" onclick="showWishlist()">
+                <span>❤️</span>
+                <span>Wishlist (<span id="desktopWishlistCount">0</span>)</span>
+            </div>
+            <div class="desktop-nav-item" onclick="showAccount()">
+                <span>👤</span>
+                <span>Account</span>
             </div>
         </div>
 
-        <!-- Products -->
-        <div class="products-section">
-            <div class="section-title">
-                <span>🛍️</span>
-                <span id="productsTitle">Recommended for You</span>
+        <!-- Main Home Content -->
+        <div id="homePage">
+            <!-- Banner -->
+            <div class="banner">
+                <h2>Let's personalize your wellness journey!</h2>
+                <p>Tell us your mood to help us find perfect products for you</p>
+                <button class="banner-cta" onclick="scrollToMood()">Get Started →</button>
             </div>
-            <div id="productsGrid" class="products-grid">
-                <!-- Products will be loaded here -->
-            </div>
-        </div>
 
-        <!-- Offers Section -->
-        <div class="offers-section">
-            <div class="offers-header">
-                <div class="section-title">Offers</div>
-                <div class="view-all" onclick="showOffers()">View All →</div>
+            <!-- Mood Selection -->
+            <div class="mood-section" id="moodSection">
+                <div class="section-title">
+                    <span>😊</span>
+                    <span>How are you feeling?</span>
+                </div>
+                <div class="mood-scroll">
+                    <div class="mood-card" data-mood="stressed" onclick="selectMood('stressed')">
+                        <div class="mood-emoji">😰</div>
+                        <div class="mood-label">Stressed</div>
+                    </div>
+                    <div class="mood-card" data-mood="tired" onclick="selectMood('tired')">
+                        <div class="mood-emoji">😴</div>
+                        <div class="mood-label">Tired</div>
+                    </div>
+                    <div class="mood-card" data-mood="anxious" onclick="selectMood('anxious')">
+                        <div class="mood-emoji">😟</div>
+                        <div class="mood-label">Anxious</div>
+                    </div>
+                    <div class="mood-card" data-mood="happy" onclick="selectMood('happy')">
+                        <div class="mood-emoji">😊</div>
+                        <div class="mood-label">Happy</div>
+                    </div>
+                    <div class="mood-card" data-mood="sad" onclick="selectMood('sad')">
+                        <div class="mood-emoji">😢</div>
+                        <div class="mood-label">Sad</div>
+                    </div>
+                    <div class="mood-card" data-mood="energetic" onclick="selectMood('energetic')">
+                        <div class="mood-emoji">⚡</div>
+                        <div class="mood-label">Energetic</div>
+                    </div>
+                </div>
             </div>
-            <div class="offers-tabs">
-                <button class="tab-btn active">Trending</button>
-                <button class="tab-btn">Teas</button>
-                <button class="tab-btn">Skincare</button>
-                <button class="tab-btn">Outfits</button>
-            </div>
-            <div class="offer-card">
-                <h3 style="margin-bottom: 8px;">🎉 Special Discount!</h3>
-                <p style="font-size: 0.9em;">Use code WELLNESS20 for 20% off</p>
-            </div>
-        </div>
-    </div>
 
-    <!-- AI Chat Page -->
-    <div id="aiChatPage" class="page-container">
-        <div class="page-header">
-            <div class="back-btn" onclick="closePage('aiChatPage')">←</div>
-            <div class="page-title">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 35px; height: 35px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2em;">🤖</div>
-                    <div>
-                        <div style="font-size: 1em; font-weight: 700;">Aivora.AI</div>
-                        <div style="font-size: 0.7em; color: #2ecc71; font-weight: 600;">● Online</div>
+            <!-- Categories -->
+            <div class="categories-section">
+                <div class="section-title">Shop by Category</div>
+                <div class="categories-grid">
+                    <div class="category-item" onclick="filterByCategory('Tea')" title="Teas">
+                        <div class="category-icon">🍵</div>
+                        <div class="category-name">Teas</div>
+                    </div>
+                    <div class="category-item" onclick="filterByCategory('Skincare')" title="Skincare">
+                        <div class="category-icon">🧴</div>
+                        <div class="category-name">Skincare</div>
+                    </div>
+                    <div class="category-item" onclick="filterByCategory('Outfit')" title="Outfits">
+                        <div class="category-icon">👕</div>
+                        <div class="category-name">Outfits</div>
+                    </div>
+                    <div class="category-item" onclick="showWishlist()" title="Wishlist">
+                        <div class="category-icon">❤️</div>
+                        <div class="category-name">Wishlist</div>
+                    </div>
+                    <div class="category-item" onclick="showOffers()" title="Offers">
+                        <div class="category-icon">🎁</div>
+                        <div class="category-name">Offers</div>
+                    </div>
+                    <div class="category-item" onclick="toggleTheme()" title="Toggle Theme">
+                        <div class="category-icon">🌙</div>
+                        <div class="category-name">Theme</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products -->
+            <div class="products-section">
+                <div class="section-title">
+                    <span>🛍️</span>
+                    <span id="productsTitle">All Products</span>
+                </div>
+                
+                <!-- Search and Filter -->
+                <div class="search-filter-bar">
+                    <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search products..." oninput="filterProducts()">
+                    <select class="filter-select" id="categoryFilter" onchange="filterProductsByCategory()">
+                        <option value="all">All Categories</option>
+                        <option value="Tea">Teas</option>
+                        <option value="Skincare">Skincare</option>
+                        <option value="Outfit">Outfits</option>
+                    </select>
+                    <select class="filter-select" id="sortFilter" onchange="sortProducts()">
+                        <option value="default">Sort By</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Rating: High to Low</option>
+                        <option value="discount">Discount: High to Low</option>
+                    </select>
+                </div>
+
+                <div id="productsGrid" class="products-grid">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Offers Section -->
+            <div class="offers-section">
+                <div class="offers-header">
+                    <div class="section-title">Special Offers</div>
+                    <div class="view-all" onclick="showAllOffers()">View All →</div>
+                </div>
+                <div class="offers-tabs">
+                    <button class="tab-btn active" onclick="filterOffers('trending')">Trending</button>
+                    <button class="tab-btn" onclick="filterOffers('teas')">Teas</button>
+                    <button class="tab-btn" onclick="filterOffers('skincare')">Skincare</button>
+                    <button class="tab-btn" onclick="filterOffers('outfits')">Outfits</button>
+                    <button class="tab-btn" onclick="filterOffers('deals')">Best Deals</button>
+                </div>
+                <div id="offersContainer">
+                    <div class="offer-card" onclick="applyOffer('WELLNESS20')">
+                        <h3 style="margin-bottom: 8px;">🎉 Wellness Special</h3>
+                        <p style="font-size: 0.95em;">Use code <strong>WELLNESS20</strong> for 20% off</p>
+                    </div>
+                    <div class="offer-card" onclick="applyOffer('SAVE10')">
+                        <h3 style="margin-bottom: 8px;">💰 Quick Saver</h3>
+                        <p style="font-size: 0.95em;">Use code <strong>SAVE10</strong> for 10% off</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="chat-container">
-            <div class="chat-messages" id="chatMessages">
-                <div class="message bot-message">
-                    Hi! 👋 I'm Aivora, your AI wellness shopping assistant. I can help you find the perfect products, compare options, and answer any questions. How can I help you today?
-                    <div class="message-timestamp">Just now</div>
+
+        <!-- AI Chat Page -->
+        <div id="aiChatPage" class="page-container">
+            <div class="page-header">
+                <div class="back-btn" onclick="closePage('aiChatPage')">←</div>
+                <div class="page-title">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 35px; height: 35px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2em;">🤖</div>
+                        <div>
+                            <div style="font-size: 1em; font-weight: 700;">Aivora.AI</div>
+                            <div style="font-size: 0.7em; color: #2ecc71; font-weight: 600;">● Online</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-left: auto; display: flex; gap: 10px;">
+                    <div class="icon-btn" onclick="clearChat()" title="Clear Chat">🗑️</div>
+                    <div class="icon-btn" onclick="speakLastMessage()" title="Speak">🔊</div>
                 </div>
             </div>
-            <div class="chat-input-area">
-                <button class="voice-btn" onclick="startVoiceInput()">🎤</button>
-                <input type="text" class="chat-input" id="chatInput" placeholder="Type or speak..." onkeypress="handleChatKeyPress(event)">
-                <button class="send-btn" onclick="sendMessage()">➤</button>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        Hi! 👋 I'm Aivora, your AI wellness shopping assistant. I can help you:<br><br>
+                        • Find perfect products for your mood<br>
+                        • Compare products and prices<br>
+                        • Answer questions about ingredients<br>
+                        • Suggest personalized recommendations<br><br>
+                        How can I help you today?
+                        <div class="message-timestamp">Just now</div>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <button class="voice-btn" id="voiceBtn" onclick="startVoiceInput()" title="Voice Input">🎤</button>
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Type or speak..." onkeypress="handleChatKeyPress(event)">
+                    <button class="send-btn" onclick="sendMessage()" title="Send Message">➤</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Cart Page -->
-    <div id="cartPage" class="page-container">
-        <div class="page-header">
-            <div class="back-btn" onclick="closePage('cartPage')">←</div>
-            <div class="page-title">My Cart (<span id="cartItemCount">0</span>)</div>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <!-- Cart items will be loaded here -->
-        </div>
-        <div class="cart-total">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span>Subtotal:</span>
-                <span id="subtotal">₹0</span>
+        <!-- Cart Page -->
+        <div id="cartPage" class="page-container">
+            <div class="page-header">
+                <div class="back-btn" onclick="closePage('cartPage')">←</div>
+                <div class="page-title">My Cart (<span id="cartItemCount">0</span>)</div>
+                <div style="margin-left: auto; display: flex; gap: 10px;">
+                    <div class="icon-btn" onclick="clearCart()" title="Clear Cart">🗑️</div>
+                </div>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #2ecc71;">
-                <span>Savings:</span>
-                <span id="savings">₹0</span>
+            <div class="cart-items" id="cartItems">
+                <!-- Cart items will be loaded here -->
             </div>
-            <hr style="margin: 10px 0; border: none; border-top: 1px solid #ddd;">
-            <div style="display: flex; justify-content: space-between; font-size: 1.2em; font-weight: 700;">
-                <span>Total:</span>
-                <span id="totalAmount">₹0</span>
+            <div class="cart-total">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95em;">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₹0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #2ecc71; font-size: 0.95em;">
+                    <span>You're Saving:</span>
+                    <span id="savings">₹0</span>
+                </div>
+                <hr style="margin: 10px 0; border: none; border-top: 1px solid #ddd;">
+                <div style="display: flex; justify-content: space-between; font-size: 1.2em; font-weight: 700;">
+                    <span>Total:</span>
+                    <span id="totalAmount">₹0</span>
+                </div>
+                <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout →</button>
             </div>
-            <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout →</button>
         </div>
-    </div>
 
-    <!-- Wishlist Page -->
-    <div id="wishlistPage" class="page-container">
-        <div class="page-header">
-            <div class="back-btn" onclick="closePage('wishlistPage')">←</div>
-            <div class="page-title">My Wishlist</div>
-        </div>
-        <div class="products-section">
-            <div id="wishlistGrid" class="products-grid">
-                <!-- Wishlist items will be loaded here -->
+        <!-- Wishlist Page -->
+        <div id="wishlistPage" class="page-container">
+            <div class="page-header">
+                <div class="back-btn" onclick="closePage('wishlistPage')">←</div>
+                <div class="page-title">My Wishlist (<span id="wishlistItemCount">0</span>)</div>
+                <div style="margin-left: auto;">
+                    <div class="icon-btn" onclick="clearWishlist()" title="Clear Wishlist">🗑️</div>
+                </div>
+            </div>
+            <div class="products-section">
+                <div id="wishlistGrid" class="products-grid">
+                    <!-- Wishlist items will be loaded here -->
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="showHome()">
-            <div class="nav-icon">🏠</div>
-            <div class="nav-label">Home</div>
-        </div>
-        <div class="nav-item" onclick="showCart()">
-            <div class="nav-icon" style="position: relative;">
-                🛒
-                <span class="badge" id="cartBadge" style="top: -5px; right: -10px;">0</span>
+        <!-- Bottom Navigation (Mobile/Tablet) -->
+        <div class="bottom-nav" id="bottomNav">
+            <div class="nav-item active" onclick="showHome()">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
             </div>
-            <div class="nav-label">My Cart</div>
-        </div>
-        <div class="nav-item ai-chat-float" onclick="showAIChat()">
-            <div class="ai-avatar">
-                🤖
-                <div class="ai-pulse"></div>
+            <div class="nav-item" onclick="showCart()">
+                <div class="nav-icon" style="position: relative;">
+                    🛒
+                    <span class="badge" id="cartBadge">0</span>
+                </div>
+                <div class="nav-label">Cart</div>
             </div>
-            <div class="nav-label" style="color: var(--primary-color);">Aivora.AI</div>
-        </div>
-        <div class="nav-item" onclick="showWishlist()">
-            <div class="nav-icon">❤️</div>
-            <div class="nav-label">Wishlist</div>
-        </div>
-        <div class="nav-item" onclick="showAccount()">
-            <div class="nav-icon">👤</div>
-            <div class="nav-label">Account</div>
+            <div class="nav-item ai-chat-float" onclick="showAIChat()">
+                <div class="ai-avatar">
+                    🤖
+                    <div class="ai-pulse"></div>
+                </div>
+                <div class="nav-label" style="color: var(--primary-color);">Aivora.AI</div>
+            </div>
+            <div class="nav-item" onclick="showWishlist()">
+                <div class="nav-icon">❤️</div>
+                <div class="nav-label">Wishlist</div>
+            </div>
+            <div class="nav-item" onclick="showAccount()">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Account</div>
+            </div>
         </div>
     </div>
 
@@ -1106,6 +1445,7 @@
         let cart = [];
         let wishlist = [];
         let products = [];
+        let filteredProducts = [];
         let currentCategory = 'all';
         let recognition;
         let synthesis = window.speechSynthesis;
@@ -1114,36 +1454,197 @@
         const GROQ_API_KEY = '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';
         const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
-        // Product images
+        // Expanded product images
         const productImages = {
-            'Chamomile Calm Tea': 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=400&h=300&fit=crop',
-            'Lavender Dream Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=300&fit=crop',
-            'Stress Relief Herbal Blend': 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400&h=300&fit=crop',
-            'Soothing Aloe Vera Gel': 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=300&fit=crop',
-            'Calming Face Mask': 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=300&fit=crop',
-            'Relaxing Aromatherapy Serum': 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=300&fit=crop',
-            'Soft Cotton Lounge Set': 'https://images.unsplash.com/photo-1578102718171-ec1f91680562?w=400&h=300&fit=crop',
-            'Bamboo Comfort Pajamas': 'https://images.unsplash.com/photo-1584293648398-9e52f5bef8f8?w=400&h=300&fit=crop',
-            'Relaxed Fit Hoodie': 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=300&fit=crop'
+            'Chamomile Calm Tea': 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=400&h=400&fit=crop',
+            'Lavender Dream Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Stress Relief Herbal Blend': 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400&h=400&fit=crop',
+            'Soothing Aloe Vera Gel': 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop',
+            'Calming Face Mask': 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=400&fit=crop',
+            'Relaxing Aromatherapy Serum': 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop',
+            'Soft Cotton Lounge Set': 'https://images.unsplash.com/photo-1578102718171-ec1f91680562?w=400&h=400&fit=crop',
+            'Bamboo Comfort Pajamas': 'https://images.unsplash.com/photo-1584293648398-9e52f5bef8f8?w=400&h=400&fit=crop',
+            'Relaxed Fit Hoodie': 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop',
+            'Energy Boost Green Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Ginseng Vitality Tea': 'https://images.unsplash.com/photo-1597318121031-6c0c0e9b5571?w=400&h=400&fit=crop',
+            'Matcha Power Blend': 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=400&h=400&fit=crop',
+            'Refreshing Vitamin C Serum': 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop',
+            'Energizing Eye Cream': 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop',
+            'Brightening Face Mist': 'https://images.unsplash.com/photo-1571875257727-256c39da42af?w=400&h=400&fit=crop',
+            'Breathable Athleisure Set': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=400&fit=crop',
+            'Cooling Fabric T-Shirt': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop',
+            'Comfy Joggers': 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=400&fit=crop',
+            'Peaceful Mind Tea': 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=400&fit=crop',
+            'Anxiety Relief Herbal Mix': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Calming Passionflower Tea': 'https://images.unsplash.com/photo-1558642891-54be180ea339?w=400&h=400&fit=crop',
+            'Gentle Soothing Cleanser': 'https://images.unsplash.com/photo-1556228852-80a39606bd3c?w=400&h=400&fit=crop',
+            'Calming CBD Cream': 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&h=400&fit=crop',
+            'Stress-Relief Face Oil': 'https://images.unsplash.com/photo-1570554886111-e80fcca6a029?w=400&h=400&fit=crop',
+            'Weighted Comfort Blanket': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=400&fit=crop',
+            'Ultra-Soft Robe': 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=400&fit=crop',
+            'Cozy Knit Sweater': 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=400&fit=crop',
+            'Tropical Fruit Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Citrus Burst Green Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Berry Bliss Herbal Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Radiant Glow Serum': 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop',
+            'Brightening Day Cream': 'https://images.unsplash.com/photo-1556228578-dd5e5f7ead12?w=400&h=400&fit=crop',
+            'Luminous Face Mask': 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=400&fit=crop',
+            'Vibrant Summer Dress': 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=400&fit=crop',
+            'Colorful Casual Outfit': 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&h=400&fit=crop',
+            'Stylish Comfort Set': 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&h=400&fit=crop',
+            'Mood Lift Herbal Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Comforting Vanilla Chai': 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&h=400&fit=crop',
+            'Uplifting Lemon Balm Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Self-Care Face Mask Set': 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=400&fit=crop',
+            'Nurturing Night Cream': 'https://images.unsplash.com/photo-1556228578-dd5e5f7ead12?w=400&h=400&fit=crop',
+            'Comforting Body Butter': 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop',
+            'Cozy Fleece Blanket Set': 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=400&fit=crop',
+            'Warm Comfort Sleepwear': 'https://images.unsplash.com/photo-1584293648398-9e52f5bef8f8?w=400&h=400&fit=crop',
+            'Snuggle-Soft Loungewear': 'https://images.unsplash.com/photo-1578102718171-ec1f91680562?w=400&h=400&fit=crop',
+            'Power Boost Black Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Athletic Performance Tea': 'https://images.unsplash.com/photo-1597318121031-6c0c0e9b5571?w=400&h=400&fit=crop',
+            'Focus & Energy Blend': 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=400&h=400&fit=crop',
+            'Energizing Face Wash': 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop',
+            'Active Hydration Gel': 'https://images.unsplash.com/photo-1556228578-dd5e5f7ead12?w=400&h=400&fit=crop',
+            'Sport Recovery Lotion': 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop',
+            'Performance Activewear Set': 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=400&fit=crop',
+            'Dynamic Sports Outfit': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=400&fit=crop',
+            'Pro Athletic Gear': 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=400&fit=crop',
+            'Peppermint Fresh Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Rose Petal Infusion': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Jasmine Night Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Detox Green Blend': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Turmeric Glow Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop',
+            'Hyaluronic Moisture Boost': 'https://images.unsplash.com/photo-1556228578-dd5e5f7ead12?w=400&h=400&fit=crop',
+            'Retinol Night Serum': 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop',
+            'Collagen Face Cream': 'https://images.unsplash.com/photo-1556228578-dd5e5f7ead12?w=400&h=400&fit=crop',
+            'Niacinamide Brightening': 'https://images.unsplash.com/photo-1556228578-dd5e5f7ead12?w=400&h=400&fit=crop',
+            'AHA BHA Exfoliant': 'https://images.unsplash.com/photo-1556228852-80a39606bd3c?w=400&h=400&fit=crop',
+            'Silk Sleepwear Set': 'https://images.unsplash.com/photo-1584293648398-9e52f5bef8f8?w=400&h=400&fit=crop',
+            'Linen Lounge Pants': 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=400&fit=crop',
+            'Cashmere Cardigan': 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=400&fit=crop',
+            'Yoga Comfort Set': 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=400&fit=crop',
+            'Merino Wool Base Layer': 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop'
         };
 
-        // Product database
+        // Expanded product database with MORE products
         const moodProducts = {
             stressed: {
                 teas: [
                     { name: 'Chamomile Calm Tea', price: 299, originalPrice: 399, rating: 4.5, reviews: 156, description: 'Organic chamomile for relaxation' },
                     { name: 'Lavender Dream Tea', price: 349, originalPrice: 449, rating: 4.7, reviews: 203, description: 'French lavender with honey' },
-                    { name: 'Stress Relief Herbal Blend', price: 399, originalPrice: 499, rating: 4.6, reviews: 178, description: 'Adaptogenic herbs blend' }
+                    { name: 'Stress Relief Herbal Blend', price: 399, originalPrice: 499, rating: 4.6, reviews: 178, description: 'Adaptogenic herbs blend' },
+                    { name: 'Peppermint Fresh Tea', price: 279, originalPrice: 379, rating: 4.4, reviews: 142, description: 'Cool peppermint leaves' },
+                    { name: 'Rose Petal Infusion', price: 399, originalPrice: 499, rating: 4.6, reviews: 165, description: 'Delicate rose petals' }
                 ],
                 skincare: [
                     { name: 'Soothing Aloe Vera Gel', price: 599, originalPrice: 799, rating: 4.4, reviews: 312, description: 'Pure aloe vera gel' },
                     { name: 'Calming Face Mask', price: 799, originalPrice: 999, rating: 4.8, reviews: 445, description: 'Clay mask with oils' },
-                    { name: 'Relaxing Aromatherapy Serum', price: 1299, originalPrice: 1699, rating: 4.6, reviews: 267, description: 'Lavender & chamomile' }
+                    { name: 'Relaxing Aromatherapy Serum', price: 1299, originalPrice: 1699, rating: 4.6, reviews: 267, description: 'Lavender & chamomile' },
+                    { name: 'Gentle Soothing Cleanser', price: 799, originalPrice: 999, rating: 4.6, reviews: 298, description: 'pH-balanced formula' },
+                    { name: 'Hyaluronic Moisture Boost', price: 1099, originalPrice: 1499, rating: 4.7, reviews: 321, description: 'Deep hydration serum' }
                 ],
                 outfits: [
                     { name: 'Soft Cotton Lounge Set', price: 1999, originalPrice: 2499, rating: 4.5, reviews: 189, description: 'Organic cotton comfort' },
                     { name: 'Bamboo Comfort Pajamas', price: 1499, originalPrice: 1999, rating: 4.7, reviews: 234, description: 'Eco-friendly bamboo' },
-                    { name: 'Relaxed Fit Hoodie', price: 1799, originalPrice: 2299, rating: 4.6, reviews: 298, description: 'Cozy fleece hoodie' }
+                    { name: 'Relaxed Fit Hoodie', price: 1799, originalPrice: 2299, rating: 4.6, reviews: 298, description: 'Cozy fleece hoodie' },
+                    { name: 'Silk Sleepwear Set', price: 2499, originalPrice: 3299, rating: 4.8, reviews: 187, description: 'Premium silk blend' },
+                    { name: 'Cashmere Cardigan', price: 3499, originalPrice: 4499, rating: 4.7, reviews: 156, description: 'Luxurious cashmere' }
+                ]
+            },
+            tired: {
+                teas: [
+                    { name: 'Energy Boost Green Tea', price: 279, originalPrice: 399, rating: 4.3, reviews: 145, description: 'Natural caffeine boost' },
+                    { name: 'Ginseng Vitality Tea', price: 449, originalPrice: 599, rating: 4.6, reviews: 198, description: 'Korean red ginseng' },
+                    { name: 'Matcha Power Blend', price: 599, originalPrice: 799, rating: 4.8, reviews: 287, description: 'Premium Japanese matcha' },
+                    { name: 'Jasmine Night Tea', price: 329, originalPrice: 449, rating: 4.5, reviews: 176, description: 'Fragrant jasmine flowers' },
+                    { name: 'Detox Green Blend', price: 379, originalPrice: 499, rating: 4.4, reviews: 198, description: 'Detoxifying green tea' }
+                ],
+                skincare: [
+                    { name: 'Refreshing Vitamin C Serum', price: 1099, originalPrice: 1499, rating: 4.7, reviews: 356, description: 'Brightens skin' },
+                    { name: 'Energizing Eye Cream', price: 899, originalPrice: 1199, rating: 4.5, reviews: 223, description: 'Reduces dark circles' },
+                    { name: 'Brightening Face Mist', price: 699, originalPrice: 899, rating: 4.4, reviews: 178, description: 'Refreshing citrus' },
+                    { name: 'Retinol Night Serum', price: 1399, originalPrice: 1899, rating: 4.8, reviews: 289, description: 'Anti-aging treatment' },
+                    { name: 'Collagen Face Cream', price: 1199, originalPrice: 1599, rating: 4.6, reviews: 245, description: 'Firms and lifts' }
+                ],
+                outfits: [
+                    { name: 'Breathable Athleisure Set', price: 2499, originalPrice: 2999, rating: 4.6, reviews: 312, description: 'Moisture-wicking' },
+                    { name: 'Cooling Fabric T-Shirt', price: 899, originalPrice: 1199, rating: 4.5, reviews: 267, description: 'Stay cool all day' },
+                    { name: 'Comfy Joggers', price: 1299, originalPrice: 1699, rating: 4.7, reviews: 345, description: 'Perfect for lounging' },
+                    { name: 'Yoga Comfort Set', price: 2199, originalPrice: 2799, rating: 4.8, reviews: 298, description: 'Flexible activewear' },
+                    { name: 'Linen Lounge Pants', price: 1799, originalPrice: 2299, rating: 4.6, reviews: 234, description: 'Breathable linen' }
+                ]
+            },
+            anxious: {
+                teas: [
+                    { name: 'Peaceful Mind Tea', price: 329, originalPrice: 449, rating: 4.6, reviews: 189, description: 'Calms anxiety naturally' },
+                    { name: 'Anxiety Relief Herbal Mix', price: 399, originalPrice: 549, rating: 4.8, reviews: 267, description: 'Clinically studied herbs' },
+                    { name: 'Calming Passionflower Tea', price: 379, originalPrice: 499, rating: 4.5, reviews: 201, description: 'Traditional remedy' },
+                    { name: 'Turmeric Glow Tea', price: 349, originalPrice: 449, rating: 4.6, reviews: 187, description: 'Anti-inflammatory blend' }
+                ],
+                skincare: [
+                    { name: 'Gentle Soothing Cleanser', price: 799, originalPrice: 999, rating: 4.6, reviews: 298, description: 'pH-balanced formula' },
+                    { name: 'Calming CBD Cream', price: 1499, originalPrice: 1999, rating: 4.7, reviews: 234, description: 'Full-spectrum CBD' },
+                    { name: 'Stress-Relief Face Oil', price: 1199, originalPrice: 1599, rating: 4.5, reviews: 189, description: 'Botanical oils' },
+                    { name: 'Niacinamide Brightening', price: 999, originalPrice: 1299, rating: 4.7, reviews: 267, description: 'Pore minimizing' },
+                    { name: 'AHA BHA Exfoliant', price: 899, originalPrice: 1199, rating: 4.5, reviews: 223, description: 'Gentle exfoliation' }
+                ],
+                outfits: [
+                    { name: 'Weighted Comfort Blanket', price: 2999, originalPrice: 3999, rating: 4.8, reviews: 412, description: 'Therapeutic design' },
+                    { name: 'Ultra-Soft Robe', price: 1799, originalPrice: 2299, rating: 4.6, reviews: 298, description: 'Plush microfiber' },
+                    { name: 'Cozy Knit Sweater', price: 2199, originalPrice: 2799, rating: 4.7, reviews: 356, description: 'Hand-knitted' },
+                    { name: 'Merino Wool Base Layer', price: 2499, originalPrice: 3199, rating: 4.8, reviews: 198, description: 'Temperature regulating' }
+                ]
+            },
+            happy: {
+                teas: [
+                    { name: 'Tropical Fruit Tea', price: 299, originalPrice: 399, rating: 4.5, reviews: 178, description: 'Exotic fruit medley' },
+                    { name: 'Citrus Burst Green Tea', price: 329, originalPrice: 449, rating: 4.6, reviews: 223, description: 'Zesty refreshing' },
+                    { name: 'Berry Bliss Herbal Tea', price: 349, originalPrice: 449, rating: 4.7, reviews: 267, description: 'Sweet berry fusion' }
+                ],
+                skincare: [
+                    { name: 'Radiant Glow Serum', price: 1299, originalPrice: 1699, rating: 4.8, reviews: 389, description: 'Instant luminosity' },
+                    { name: 'Brightening Day Cream', price: 999, originalPrice: 1299, rating: 4.6, reviews: 312, description: 'SPF 30 protection' },
+                    { name: 'Luminous Face Mask', price: 799, originalPrice: 999, rating: 4.5, reviews: 245, description: 'Golden glow' }
+                ],
+                outfits: [
+                    { name: 'Vibrant Summer Dress', price: 2499, originalPrice: 2999, rating: 4.7, reviews: 356, description: 'Colorful floral' },
+                    { name: 'Colorful Casual Outfit', price: 2199, originalPrice: 2699, rating: 4.6, reviews: 298, description: 'Mix and match' },
+                    { name: 'Stylish Comfort Set', price: 2799, originalPrice: 3299, rating: 4.8, reviews: 423, description: 'Fashion meets comfort' }
+                ]
+            },
+            sad: {
+                teas: [
+                    { name: 'Mood Lift Herbal Tea', price: 349, originalPrice: 499, rating: 4.6, reviews: 198, description: 'St. Johns Wort' },
+                    { name: 'Comforting Vanilla Chai', price: 329, originalPrice: 449, rating: 4.7, reviews: 234, description: 'Warm spices' },
+                    { name: 'Uplifting Lemon Balm Tea', price: 299, originalPrice: 399, rating: 4.5, reviews: 189, description: 'Mood booster' }
+                ],
+                skincare: [
+                    { name: 'Self-Care Face Mask Set', price: 1099, originalPrice: 1499, rating: 4.7, reviews: 312, description: '5-pack variety' },
+                    { name: 'Nurturing Night Cream', price: 1299, originalPrice: 1699, rating: 4.6, reviews: 267, description: 'Deep hydration' },
+                    { name: 'Comforting Body Butter', price: 899, originalPrice: 1199, rating: 4.5, reviews: 223, description: 'Shea and cocoa' }
+                ],
+                outfits: [
+                    { name: 'Cozy Fleece Blanket Set', price: 1999, originalPrice: 2499, rating: 4.8, reviews: 389, description: 'Ultra-soft fleece' },
+                    { name: 'Warm Comfort Sleepwear', price: 1799, originalPrice: 2299, rating: 4.6, reviews: 298, description: 'Thermal insulation' },
+                    { name: 'Snuggle-Soft Loungewear', price: 2199, originalPrice: 2699, rating: 4.7, reviews: 345, description: 'Cloud-like softness' }
+                ]
+            },
+            energetic: {
+                teas: [
+                    { name: 'Power Boost Black Tea', price: 279, originalPrice: 399, rating: 4.5, reviews: 167, description: 'Strong Assam blend' },
+                    { name: 'Athletic Performance Tea', price: 499, originalPrice: 649, rating: 4.7, reviews: 245, description: 'Pre-workout formula' },
+                    { name: 'Focus & Energy Blend', price: 399, originalPrice: 549, rating: 4.6, reviews: 201, description: 'Yerba mate base' }
+                ],
+                skincare: [
+                    { name: 'Energizing Face Wash', price: 699, originalPrice: 899, rating: 4.5, reviews: 289, description: 'Mint formula' },
+                    { name: 'Active Hydration Gel', price: 999, originalPrice: 1299, rating: 4.6, reviews: 312, description: 'Hyaluronic acid' },
+                    { name: 'Sport Recovery Lotion', price: 1199, originalPrice: 1599, rating: 4.7, reviews: 267, description: 'Muscle soothing' }
+                ],
+                outfits: [
+                    { name: 'Performance Activewear Set', price: 3499, originalPrice: 4499, rating: 4.8, reviews: 445, description: 'Pro-grade fabric' },
+                    { name: 'Dynamic Sports Outfit', price: 2999, originalPrice: 3799, rating: 4.7, reviews: 389, description: 'Full range motion' },
+                    { name: 'Pro Athletic Gear', price: 3999, originalPrice: 4999, rating: 4.6, reviews: 356, description: 'Competition ready' }
                 ]
             }
         };
@@ -1154,7 +1655,17 @@
             setupSpeechRecognition();
             loadAllProducts();
             updateBadges();
+            checkResponsive();
+            window.addEventListener('resize', checkResponsive);
         };
+
+        function checkResponsive() {
+            if (window.innerWidth >= 768) {
+                document.getElementById('desktopNav').classList.remove('hidden');
+            } else {
+                document.getElementById('desktopNav').classList.add('hidden');
+            }
+        }
 
         function loadFromLocalStorage() {
             const savedCart = localStorage.getItem('wellnessCart');
@@ -1190,6 +1701,10 @@
                     document.getElementById('chatInput').value = transcript;
                     sendMessage();
                 };
+                
+                recognition.onend = function() {
+                    document.getElementById('voiceBtn').classList.remove('listening');
+                };
             }
         }
 
@@ -1197,14 +1712,28 @@
             document.body.classList.toggle('dark-mode');
             if (document.body.classList.contains('dark-mode')) {
                 localStorage.setItem('theme', 'dark');
+                showNotification('Dark mode enabled', 'success');
             } else {
                 localStorage.setItem('theme', 'light');
+                showNotification('Light mode enabled', 'success');
             }
+        }
+
+        function toggleMenu() {
+            showNotification('Menu feature coming soon!', 'success');
+        }
+
+        function scrollToMood() {
+            document.getElementById('moodSection').scrollIntoView({ behavior: 'smooth' });
         }
 
         function selectMood(mood) {
             currentMood = mood;
-            highlightMood(mood);
+            document.querySelectorAll('.mood-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.querySelector(`.mood-card[data-mood="${mood}"]`).classList.add('active');
+            
             loadProductsByMood(mood);
             saveToLocalStorage();
             showNotification(`Showing ${mood} mood products`, 'success');
@@ -1214,14 +1743,14 @@
             document.querySelectorAll('.mood-card').forEach(card => {
                 card.classList.remove('active');
             });
-            event.target.closest('.mood-card').classList.add('active');
+            const moodCard = document.querySelector(`.mood-card[data-mood="${mood}"]`);
+            if (moodCard) moodCard.classList.add('active');
         }
 
         function loadAllProducts() {
             products = [];
             let productId = 0;
             
-            // Load from all moods
             Object.keys(moodProducts).forEach(mood => {
                 const moodData = moodProducts[mood];
                 ['teas', 'skincare', 'outfits'].forEach(category => {
@@ -1229,74 +1758,137 @@
                         const categoryName = category.charAt(0).toUpperCase() + category.slice(0, -1);
                         product.id = productId++;
                         product.category = categoryName;
-                        product.imageUrl = productImages[product.name] || 'https://via.placeholder.com/400x300';
+                        product.mood = mood;
+                        product.imageUrl = productImages[product.name] || 'https://via.placeholder.com/400';
                         products.push(product);
                     });
                 });
             });
             
-            displayProducts(products);
+            filteredProducts = [...products];
+            displayProducts(filteredProducts);
         }
 
         function loadProductsByMood(mood) {
-            products = [];
-            let productId = 0;
-            const moodData = moodProducts[mood];
-            
-            if (!moodData) return loadAllProducts();
-            
-            ['teas', 'skincare', 'outfits'].forEach(category => {
-                moodData[category].forEach(product => {
-                    const categoryName = category.charAt(0).toUpperCase() + category.slice(0, -1);
-                    product.id = productId++;
-                    product.category = categoryName;
-                    product.imageUrl = productImages[product.name] || 'https://via.placeholder.com/400x300';
-                    products.push(product);
-                });
-            });
-            
-            displayProducts(products);
+            const moodFilteredProducts = products.filter(p => p.mood === mood);
+            filteredProducts = moodFilteredProducts;
+            displayProducts(filteredProducts);
+            document.getElementById('productsTitle').textContent = `${mood.charAt(0).toUpperCase() + mood.slice(1)} Mood Products`;
         }
 
         function displayProducts(productList) {
             const grid = document.getElementById('productsGrid');
+            
+            if (productList.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <div class="empty-icon">🔍</div>
+                        <p>No products found. Try adjusting your filters!</p>
+                    </div>
+                `;
+                return;
+            }
+            
             grid.innerHTML = '';
             
             productList.forEach(product => {
                 const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
                 const isWishlisted = wishlist.some(item => item.id === product.id);
                 
-                grid.innerHTML += `
-                    <div class="product-card">
-                        <div class="product-image-wrapper">
-                            <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
-                            <div class="wishlist-icon ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${product.id})">
-                                ${isWishlisted ? '❤️' : '🤍'}
-                            </div>
-                            <div class="discount-badge">${discount}% OFF</div>
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.setAttribute('data-category', product.category);
+                card.setAttribute('data-price', product.price);
+                card.setAttribute('data-rating', product.rating);
+                card.setAttribute('data-discount', discount);
+                
+                card.innerHTML = `
+                    <div class="product-image-wrapper">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
+                        <div class="wishlist-icon ${isWishlisted ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlist(${product.id})">
+                            ${isWishlisted ? '❤️' : '🤍'}
                         </div>
-                        <div class="product-info">
-                            <div class="product-category">${product.category}</div>
-                            <div class="product-name">${product.name}</div>
-                            <div class="product-rating">
-                                ⭐ ${product.rating} <span style="color: #999;">(${product.reviews})</span>
-                            </div>
-                            <div class="product-price">
-                                <span class="current-price">₹${product.price}</span>
-                                <span class="original-price">₹${product.originalPrice}</span>
-                            </div>
-                            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                        <div class="discount-badge">${discount}% OFF</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-rating">
+                            ⭐ ${product.rating} <span style="color: #999;">(${product.reviews})</span>
                         </div>
+                        <div class="product-price">
+                            <span class="current-price">₹${product.price}</span>
+                            <span class="original-price">₹${product.originalPrice}</span>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart(${product.id})">Add to Cart</button>
                     </div>
                 `;
+                
+                grid.appendChild(card);
             });
         }
 
         function filterByCategory(category) {
             currentCategory = category;
-            const filtered = products.filter(p => p.category === category);
-            displayProducts(filtered);
+            filteredProducts = products.filter(p => p.category === category);
+            displayProducts(filteredProducts);
             document.getElementById('productsTitle').textContent = `${category} Products`;
+            document.getElementById('categoryFilter').value = category;
+            showNotification(`Showing ${category} products`, 'success');
+        }
+
+        function filterProductsByCategory() {
+            const category = document.getElementById('categoryFilter').value;
+            if (category === 'all') {
+                filteredProducts = [...products];
+                document.getElementById('productsTitle').textContent = 'All Products';
+            } else {
+                filteredProducts = products.filter(p => p.category === category);
+                document.getElementById('productsTitle').textContent = `${category} Products`;
+            }
+            displayProducts(filteredProducts);
+        }
+
+        function filterProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            
+            filteredProducts = products.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchTerm) || 
+                                     p.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = category === 'all' || p.category === category;
+                return matchesSearch && matchesCategory;
+            });
+            
+            displayProducts(filteredProducts);
+        }
+
+        function sortProducts() {
+            const sortBy = document.getElementById('sortFilter').value;
+            const grid = document.getElementById('productsGrid');
+            const cards = Array.from(grid.children);
+            
+            cards.sort((a, b) => {
+                switch(sortBy) {
+                    case 'price-low':
+                        return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                    case 'price-high':
+                        return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                    case 'rating':
+                        return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+                    case 'discount':
+                        return parseFloat(b.dataset.discount) - parseFloat(a.dataset.discount);
+                    default:
+                        return 0;
+                }
+            });
+            
+            grid.innerHTML = '';
+            cards.forEach(card => grid.appendChild(card));
+            
+            if (sortBy !== 'default') {
+                showNotification(`Sorted by ${sortBy}`, 'success');
+            }
         }
 
         function toggleWishlist(productId) {
@@ -1313,7 +1905,11 @@
             
             saveToLocalStorage();
             updateBadges();
-            displayProducts(products);
+            displayProducts(filteredProducts);
+            
+            if (document.getElementById('wishlistPage').classList.contains('active')) {
+                loadWishlistPage();
+            }
         }
 
         function addToCart(productId) {
@@ -1322,27 +1918,29 @@
             
             if (existingItem) {
                 existingItem.quantity++;
+                showNotification(`Added another ${product.name}!`, 'success');
             } else {
                 cart.push({ ...product, quantity: 1 });
+                showNotification(`${product.name} added to cart!`, 'success');
             }
             
             saveToLocalStorage();
             updateBadges();
-            showNotification(`${product.name} added to cart!`, 'success');
         }
 
         function updateBadges() {
             const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cartBadge').textContent = cartCount;
             document.getElementById('wishlistBadge').textContent = wishlist.length;
+            document.getElementById('desktopCartCount').textContent = cartCount;
+            document.getElementById('desktopWishlistCount').textContent = wishlist.length;
         }
 
-        // Navigation
+        // Navigation functions
         function showHome() {
             document.querySelectorAll('.page-container').forEach(page => page.classList.remove('active'));
             document.getElementById('homePage').style.display = 'block';
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            updateNavActive(0);
         }
 
         function showCart() {
@@ -1350,16 +1948,14 @@
             document.querySelectorAll('.page-container').forEach(page => page.classList.remove('active'));
             document.getElementById('cartPage').classList.add('active');
             loadCartPage();
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            updateNavActive(1);
         }
 
         function showAIChat() {
             document.getElementById('homePage').style.display = 'none';
             document.querySelectorAll('.page-container').forEach(page => page.classList.remove('active'));
             document.getElementById('aiChatPage').classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            updateNavActive(2);
         }
 
         function showWishlist() {
@@ -1367,23 +1963,27 @@
             document.querySelectorAll('.page-container').forEach(page => page.classList.remove('active'));
             document.getElementById('wishlistPage').classList.add('active');
             loadWishlistPage();
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            document.querySelectorAll('.nav-item')[3].classList.add('active');
+            updateNavActive(3);
         }
 
         function showAccount() {
-            showNotification('Account page coming soon!', 'success');
+            showNotification('Account page coming soon! 👤', 'success');
+            updateNavActive(4);
         }
 
-        function showOffers() {
-            showNotification('Special offers: Use code WELLNESS20 for 20% off!', 'success');
+        function updateNavActive(index) {
+            document.querySelectorAll('.nav-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.desktop-nav-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
         }
 
         function closePage(pageId) {
             document.getElementById(pageId).classList.remove('active');
             document.getElementById('homePage').style.display = 'block';
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            document.querySelectorAll('.nav-item')[0].classList.add('active');
+            updateNavActive(0);
         }
 
         function loadCartPage() {
@@ -1393,7 +1993,13 @@
             cartItemCount.textContent = cart.length;
             
             if (cart.length === 0) {
-                cartItems.innerHTML = '<div class="loading">Your cart is empty. Start shopping!</div>';
+                cartItems.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🛒</div>
+                        <p>Your cart is empty</p>
+                        <button class="checkout-btn" onclick="closePage('cartPage')" style="margin-top: 20px;">Start Shopping</button>
+                    </div>
+                `;
                 document.getElementById('subtotal').textContent = '₹0';
                 document.getElementById('savings').textContent = '₹0';
                 document.getElementById('totalAmount').textContent = '₹0';
@@ -1416,12 +2022,12 @@
                         <div class="cart-item-info">
                             <div class="cart-item-name">${item.name}</div>
                             <div style="color: #999; font-size: 0.85em; margin: 5px 0;">${item.category}</div>
-                            <div style="font-weight: 700; color: var(--primary-color);">₹${item.price}</div>
+                            <div style="font-weight: 700; color: var(--primary-color); margin: 5px 0;">₹${item.price} × ${item.quantity} = ₹${itemTotal}</div>
                             <div class="quantity-controls">
                                 <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
-                                <span style="font-weight: 700;">${item.quantity}</span>
+                                <span style="font-weight: 700; min-width: 30px; text-align: center;">${item.quantity}</span>
                                 <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
-                                <button style="margin-left: auto; background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8em; cursor: pointer;" onclick="removeFromCart(${index})">Remove</button>
+                                <button style="margin-left: auto; background: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-size: 0.8em; cursor: pointer; transition: all 0.3s;" onclick="removeFromCart(${index})">Remove</button>
                             </div>
                         </div>
                     </div>
@@ -1441,15 +2047,31 @@
                 saveToLocalStorage();
                 updateBadges();
                 loadCartPage();
+                showNotification('Cart updated', 'success');
             }
         }
 
         function removeFromCart(index) {
+            const item = cart[index];
             cart.splice(index, 1);
             saveToLocalStorage();
             updateBadges();
             loadCartPage();
-            showNotification('Item removed from cart', 'success');
+            showNotification(`${item.name} removed from cart`, 'success');
+        }
+
+        function clearCart() {
+            if (cart.length === 0) {
+                showNotification('Cart is already empty!', 'error');
+                return;
+            }
+            if (confirm('Are you sure you want to clear your cart?')) {
+                cart = [];
+                saveToLocalStorage();
+                updateBadges();
+                loadCartPage();
+                showNotification('Cart cleared', 'success');
+            }
         }
 
         function proceedToCheckout() {
@@ -1457,18 +2079,42 @@
                 showNotification('Your cart is empty!', 'error');
                 return;
             }
-            showNotification('Checkout coming soon! 🎉', 'success');
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            showNotification(`Checkout for ₹${total} - Feature coming soon! 🎉`, 'success');
         }
 
         function loadWishlistPage() {
             const grid = document.getElementById('wishlistGrid');
+            const wishlistItemCount = document.getElementById('wishlistItemCount');
+            
+            wishlistItemCount.textContent = wishlist.length;
             
             if (wishlist.length === 0) {
-                grid.innerHTML = '<div class="loading">Your wishlist is empty. Add some products!</div>';
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <div class="empty-icon">❤️</div>
+                        <p>Your wishlist is empty</p>
+                        <button class="checkout-btn" onclick="closePage('wishlistPage')" style="margin-top: 20px;">Browse Products</button>
+                    </div>
+                `;
                 return;
             }
             
             displayProducts(wishlist);
+        }
+
+        function clearWishlist() {
+            if (wishlist.length === 0) {
+                showNotification('Wishlist is already empty!', 'error');
+                return;
+            }
+            if (confirm('Are you sure you want to clear your wishlist?')) {
+                wishlist = [];
+                saveToLocalStorage();
+                updateBadges();
+                loadWishlistPage();
+                showNotification('Wishlist cleared', 'success');
+            }
         }
 
         // Chat functions
@@ -1480,11 +2126,14 @@
 
         function startVoiceInput() {
             if (!recognition) {
-                showNotification('Voice not supported', 'error');
+                showNotification('Voice not supported on this device', 'error');
                 return;
             }
+            
+            const btn = document.getElementById('voiceBtn');
+            btn.classList.add('listening');
             recognition.start();
-            showNotification('Listening...', 'success');
+            showNotification('Listening... Speak now!', 'success');
         }
 
         async function sendMessage() {
@@ -1499,21 +2148,24 @@
             const typingDiv = document.createElement('div');
             typingDiv.className = 'message bot-message';
             typingDiv.id = 'typing';
-            typingDiv.textContent = 'Aivora is thinking...';
+            typingDiv.innerHTML = 'Aivora is thinking<span class="typing-dots">...</span>';
             document.getElementById('chatMessages').appendChild(typingDiv);
             
-            const productContext = products.map(p => 
-                `${p.name} - ₹${p.price}, Rating: ${p.rating}/5`
+            const productContext = products.slice(0, 20).map(p => 
+                `${p.name} (${p.category}) - ₹${p.price}, Rating: ${p.rating}/5, ${p.reviews} reviews`
             ).join('\n');
             
-            const systemPrompt = `You are Aivora, an AI wellness shopping assistant. Help customers find products.
+            const cartContext = cart.length > 0 ? `\n\nUser's Cart: ${cart.map(item => `${item.name} (Qty: ${item.quantity})`).join(', ')}` : '';
             
-Products:
+                        const systemPrompt = `You are Aivora, an AI wellness shopping assistant. Help customers find products based on their needs.
+            
+Available products (showing sample):
 ${productContext}
+${cartContext}
 
-User mood: ${currentMood || 'not specified'}
+User's current mood: ${currentMood || 'not specified'}
 
-Be helpful, friendly, and concise.`;
+Be helpful, friendly, concise, and provide specific product recommendations with prices.`;
             
             try {
                 const response = await fetch(GROQ_API_URL, {
@@ -1529,23 +2181,26 @@ Be helpful, friendly, and concise.`;
                             { role: 'user', content: message }
                         ],
                         temperature: 0.7,
-                        max_tokens: 400
+                        max_tokens: 500
                     })
                 });
                 
                 const data = await response.json();
-                document.getElementById('typing').remove();
+                const typingElement = document.getElementById('typing');
+                if (typingElement) typingElement.remove();
                 
                 if (data.choices && data.choices[0]) {
                     const botResponse = data.choices[0].message.content;
                     addMessageToChat(botResponse, 'bot');
                     aiInteractions++;
                 } else {
-                    addMessageToChat('Sorry, error occurred!', 'bot');
+                    addMessageToChat('Sorry, I encountered an error. Please try again!', 'bot');
                 }
             } catch (error) {
-                document.getElementById('typing').remove();
-                addMessageToChat('Connection error!', 'bot');
+                const typingElement = document.getElementById('typing');
+                if (typingElement) typingElement.remove();
+                addMessageToChat('Connection error. Please check your internet and try again!', 'bot');
+                console.error('Chat error:', error);
             }
         }
 
@@ -1561,16 +2216,273 @@ Be helpful, friendly, and concise.`;
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
+        function clearChat() {
+            if (confirm('Are you sure you want to clear the chat history?')) {
+                document.getElementById('chatMessages').innerHTML = `
+                    <div class="message bot-message">
+                        Chat cleared! How can I help you today?
+                        <div class="message-timestamp">Just now</div>
+                    </div>
+                `;
+                showNotification('Chat cleared', 'success');
+            }
+        }
+
+        function speakLastMessage() {
+            const messages = document.querySelectorAll('.bot-message');
+            if (messages.length === 0) {
+                showNotification('No messages to speak', 'error');
+                return;
+            }
+            
+            const lastMessage = messages[messages.length - 1].textContent.replace(/\d{1,2}:\d{2}\s?(AM|PM)?/g, '').trim();
+            
+            if (synthesis.speaking) {
+                synthesis.cancel();
+                showNotification('Speech stopped', 'success');
+                return;
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(lastMessage);
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            
+            utterance.onstart = function() {
+                showNotification('Speaking...', 'success');
+            };
+            
+            utterance.onend = function() {
+                showNotification('Speech ended', 'success');
+            };
+            
+            synthesis.speak(utterance);
+        }
+
+        // Offers functions
+        function showOffers() {
+            showNotification('Check out our special offers below! Use codes: WELLNESS20, SAVE10', 'success');
+            document.querySelector('.offers-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function filterOffers(category) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            showNotification(`Showing ${category} offers`, 'success');
+        }
+
+        function applyOffer(code) {
+            showNotification(`Offer code "${code}" copied! Apply at checkout.`, 'success');
+            navigator.clipboard.writeText(code).catch(() => {
+                console.log('Clipboard write failed');
+            });
+        }
+
+        function showAllOffers() {
+            const offersHTML = `
+                <div class="offer-card" onclick="applyOffer('WELLNESS20')">
+                    <h3 style="margin-bottom: 8px;">🎉 Wellness Special</h3>
+                    <p style="font-size: 0.95em;">Get 20% off with code <strong>WELLNESS20</strong></p>
+                </div>
+                <div class="offer-card" onclick="applyOffer('SAVE10')">
+                    <h3 style="margin-bottom: 8px;">💰 Quick Saver</h3>
+                    <p style="font-size: 0.95em;">Save 10% with code <strong>SAVE10</strong></p>
+                </div>
+                <div class="offer-card" onclick="applyOffer('FIRST25')">
+                    <h3 style="margin-bottom: 8px;">🎁 First Order Bonus</h3>
+                    <p style="font-size: 0.95em;">25% off first order with <strong>FIRST25</strong></p>
+                </div>
+                <div class="offer-card" onclick="applyOffer('FREESHIP')">
+                    <h3 style="margin-bottom: 8px;">🚚 Free Shipping</h3>
+                    <p style="font-size: 0.95em;">Free delivery with <strong>FREESHIP</strong></p>
+                </div>
+            `;
+            document.getElementById('offersContainer').innerHTML = offersHTML;
+            showNotification('Showing all available offers!', 'success');
+        }
+
+        // Notification function
         function showNotification(message, type) {
+            // Remove any existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notif => notif.remove());
+            
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             notification.textContent = message;
             document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.remove();
+                notification.style.animation = 'slideDown 0.3s ease reverse';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
             }, 3000);
         }
+
+        // Prevent default touch behaviors on buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('button, .category-item, .mood-card, .nav-item, .icon-btn');
+            buttons.forEach(button => {
+                button.addEventListener('touchstart', function() {
+                    this.style.opacity = '0.7';
+                });
+                button.addEventListener('touchend', function() {
+                    this.style.opacity = '1';
+                });
+            });
+        });
+
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                if (synthesis.speaking) {
+                    synthesis.cancel();
+                }
+            }
+        });
+
+        // Handle online/offline status
+        window.addEventListener('online', function() {
+            showNotification('You are back online! 🌐', 'success');
+        });
+
+        window.addEventListener('offline', function() {
+            showNotification('You are offline. Some features may not work.', 'error');
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+                showNotification('Search activated', 'success');
+            }
+            
+            // Ctrl/Cmd + B to open cart
+            if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+                e.preventDefault();
+                showCart();
+            }
+            
+            // Ctrl/Cmd + H to go home
+            if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
+                e.preventDefault();
+                showHome();
+            }
+            
+            // Ctrl/Cmd + I to open AI chat
+            if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
+                e.preventDefault();
+                showAIChat();
+            }
+            
+            // Escape to close pages
+            if (e.key === 'Escape') {
+                const activePages = document.querySelectorAll('.page-container.active');
+                if (activePages.length > 0) {
+                    activePages.forEach(page => page.classList.remove('active'));
+                    document.getElementById('homePage').style.display = 'block';
+                    updateNavActive(0);
+                }
+            }
+        });
+
+        // Smooth scroll for all internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Image lazy loading fallback
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // Performance monitoring
+        if ('PerformanceObserver' in window) {
+            try {
+                const perfObserver = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                        if (entry.duration > 1000) {
+                            console.warn('Slow operation detected:', entry.name, entry.duration);
+                        }
+                    }
+                });
+                perfObserver.observe({ entryTypes: ['measure', 'navigation'] });
+            } catch (e) {
+                console.log('Performance monitoring not available');
+            }
+        }
+
+        // Auto-save cart and wishlist every 30 seconds
+        setInterval(function() {
+            if (cart.length > 0 || wishlist.length > 0) {
+                saveToLocalStorage();
+            }
+        }, 30000);
+
+        // Service Worker registration for PWA (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                // Uncomment to enable service worker
+                // navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                //     console.log('ServiceWorker registered:', registration);
+                // }).catch(function(error) {
+                //     console.log('ServiceWorker registration failed:', error);
+                // });
+            });
+        }
+
+        // Add install prompt for PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showNotification('💡 Tip: You can install this app for quick access!', 'success');
+        });
+
+        // Handle app installed
+        window.addEventListener('appinstalled', () => {
+            showNotification('App installed successfully! 🎉', 'success');
+            deferredPrompt = null;
+        });
+
+        // Console welcome message
+        console.log('%c🌸 Welcome to Wellness Shopping!', 'color: #667eea; font-size: 20px; font-weight: bold;');
+        console.log('%cPowered by Aivora AI', 'color: #764ba2; font-size: 14px;');
+        console.log('%cKeyboard Shortcuts:', 'color: #2ecc71; font-size: 14px; font-weight: bold;');
+        console.log('Ctrl/Cmd + K: Search');
+        console.log('Ctrl/Cmd + B: Open Cart');
+        console.log('Ctrl/Cmd + H: Go Home');
+        console.log('Ctrl/Cmd + I: Open AI Chat');
+        console.log('Escape: Close Pages');
     </script>
 </body>
 </html>
