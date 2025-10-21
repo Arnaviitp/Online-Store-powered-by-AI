@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="AI-powered wellness shopping">
+    <meta name="theme-color" content="#667eea">
+    <title>Wellness Shopping - Powered by Aivora AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --dark-bg: #1a1a2e;
+            --light-bg: #f8f9fa;
+            --bottom-nav-height: 65px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding-bottom: var(--bottom-nav-height);
+        }
+
+        body.dark-mode {
+            background: var(--dark-bg);
+            color: #fff;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: white;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        body.dark-mode .top-header {
+            background: var(--dark-bg);
+            border-bottom: 1px solid #333;
+        }
+
+        .menu-icon {
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .logo {
+            font-size: 1.3em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .top-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            font-size: 1.3em;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            font-size: 0.6em;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .new-badge {
+            background: #2ecc71;
+            color: white;
+            font-size: 0.5em;
+            padding: 2px 5px;
+            border-radius: 3px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        /* Banner Section */
+        .banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 15px;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        body.dark-mode .banner {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+        }
+
+        .banner h2 {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .banner p {
+            font-size: 0.9em;
+            opacity: 0.95;
+        }
+
+        .banner-cta {
+            background: white;
+            color: var(--primary-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 700;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+
+        /* Category Grid */
+        .categories-section {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        body.dark-mode .categories-section {
+            background: #16213e;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .category-item:active {
+            transform: scale(0.95);
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .category-name {
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        body.dark-mode .category-name {
+            color: #fff;
+        }
+
+        /* Mood Selector */
+        .mood-section {
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.dark-mode .section-title {
+            color: #fff;
+        }
+
+        .mood-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .mood-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .mood-card {
+            min-width: 120px;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .mood-card {
+            background: #16213e;
+        }
+
+        .mood-card.active {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            transform: scale(1.05);
+        }
+
+        .mood-emoji {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .mood-label {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        body.dark-mode .mood-label {
+            color: #fff;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 15px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        body.dark-mode .product-card {
+            background: #16213e;
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wishlist-icon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .wishlist-icon.active {
+            color: #e74c3c;
+        }
+
+        .discount-badge {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: #2ecc71;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 700;
+        }
+
+        .product-info {
+            padding: 12px;
+        }
+
+        .product-category {
+            font-size: 0.7em;
+            color: #764ba2;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .product-name {
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #333;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        body.dark-mode .product-name {
+            color: #fff;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75em;
+            color: #f39c12;
+            margin-bottom: 6px;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .current-price {
+            font-size: 1em;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .original-price {
+            font-size: 0.8em;
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .add-to-cart-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Offers Section */
+        .offers-section {
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .offers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .view-all {
+            color: var(--primary-color);
+            font-size: 0.9em;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .offers-tabs {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            margin-bottom: 15px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .offers-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .tab-btn {
+            background: #16213e;
+            border-color: #333;
+            color: #fff;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .offer-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        body.dark-mode .bottom-nav {
+            background: #16213e;
+            border-top: 1px solid #333;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 5px 12px;
+            transition: transform 0.2s;
+            flex: 1;
+        }
+
+        .nav-item:active {
+            transform: scale(0.95);
+        }
+
+        .nav-icon {
+            font-size: 1.5em;
+            margin-bottom: 3px;
+            color: #666;
+        }
+
+        body.dark-mode .nav-icon {
+            color: #aaa;
+        }
+
+        .nav-item.active .nav-icon {
+            color: var(--primary-color);
+        }
+
+        .nav-label {
+            font-size: 0.7em;
+            color: #666;
+            font-weight: 600;
+        }
+
+        body.dark-mode .nav-label {
+            color: #aaa;
+        }
+
+        .nav-item.active .nav-label {
+            color: var(--primary-color);
+        }
+
+        /* AI Chat Floating Button */
+        .ai-chat-float {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ai-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            margin-bottom: 3px;
+            position: relative;
+        }
+
+        .ai-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            animation: pulse-ring 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Modal/Page Containers */
+        .page-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: var(--bottom-nav-height);
+            background: white;
+            z-index: 999;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        body.dark-mode .page-container {
+            background: var(--dark-bg);
+        }
+
+        .page-container.active {
+            display: block;
+        }
+
+        .page-header {
+            background: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        body.dark-mode .page-header {
+            background: #16213e;
+        }
+
+        .back-btn {
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .page-title {
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - var(--bottom-nav-height) - 60px);
+            background: #f5f5f5;
+        }
+
+        body.dark-mode .chat-container {
+            background: var(--dark-bg);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot-message {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .bot-message {
+            background: #16213e;
+            color: #fff;
+        }
+
+        .message-timestamp {
+            font-size: 0.7em;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .chat-input-area {
+            padding: 12px 15px;
+            background: white;
+            border-top: 1px solid #ddd;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        body.dark-mode .chat-input-area {
+            background: #16213e;
+            border-top-color: #333;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 0.95em;
+            background: #f5f5f5;
+        }
+
+        body.dark-mode .chat-input {
+            background: var(--dark-bg);
+            border-color: #333;
+            color: #fff;
+        }
+
+        .voice-btn, .send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .voice-btn {
+            background: #f39c12;
+            color: white;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .voice-btn:active, .send-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Cart Page */
+        .cart-items {
+            padding: 15px;
+        }
+
+        .cart-item {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .cart-item {
+            background: #16213e;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 700;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary-color);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .cart-total {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .cart-total {
+            background: #16213e;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--primary-color);
+            font-style: italic;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 2000;
+            font-size: 0.9em;
+            font-weight: 600;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        .notification.success {
+            border-left: 4px solid #2ecc71;
+        }
+
+        .notification.error {
+            border-left: 4px solid #e74c3c;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            body {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .bottom-nav {
+                max-width: 600px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="menu-icon">☰</div>
+        <div class="logo">🌸 Wellness</div>
+        <div class="top-icons">
+            <div class="icon-btn" onclick="toggleTheme()">🌙</div>
+            <div class="icon-btn" onclick="showWishlist()">
+                ❤️
+                <span class="badge" id="wishlistBadge">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Home Content -->
+    <div id="homePage">
+        <!-- Banner -->
+        <div class="banner">
+            <h2>Let's personalize your wellness journey!</h2>
+            <p>Tell us your mood to help us find perfect products for you</p>
+        </div>
+
+        <!-- Mood Selection -->
+        <div class="mood-section">
+            <div class="section-title">
+                <span>😊</span>
+                <span>How are you feeling?</span>
+            </div>
+            <div class="mood-scroll">
+                <div class="mood-card" onclick="selectMood('stressed')">
+                    <div class="mood-emoji">😰</div>
+                    <div class="mood-label">Stressed</div>
+                </div>
+                <div class="mood-card" onclick="selectMood('tired')">
+                    <div class="mood-emoji">😴</div>
+                    <div class="mood-label">Tired</div>
+                </div>
+                <div class="mood-card" onclick="selectMood('anxious')">
+                    <div class="mood-emoji">😟</div>
+                    <div class="mood-label">Anxious</div>
+                </div>
+                <div class="mood-card" onclick="selectMood('happy')">
+                    <div class="mood-emoji">😊</div>
+                    <div class="mood-label">Happy</div>
+                </div>
+                <div class="mood-card" onclick="selectMood('sad')">
+                    <div class="mood-emoji">😢</div>
+                    <div class="mood-label">Sad</div>
+                </div>
+                <div class="mood-card" onclick="selectMood('energetic')">
+                    <div class="mood-emoji">⚡</div>
+                    <div class="mood-label">Energetic</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="categories-section">
+            <div class="section-title">Shop by Category</div>
+            <div class="categories-grid">
+                <div class="category-item" onclick="filterByCategory('Tea')">
+                    <div class="category-icon">🍵</div>
+                    <div class="category-name">Teas</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory('Skincare')">
+                    <div class="category-icon">🧴</div>
+                    <div class="category-name">Skincare</div>
+                </div>
+                <div class="category-item" onclick="filterByCategory('Outfit')">
+                    <div class="category-icon">👕</div>
+                    <div class="category-name">Outfits</div>
+                </div>
+                <div class="category-item" onclick="showWishlist()">
+                    <div class="category-icon">❤️</div>
+                    <div class="category-name">Wishlist</div>
+                </div>
+                <div class="category-item" onclick="showOffers()">
+                    <div class="category-icon">🎁</div>
+                    <div class="category-name">Offers</div>
+                </div>
+                <div class="category-item" onclick="toggleTheme()">
+                    <div class="category-icon">🌙</div>
+                    <div class="category-name">Theme</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products -->
+        <div class="products-section">
+            <div class="section-title">
+                <span>🛍️</span>
+                <span id="productsTitle">Recommended for You</span>
+            </div>
+            <div id="productsGrid" class="products-grid">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Offers Section -->
+        <div class="offers-section">
+            <div class="offers-header">
+                <div class="section-title">Offers</div>
+                <div class="view-all" onclick="showOffers()">View All →</div>
+            </div>
+            <div class="offers-tabs">
+                <button class="tab-btn active">Trending</button>
+                <button class="tab-btn">Teas</button>
+                <button class="tab-btn">Skincare</button>
+                <button class="tab-btn">Outfits</button>
+            </div>
+            <div class="offer-card">
+                <h3 style="margin-bottom: 8px;">🎉 Special Discount!</h3>
+                <p style="font-size: 0.9em;">Use code WELLNESS20 for 20% off</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Page -->
+    <div id="aiChatPage" class="page-container">
+        <div class="page-header">
+            <div class="back-btn" onclick="closePage('aiChatPage')">←</div>
+            <div class="page-title">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 35px; height: 35px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2em;">🤖</div>
+                    <div>
+                        <div style="font-size: 1em; font-weight: 700;">Aivora.AI</div>
+                        <div style="font-size: 0.7em; color: #2ecc71; font-weight: 600;">● Online</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Hi! 👋 I'm Aivora, your AI wellness shopping assistant. I can help you find the perfect products, compare options, and answer any questions. How can I help you today?
+                    <div class="message-timestamp">Just now</div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <button class="voice-btn" onclick="startVoiceInput()">🎤</button>
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type or speak..." onkeypress="handleChatKeyPress(event)">
+                <button class="send-btn" onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Page -->
+    <div id="cartPage" class="page-container">
+        <div class="page-header">
+            <div class="back-btn" onclick="closePage('cartPage')">←</div>
+            <div class="page-title">My Cart (<span id="cartItemCount">0</span>)</div>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be loaded here -->
+        </div>
+        <div class="cart-total">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span>Subtotal:</span>
+                <span id="subtotal">₹0</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #2ecc71;">
+                <span>Savings:</span>
+                <span id="savings">₹0</span>
+            </div>
+            <hr style="margin: 10px 0; border: none; border-top: 1px solid #ddd;">
+            <div style="display: flex; justify-content: space-between; font-size: 1.2em; font-weight: 700;">
+                <span>Total:</span>
+                <span id="totalAmount">₹0</span>
+            </div>
+            <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout →</button>
+        </div>
+    </div>
+
+    <!-- Wishlist Page -->
+    <div id="wishlistPage" class="page-container">
+        <div class="page-header">
+            <div class="back-btn" onclick="closePage('wishlistPage')">←</div>
+            <div class="page-title">My Wishlist</div>
+        </div>
+        <div class="products-section">
+            <div id="wishlistGrid" class="products-grid">
+                <!-- Wishlist items will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="showHome()">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">Home</div>
+        </div>
+        <div class="nav-item" onclick="showCart()">
+            <div class="nav-icon" style="position: relative;">
+                🛒
+                <span class="badge" id="cartBadge" style="top: -5px; right: -10px;">0</span>
+            </div>
+            <div class="nav-label">My Cart</div>
+        </div>
+        <div class="nav-item ai-chat-float" onclick="showAIChat()">
+            <div class="ai-avatar">
+                🤖
+                <div class="ai-pulse"></div>
+            </div>
+            <div class="nav-label" style="color: var(--primary-color);">Aivora.AI</div>
+        </div>
+        <div class="nav-item" onclick="showWishlist()">
+            <div class="nav-icon">❤️</div>
+            <div class="nav-label">Wishlist</div>
+        </div>
+        <div class="nav-item" onclick="showAccount()">
+            <div class="nav-icon">👤</div>
+            <div class="nav-label">Account</div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentMood = '';
+        let cart = [];
+        let wishlist = [];
+        let products = [];
+        let currentCategory = 'all';
+        let recognition;
+        let synthesis = window.speechSynthesis;
+        let aiInteractions = 0;
+        
+        const GROQ_API_KEY = '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';
+        const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+        // Product images
+        const productImages = {
+            'Chamomile Calm Tea': 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=400&h=300&fit=crop',
+            'Lavender Dream Tea': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=300&fit=crop',
+            'Stress Relief Herbal Blend': 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400&h=300&fit=crop',
+            'Soothing Aloe Vera Gel': 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=300&fit=crop',
+            'Calming Face Mask': 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=300&fit=crop',
+            'Relaxing Aromatherapy Serum': 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=300&fit=crop',
+            'Soft Cotton Lounge Set': 'https://images.unsplash.com/photo-1578102718171-ec1f91680562?w=400&h=300&fit=crop',
+            'Bamboo Comfort Pajamas': 'https://images.unsplash.com/photo-1584293648398-9e52f5bef8f8?w=400&h=300&fit=crop',
+            'Relaxed Fit Hoodie': 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=300&fit=crop'
+        };
+
+        // Product database
+        const moodProducts = {
+            stressed: {
+                teas: [
+                    { name: 'Chamomile Calm Tea', price: 299, originalPrice: 399, rating: 4.5, reviews: 156, description: 'Organic chamomile for relaxation' },
+                    { name: 'Lavender Dream Tea', price: 349, originalPrice: 449, rating: 4.7, reviews: 203, description: 'French lavender with honey' },
+                    { name: 'Stress Relief Herbal Blend', price: 399, originalPrice: 499, rating: 4.6, reviews: 178, description: 'Adaptogenic herbs blend' }
+                ],
+                skincare: [
+                    { name: 'Soothing Aloe Vera Gel', price: 599, originalPrice: 799, rating: 4.4, reviews: 312, description: 'Pure aloe vera gel' },
+                    { name: 'Calming Face Mask', price: 799, originalPrice: 999, rating: 4.8, reviews: 445, description: 'Clay mask with oils' },
+                    { name: 'Relaxing Aromatherapy Serum', price: 1299, originalPrice: 1699, rating: 4.6, reviews: 267, description: 'Lavender & chamomile' }
+                ],
+                outfits: [
+                    { name: 'Soft Cotton Lounge Set', price: 1999, originalPrice: 2499, rating: 4.5, reviews: 189, description: 'Organic cotton comfort' },
+                    { name: 'Bamboo Comfort Pajamas', price: 1499, originalPrice: 1999, rating: 4.7, reviews: 234, description: 'Eco-friendly bamboo' },
+                    { name: 'Relaxed Fit Hoodie', price: 1799, originalPrice: 2299, rating: 4.6, reviews: 298, description: 'Cozy fleece hoodie' }
+                ]
+            }
+        };
+
+        // Initialize
+        window.onload = function() {
+            loadFromLocalStorage();
+            setupSpeechRecognition();
+            loadAllProducts();
+            updateBadges();
+        };
+
+        function loadFromLocalStorage() {
+            const savedCart = localStorage.getItem('wellnessCart');
+            const savedWishlist = localStorage.getItem('wellnessWishlist');
+            const savedMood = localStorage.getItem('currentMood');
+            
+            if (savedCart) cart = JSON.parse(savedCart);
+            if (savedWishlist) wishlist = JSON.parse(savedWishlist);
+            if (savedMood) {
+                currentMood = savedMood;
+                highlightMood(savedMood);
+            }
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('wellnessCart', JSON.stringify(cart));
+            localStorage.setItem('wellnessWishlist', JSON.stringify(wishlist));
+            localStorage.setItem('currentMood', currentMood);
+        }
+
+        function setupSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('chatInput').value = transcript;
+                    sendMessage();
+                };
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function selectMood(mood) {
+            currentMood = mood;
+            highlightMood(mood);
+            loadProductsByMood(mood);
+            saveToLocalStorage();
+            showNotification(`Showing ${mood} mood products`, 'success');
+        }
+
+        function highlightMood(mood) {
+            document.querySelectorAll('.mood-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.target.closest('.mood-card').classList.add('active');
+        }
+
+        function loadAllProducts() {
+            products = [];
+            let productId = 0;
+            
+            // Load from all moods
+            Object.keys(moodProducts).forEach(mood => {
+                const moodData = moodProducts[mood];
+                ['teas', 'skincare', 'outfits'].forEach(category => {
+                    moodData[category].forEach(product => {
+                        const categoryName = category.charAt(0).toUpperCase() + category.slice(0, -1);
+                        product.id = productId++;
+                        product.category = categoryName;
+                        product.imageUrl = productImages[product.name] || 'https://via.placeholder.com/400x300';
+                        products.push(product);
+                    });
+                });
+            });
+            
+            displayProducts(products);
+        }
+
+        function loadProductsByMood(mood) {
+            products = [];
+            let productId = 0;
+            const moodData = moodProducts[mood];
+            
+            if (!moodData) return loadAllProducts();
+            
+            ['teas', 'skincare', 'outfits'].forEach(category => {
+                moodData[category].forEach(product => {
+                    const categoryName = category.charAt(0).toUpperCase() + category.slice(0, -1);
+                    product.id = productId++;
+                    product.category = categoryName;
+                    product.imageUrl = productImages[product.name] || 'https://via.placeholder.com/400x300';
+                    products.push(product);
+                });
+            });
+            
+            displayProducts(products);
+        }
+
+        function displayProducts(productList) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            
+            productList.forEach(product => {
+                const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+                const isWishlisted = wishlist.some(item => item.id === product.id);
+                
+                grid.innerHTML += `
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
+                            <div class="wishlist-icon ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${product.id})">
+                                ${isWishlisted ? '❤️' : '🤍'}
+                            </div>
+                            <div class="discount-badge">${discount}% OFF</div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">${product.category}</div>
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-rating">
+                                ⭐ ${product.rating} <span style="color: #999;">(${product.reviews})</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹${product.price}</span>
+                                <span class="original-price">₹${product.originalPrice}</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterByCategory(category) {
+            currentCategory = category;
+            const filtered = products.filter(p => p.category === category);
+            displayProducts(filtered);
+            document.getElementById('productsTitle').textContent = `${category} Products`;
+        }
+
+        function toggleWishlist(productId) {
+            const product = products.find(p => p.id === productId);
+            const index = wishlist.findIndex(item => item.id === productId);
+            
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showNotification('Removed from wishlist', 'success');
+            } else {
+                wishlist.push(product);
+                showNotification('Added to wishlist!', 'success');
+            }
+            
+            saveToLocalStorage();
+            updateBadges();
+            displayProducts(products);
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            saveToLocalStorage();
+            updateBadges();
+            showNotification(`${product.name} added to cart!`, 'success');
+        }
+
+        function updateBadges() {
+            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartBadge').textContent = cartCount;
+            document.getElementById('wishlistBadge').textContent = wishlist.length;
+        }
+
+        // Navigation
+        function showHome() {
+            document.querySelectorAll('.page-container').forEach(page => page.classList.remove('active'));
+            document.getElementById('homePage').style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        function showCart() {
+            document.getElementById('homePage').style.display = 'none';
+            document.querySelectorAll('.page-container').forEach(page => page.classList.remove('active'));
+            document.getElementById('cartPage').classList.add('active');
+            loadCartPage();
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        function showAIChat() {
+            document.getElementById('homePage').style.display = 'none';
+            document.querySelectorAll('.page-container').forEach(page => page.classList.remove('active'));
+            document.getElementById('aiChatPage').classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        function showWishlist() {
+            document.getElementById('homePage').style.display = 'none';
+            document.querySelectorAll('.page-container').forEach(page => page.classList.remove('active'));
+            document.getElementById('wishlistPage').classList.add('active');
+            loadWishlistPage();
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.nav-item')[3].classList.add('active');
+        }
+
+        function showAccount() {
+            showNotification('Account page coming soon!', 'success');
+        }
+
+        function showOffers() {
+            showNotification('Special offers: Use code WELLNESS20 for 20% off!', 'success');
+        }
+
+        function closePage(pageId) {
+            document.getElementById(pageId).classList.remove('active');
+            document.getElementById('homePage').style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
+        }
+
+        function loadCartPage() {
+            const cartItems = document.getElementById('cartItems');
+            const cartItemCount = document.getElementById('cartItemCount');
+            
+            cartItemCount.textContent = cart.length;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="loading">Your cart is empty. Start shopping!</div>';
+                document.getElementById('subtotal').textContent = '₹0';
+                document.getElementById('savings').textContent = '₹0';
+                document.getElementById('totalAmount').textContent = '₹0';
+                return;
+            }
+            
+            cartItems.innerHTML = '';
+            let subtotal = 0;
+            let savings = 0;
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                const itemSavings = (item.originalPrice - item.price) * item.quantity;
+                subtotal += itemTotal;
+                savings += itemSavings;
+                
+                cartItems.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-image">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div style="color: #999; font-size: 0.85em; margin: 5px 0;">${item.category}</div>
+                            <div style="font-weight: 700; color: var(--primary-color);">₹${item.price}</div>
+                            <div class="quantity-controls">
+                                <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                                <span style="font-weight: 700;">${item.quantity}</span>
+                                <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                                <button style="margin-left: auto; background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8em; cursor: pointer;" onclick="removeFromCart(${index})">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('subtotal').textContent = `₹${subtotal}`;
+            document.getElementById('savings').textContent = `₹${savings}`;
+            document.getElementById('totalAmount').textContent = `₹${subtotal}`;
+        }
+
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                removeFromCart(index);
+            } else {
+                saveToLocalStorage();
+                updateBadges();
+                loadCartPage();
+            }
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveToLocalStorage();
+            updateBadges();
+            loadCartPage();
+            showNotification('Item removed from cart', 'success');
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                showNotification('Your cart is empty!', 'error');
+                return;
+            }
+            showNotification('Checkout coming soon! 🎉', 'success');
+        }
+
+        function loadWishlistPage() {
+            const grid = document.getElementById('wishlistGrid');
+            
+            if (wishlist.length === 0) {
+                grid.innerHTML = '<div class="loading">Your wishlist is empty. Add some products!</div>';
+                return;
+            }
+            
+            displayProducts(wishlist);
+        }
+
+        // Chat functions
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function startVoiceInput() {
+            if (!recognition) {
+                showNotification('Voice not supported', 'error');
+                return;
+            }
+            recognition.start();
+            showNotification('Listening...', 'success');
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessageToChat(message, 'user');
+            input.value = '';
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot-message';
+            typingDiv.id = 'typing';
+            typingDiv.textContent = 'Aivora is thinking...';
+            document.getElementById('chatMessages').appendChild(typingDiv);
+            
+            const productContext = products.map(p => 
+                `${p.name} - ₹${p.price}, Rating: ${p.rating}/5`
+            ).join('\n');
+            
+            const systemPrompt = `You are Aivora, an AI wellness shopping assistant. Help customers find products.
+            
+Products:
+${productContext}
+
+User mood: ${currentMood || 'not specified'}
+
+Be helpful, friendly, and concise.`;
+            
+            try {
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${GROQ_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.1-8b-instant',
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: message }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 400
+                    })
+                });
+                
+                const data = await response.json();
+                document.getElementById('typing').remove();
+                
+                if (data.choices && data.choices[0]) {
+                    const botResponse = data.choices[0].message.content;
+                    addMessageToChat(botResponse, 'bot');
+                    aiInteractions++;
+                } else {
+                    addMessageToChat('Sorry, error occurred!', 'bot');
+                }
+            } catch (error) {
+                document.getElementById('typing').remove();
+                addMessageToChat('Connection error!', 'bot');
+            }
+        }
+
+        function addMessageToChat(message, type) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+            
+            const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            messageDiv.innerHTML = `${message}<div class="message-timestamp">${timestamp}</div>`;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
