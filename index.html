@@ -2058,7 +2058,75 @@
       .hidden {
         display: none !important;
       }
-    </style>
+    
+/* Product Detail Modal */
+.product-modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(2,6,23,0.6);
+  backdrop-filter: var(--blur);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+}
+.product-modal {
+  width: min(980px, 92vw);
+  max-height: 88vh; overflow: auto;
+  border-radius: 24px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+  padding: 18px; position: relative;
+}
+.pm-body {
+  display: grid; grid-template-columns: 1.1fr 1.4fr; gap: 22px;
+}
+.pm-image { position: relative; border-radius: 20px; overflow: hidden;
+  background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(255,255,255,0.06));
+}
+.pm-image img { width: 100%; height: 100%; max-height: 460px; object-fit: cover; display: block; }
+.pm-discount {
+  position: absolute; bottom: 12px; left: 12px;
+  background: linear-gradient(135deg, #10b981, #059669); color: #fff;
+  font-weight: 800; font-size: .9em; padding: 8px 12px; border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(16,185,129,.4);
+}
+.pm-category {
+  font-size: .75em; text-transform: uppercase; letter-spacing: .08em;
+  font-weight: 800; color: var(--primary-solid); margin-bottom: 8px;
+}
+.pm-name { font-size: clamp(1.2em, 3.4vw, 1.8em); font-weight: 900; margin: 6px 0 10px; color: inherit; }
+.pm-rating { display: flex; align-items: center; gap: 8px; color: #f59e0b; font-weight: 700; margin-bottom: 12px; }
+.pm-price { display: flex; gap: 12px; align-items: baseline; margin: 10px 0 15px; flex-wrap: wrap; }
+.pm-current {
+  font-size: 1.8em; font-weight: 900;
+  background: var(--primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.pm-original { color: #94a3b8; text-decoration: line-through; }
+.pm-save { color: #10b981; font-weight: 800; }
+.pm-desc { color: #334155; line-height: 1.6; }
+body.dark-mode .pm-desc { color: rgba(226,232,240,.9); }
+.pm-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.pm-btn {
+  padding: 12px 16px; border-radius: 14px; font-weight: 800;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 0; cursor: pointer; transition: var(--transition);
+}
+.pm-btn.primary { background: var(--primary); color: #fff; box-shadow: 0 10px 28px rgba(37,99,235,.35); }
+.pm-btn.ghost { background: rgba(37,99,235,.1); color: var(--primary-solid); border: 2px solid rgba(37,99,235,.2); }
+.pm-btn.buy { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; box-shadow: 0 10px 28px rgba(245,158,11,.35); }
+.pm-btn:hover { transform: translateY(-3px); }
+.pm-close {
+  position: absolute; top: 12px; right: 12px; width: 40px; height: 40px;
+  border-radius: 12px; border: 1px solid rgba(37,99,235,.2);
+  background: rgba(255,255,255,.95); color: var(--primary-solid); cursor: pointer; display: grid; place-items: center; font-size: 1.1em;
+}
+body.dark-mode .pm-close { background: rgba(15,23,42,.9); }
+
+@media (max-width: 900px) {
+  .pm-body { grid-template-columns: 1fr; }
+  .pm-image img { max-height: 300px; }
+}
+
+</style>
   </head>
   <body>
     <div class="container">
@@ -3877,6 +3945,7 @@
                         </button>
                     </div>
                 `;
+          card.addEventListener('click', () => openProductModal(product.id));
 
           grid.appendChild(card);
         });
@@ -4448,7 +4517,7 @@
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 15px;">
             ${productList.map(p => `
               <div style="background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; border: 1px solid #e2e8f0; cursor: pointer;"
-                   onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 24px rgba(37,99,235,0.15)'"
+                   onclick=\"openProductModal(${p.id})\" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 24px rgba(37,99,235,0.15)'"
                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">
                 <div style="position: relative;">
                   <img src="${p.imageUrl}" style="width: 100%; height: 160px; object-fit: cover; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
@@ -5109,5 +5178,86 @@
         "color: #1e40af; font-size: 16px; font-weight: 600;"
       );
     </script>
-  </body>
+  
+<!-- Product Detail Modal -->
+<div id="productModal" class="product-modal-backdrop hidden" onclick="if(event.target.id==='productModal'){closeProductModal()}">
+  <div class="product-modal" role="dialog" aria-modal="true" aria-labelledby="pmName">
+    <button class="pm-close" onclick="closeProductModal()" aria-label="Close">×</button>
+    <div class="pm-body">
+      <div class="pm-image">
+        <img id="pmImage" alt="" />
+        <div id="pmDiscount" class="pm-discount hidden"></div>
+      </div>
+      <div class="pm-info">
+        <div class="pm-category" id="pmCategory"></div>
+        <h2 class="pm-name" id="pmName"></h2>
+        <div class="pm-rating">
+          <span id="pmStars"></span>
+          <span class="pm-reviews" id="pmReviews"></span>
+        </div>
+        <div class="pm-price">
+          <span class="pm-current" id="pmPrice"></span>
+          <span class="pm-original" id="pmOriginal"></span>
+          <span class="pm-save" id="pmSave"></span>
+        </div>
+        <p class="pm-desc" id="pmDesc"></p>
+        <div class="pm-actions">
+          <button class="pm-btn primary" onclick="addToCart(window.__pmId)">Add to Cart</button>
+          <button class="pm-btn ghost" onclick="toggleWishlist(window.__pmId)">Wishlist</button>
+          <button class="pm-btn buy" onclick="addToCart(window.__pmId); proceedToCheckout();">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function openProductModal(productId) {
+  const product = (typeof products !== 'undefined') ? products.find(p => p.id === productId) : null;
+  if (!product) return;
+  window.__pmId = productId;
+
+  const modal = document.getElementById('productModal');
+  const discountPct = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+
+  const imgEl = document.getElementById('pmImage');
+  imgEl.src = product.imageUrl;
+  imgEl.alt = product.name;
+
+  document.getElementById('pmCategory').textContent = product.category || '';
+  document.getElementById('pmName').textContent = product.name;
+  document.getElementById('pmDesc').textContent = product.description || '';
+  document.getElementById('pmPrice').textContent = '₹' + product.price;
+  document.getElementById('pmOriginal').textContent = '₹' + product.originalPrice;
+  document.getElementById('pmSave').textContent = discountPct > 0 ? ('Save ₹' + (product.originalPrice - product.price)) : '';
+
+  const pmDiscount = document.getElementById('pmDiscount');
+  if (discountPct > 0) {
+    pmDiscount.textContent = discountPct + '% OFF';
+    pmDiscount.classList.remove('hidden');
+  } else {
+    pmDiscount.classList.add('hidden');
+  }
+
+  const stars = Math.round(product.rating || 0);
+  document.getElementById('pmStars').textContent = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+  document.getElementById('pmReviews').textContent = '(' + (product.reviews || 0) + ' reviews)';
+
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProductModal() {
+  const modal = document.getElementById('productModal');
+  modal.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeProductModal();
+});
+</script>
+
+</body>
 </html>
