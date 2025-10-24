@@ -4163,7 +4163,10 @@
         const cartItems = document.getElementById("cartItems");
         const cartItemCount = document.getElementById("cartItemCount");
 
-        cartItemCount.textContent = cart.length;
+        cartItemCount.textContent = cart.reduce(
+          (sum, item) => sum + item.quantity,
+          0
+        );
 
         if (cart.length === 0) {
           cartItems.innerHTML = `
