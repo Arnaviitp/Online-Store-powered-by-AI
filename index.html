@@ -4335,46 +4335,133 @@
         showNotification("🎤 Listening...", "success");
       }
 
+      // Advanced Chat System with Context Awareness
+      let conversationContext = {
+        history: [],
+        userPreferences: {},
+        currentTopic: null,
+        userName: null,
+        sentiment: "neutral",
+      };
+
       async function sendMessage() {
         const input = document.getElementById("chatInput");
         const message = input.value.trim();
 
         if (message === "") return;
 
-        addMessageToChat(message, "user-message");
+        // Add to conversation history
+        conversationContext.history.push({ role: "user", content: message });
+
+        addMessageToChat(message, "user");
         input.value = "";
 
-        // Show typing indicator
-        const messagesDiv = document.getElementById("chatMessages");
-        const typingDiv = document.createElement("div");
-        typingDiv.className = "message bot-message";
-        typingDiv.innerHTML =
-          '<div style="display: flex; gap: 5px; padding: 10px;"><span style="animation: bounce 1.4s infinite;">●</span><span style="animation: bounce 1.4s infinite 0.2s;">●</span><span style="animation: bounce 1.4s infinite 0.4s;">●</span></div>';
-        messagesDiv.appendChild(typingDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        // Show realistic typing indicator
+        showTypingIndicator();
+
+        // Simulate AI processing time (variable based on query complexity)
+        const processingTime = calculateProcessingTime(message);
 
         setTimeout(() => {
-          typingDiv.remove();
+          removeTypingIndicator();
+
+          // Analyze sentiment
+          const sentiment = analyzeSentiment(message);
+          conversationContext.sentiment = sentiment;
 
           // Check if user wants products or just chat
           const wantsProducts = shouldShowProducts(message);
 
           if (wantsProducts) {
-            // Get relevant products
-            const relevantProducts = getProductsForQuery(message);
-            const responseText = getProductResponseText(message);
-
-            if (relevantProducts.length > 0) {
-              displayProductCards(responseText, relevantProducts);
-            } else {
-              addMessageToChat(responseText, "bot-message");
-            }
+            handleProductRequest(message);
           } else {
-            // Normal conversation
-            const chatResponse = getNormalChatResponse(message);
-            addMessageToChat(chatResponse, "bot-message");
+            handleConversation(message);
           }
-        }, 1500);
+        }, processingTime);
+      }
+
+      function calculateProcessingTime(message) {
+        // Variable timing based on complexity
+        const wordCount = message.split(" ").length;
+        if (wordCount > 20) return 2000;
+        if (wordCount > 10) return 1500;
+        return 1000;
+      }
+
+      function showTypingIndicator() {
+        const messagesDiv = document.getElementById("chatMessages");
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "message bot-message typing-indicator";
+        typingDiv.id = "typing-indicator";
+        typingDiv.innerHTML = `
+    <div style="display: flex; gap: 5px; padding: 10px; align-items: center;">
+      <span style="animation: bounce 1.4s infinite; font-size: 8px;">●</span>
+      <span style="animation: bounce 1.4s infinite 0.2s; font-size: 8px;">●</span>
+      <span style="animation: bounce 1.4s infinite 0.4s; font-size: 8px;">●</span>
+      <span style="margin-left: 8px; font-size: 0.75em; color: #64748b;">Aivora is thinking...</span>
+    </div>
+  `;
+        messagesDiv.appendChild(typingDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+
+      function removeTypingIndicator() {
+        const typingDiv = document.getElementById("typing-indicator");
+        if (typingDiv) typingDiv.remove();
+      }
+
+      // Advanced sentiment analysis
+      function analyzeSentiment(text) {
+        const t = text.toLowerCase();
+
+        // Negative emotions
+        const negativeWords = [
+          "sad",
+          "unhappy",
+          "depressed",
+          "terrible",
+          "awful",
+          "hate",
+          "angry",
+          "frustrated",
+          "stressed",
+          "anxious",
+          "worried",
+          "tired",
+          "exhausted",
+          "bad",
+          "horrible",
+          "miserable",
+        ];
+
+        // Positive emotions
+        const positiveWords = [
+          "happy",
+          "great",
+          "excellent",
+          "wonderful",
+          "amazing",
+          "love",
+          "fantastic",
+          "good",
+          "nice",
+          "excited",
+          "joyful",
+          "delighted",
+          "pleased",
+          "satisfied",
+        ];
+
+        const negativeCount = negativeWords.filter((word) =>
+          t.includes(word)
+        ).length;
+        const positiveCount = positiveWords.filter((word) =>
+          t.includes(word)
+        ).length;
+
+        if (negativeCount > positiveCount) return "negative";
+        if (positiveCount > negativeCount) return "positive";
+        return "neutral";
       }
 
       function shouldShowProducts(query) {
@@ -4417,102 +4504,398 @@
           "which",
         ];
 
-        // Check if query contains product keywords
         return productKeywords.some((keyword) => q.includes(keyword));
       }
 
-      function getNormalChatResponse(query) {
-        const q = query.toLowerCase();
+      function handleProductRequest(message) {
+        const relevantProducts = getProductsForQuery(message);
+        const responseText = getProductResponseText(message);
 
-        // Greetings
+        if (relevantProducts.length > 0) {
+          // Add context message first
+          addMessageToChat(responseText, "bot");
+
+          // Show quick action suggestions
+          setTimeout(() => {
+            displayProductCards(relevantProducts);
+            showQuickSuggestions([
+              "Show me more options",
+              "Filter by price",
+              "What's on sale?",
+              "I need something else",
+            ]);
+          }, 300);
+        } else {
+          const fallbackResponse = `I understand you're looking for something, but I couldn't find exactly what you need. Could you be more specific? For example:\n\n• Tell me your mood (stressed, tired, happy)\n• Specify a category (tea, skincare, outfit)\n• Share your budget range\n\nI'm here to help! 😊`;
+          addMessageToChat(fallbackResponse, "bot");
+          showQuickSuggestions([
+            "I'm feeling stressed",
+            "Show me tea products",
+            "Budget-friendly options",
+          ]);
+        }
+
+        // Add to context
+        conversationContext.currentTopic = "products";
+        conversationContext.history.push({
+          role: "assistant",
+          content: responseText,
+        });
+      }
+
+      function handleConversation(message) {
+        const q = message.toLowerCase();
+
+        // Check for context from previous conversation
+        const hasContext = conversationContext.history.length > 2;
+        const previousTopic = conversationContext.currentTopic;
+
+        let response = "";
+        let suggestions = [];
+
+        // Greeting with personalization
         if (q.includes("hi") || q.includes("hello") || q.includes("hey")) {
-          return "Hello! 👋 I'm Aivora, your AI wellness assistant. I'm here to help you find the perfect wellness products or just chat about your day. How can I assist you today?";
+          if (!conversationContext.userName) {
+            response =
+              "Hello! 👋 I'm Aivora, your AI wellness assistant. I'm here to help you discover products that match your mood and needs. What should I call you?";
+            conversationContext.currentTopic = "greeting";
+          } else {
+            response = `Welcome back, ${conversationContext.userName}! 🌟 How can I help you today?`;
+            suggestions = [
+              "I'm feeling stressed",
+              "Show me new products",
+              "Track my orders",
+            ];
+          }
         }
-
-        // How are you
-        if (q.includes("how are you")) {
-          return "I'm doing great, thank you for asking! 😊 I'm here and ready to help you with your wellness journey. How are you feeling today?";
+        // Capture user name
+        else if (
+          conversationContext.currentTopic === "greeting" &&
+          !conversationContext.userName
+        ) {
+          const name = message.split(" ")[0].replace(/[^a-zA-Z]/g, "");
+          if (name.length > 0) {
+            conversationContext.userName = name;
+            response = `Nice to meet you, ${name}! 🎉 I'm excited to help you on your wellness journey. I can:\n\n✨ Recommend products based on your mood\n🛍️ Help you find the perfect tea, skincare, or outfit\n💬 Chat about wellness and self-care\n🎯 Find deals and bestsellers\n\nHow are you feeling today?`;
+            suggestions = [
+              "I'm feeling great",
+              "A bit stressed",
+              "Show me products",
+            ];
+          } else {
+            response =
+              "I didn't quite catch that. What would you like me to call you?";
+          }
         }
-
-        // Thank you
-        if (q.includes("thank") || q.includes("thanks")) {
-          return "You're very welcome! 🌟 I'm always here to help. Is there anything else you'd like to know?";
+        // How are you - sentiment-aware response
+        else if (q.includes("how are you")) {
+          if (conversationContext.sentiment === "negative") {
+            response =
+              "Thank you for asking! I'm here and ready to help brighten your day. 😊 I noticed you might not be feeling your best - would you like me to suggest some products that could help?";
+            suggestions = [
+              "Yes, show me calming products",
+              "Just want to chat",
+              "Tell me about self-care",
+            ];
+          } else {
+            response =
+              "I'm doing great, thank you! 🌟 More importantly, how are YOU feeling? I'm here to help with whatever you need.";
+            suggestions = [
+              "I'm doing well",
+              "Could be better",
+              "Show me products",
+            ];
+          }
         }
-
-        // About Aivora
-        if (
+        // Thank you - contextual response
+        else if (q.includes("thank") || q.includes("thanks")) {
+          if (previousTopic === "products") {
+            response =
+              "You're very welcome! 🌸 I hope you find exactly what you're looking for. Is there anything else I can help you with?";
+            suggestions = ["Show me more", "Check my cart", "No, that's all"];
+          } else {
+            response =
+              "You're welcome! 😊 I'm always here to help. Feel free to ask me anything!";
+            suggestions = [
+              "Show me products",
+              "Tell me about wellness",
+              "Goodbye",
+            ];
+          }
+        }
+        // About Aivora - enhanced
+        else if (
           q.includes("who are you") ||
           q.includes("what are you") ||
           q.includes("your name")
         ) {
-          return "I'm Aivora, your AI-powered wellness shopping assistant! 🤖 I can help you find the perfect products based on your mood, answer questions about wellness, and guide you through your shopping experience. What can I help you with?";
+          response = `I'm Aivora, your intelligent wellness shopping companion! 🤖✨\n\nI use advanced AI to:\n• Understand your emotions and needs\n• Remember our conversations\n• Provide personalized product recommendations\n• Offer wellness advice\n• Make shopping stress-free\n\nThink of me as your personal wellness advisor who's always available! What interests you most?`;
+          suggestions = [
+            "Find products for my mood",
+            "Tell me about wellness",
+            "Show me deals",
+          ];
         }
-
-        // Help/What can you do
-        if (q.includes("help") || q.includes("what can you")) {
-          return "I can help you with many things! 🌸\n\n✨ Find products based on your mood\n🛍️ Recommend tea, skincare, or outfits\n💬 Chat about wellness and self-care\n🔍 Search for specific products\n💰 Find budget-friendly options\n⭐ Show best-rated products\n\nJust ask me anything, like 'I'm feeling stressed' or 'Show me tea products'!";
+        // Help - comprehensive guide
+        else if (
+          q.includes("help") ||
+          q.includes("what can you") ||
+          q.includes("how to use")
+        ) {
+          response = `I'm here to make your wellness shopping easy! 🌸 Here's what I can do:\n\n🎭 **Mood-Based Shopping**\n"I'm feeling stressed" → Get calming products\n\n🔍 **Smart Search**\n"Show me tea" → Browse tea collection\n\n💰 **Budget Shopping**\n"Affordable skincare" → Budget-friendly options\n\n⭐ **Best Sellers**\n"Top rated products" → Highly rated items\n\n💬 **Wellness Chat**\nAsk me about self-care tips!\n\n🛒 **Shopping Help**\nShipping, returns, payments, discounts\n\nJust type naturally - I understand! What would you like to try?`;
+          suggestions = [
+            "I'm feeling tired",
+            "Show me bestsellers",
+            "Budget options",
+          ];
         }
-
-        // General wellness questions
-        if (
+        // Follow-up handling with context
+        else if (
+          (q.includes("more") ||
+            q.includes("other") ||
+            q.includes("different") ||
+            q.includes("else")) &&
+          hasContext
+        ) {
+          if (previousTopic === "products") {
+            response =
+              "I'd love to show you more options! What are you interested in?\n\n• A different category?\n• Different price range?\n• Based on a different mood?\n\nJust let me know!";
+            suggestions = ["Show me tea", "Budget options", "Bestsellers"];
+          } else {
+            response =
+              "What else would you like to know? I can help with products, wellness advice, or shopping questions!";
+            suggestions = [
+              "Product recommendations",
+              "Wellness tips",
+              "Shopping help",
+            ];
+          }
+        }
+        // Wellness questions - expanded
+        else if (
           q.includes("wellness") ||
           q.includes("health") ||
-          q.includes("self-care")
+          q.includes("self-care") ||
+          q.includes("tips")
         ) {
-          return "Wellness and self-care are so important! 💚 Taking time for yourself, whether through calming teas, skincare routines, or comfortable outfits, can make a huge difference in how you feel. What aspect of wellness interests you most?";
+          response = `Wellness is a journey, not a destination! 💚 Here are some daily self-care tips:\n\n🍵 **Morning Routine**\nStart with herbal tea and mindful breathing\n\n✨ **Skincare Ritual**\nTreat your skin with gentle, natural products\n\n🧘 **Stress Management**\nTake breaks, practice gratitude, stay present\n\n👗 **Comfort Matters**\nWear clothes that make you feel good\n\n💤 **Evening Wind-down**\nCreate a calming bedtime routine\n\nWould you like product recommendations for any of these?`;
+          suggestions = [
+            "Morning tea",
+            "Skincare products",
+            "Comfortable outfits",
+          ];
         }
-
         // Shipping/Delivery
-        if (
+        else if (
           q.includes("shipping") ||
           q.includes("delivery") ||
           q.includes("deliver")
         ) {
-          return "We offer free shipping on all orders over ₹500! 🚚 Standard delivery takes 3-5 business days, and express delivery is available for faster service. All orders are trackable from your account page.";
+          response = `📦 **Shipping Information**\n\n🚚 **Free Shipping**: Orders over ₹500\n⚡ **Standard**: 3-5 business days\n🚀 **Express**: 1-2 business days (extra charge)\n📍 **Tracking**: Available for all orders\n🌍 **Coverage**: Pan-India delivery\n\n${
+            conversationContext.userName
+              ? conversationContext.userName + ", y"
+              : "Y"
+          }our order will be tracked every step of the way!`;
+          suggestions = ["Track my order", "Order status", "Continue shopping"];
         }
-
         // Returns/Refund
-        if (
+        else if (
           q.includes("return") ||
           q.includes("refund") ||
           q.includes("exchange")
         ) {
-          return "We have a hassle-free 30-day return policy! 💯 If you're not completely satisfied with your purchase, you can return it for a full refund or exchange. Just make sure the product is in its original condition.";
+          response = `💯 **Our Hassle-Free Return Policy**\n\n✅ **30 Days**: Full return period\n🔄 **Easy Process**: Return or exchange\n💰 **Full Refund**: Money-back guarantee\n📦 **Condition**: Original packaging preferred\n🚚 **Free Return Pickup**: We arrange it!\n\nYour satisfaction is our priority! Need help with a return?`;
+          suggestions = ["Start a return", "Return status", "Contact support"];
         }
-
-        // Payment
-        if (q.includes("payment") || q.includes("pay") || q.includes("emi")) {
-          return "We accept multiple payment methods! 💳 You can pay via Credit/Debit Card, UPI, Net Banking, Wallets, EMI (3-12 months), or Cash on Delivery. All transactions are 100% secure.";
+        // Payment - detailed
+        else if (
+          q.includes("payment") ||
+          q.includes("pay") ||
+          q.includes("emi")
+        ) {
+          response = `💳 **Payment Options**\n\n💳 Credit/Debit Cards\n📱 UPI (Google Pay, PhonePe, Paytm)\n🏦 Net Banking\n👛 Wallets (Paytm, PhonePe, Amazon Pay)\n💰 Cash on Delivery\n📊 EMI (3, 6, 9, 12 months)\n\n🔒 **100% Secure** - All transactions encrypted\n✨ **Instant Confirmation** - Order confirmed immediately\n\nPrefer any particular method?`;
+          suggestions = ["EMI options", "COD available?", "Payment secure?"];
         }
-
-        // Discount/Coupon
-        if (
+        // Discount/Coupon - interactive
+        else if (
           q.includes("discount") ||
           q.includes("coupon") ||
           q.includes("promo") ||
-          q.includes("offer")
+          q.includes("offer") ||
+          q.includes("deal")
         ) {
-          return "Great question! 🎉 We have several active discount codes:\n\n• WELLNESS20 - 20% off on all products\n• SAVE10 - ₹10 off\n• FIRST25 - 25% off on first order\n• FREESHIP - Free shipping\n\nYou can apply these at checkout!";
+          response = `🎉 **Active Discount Codes** - Save Big!\n\n💎 **WELLNESS20** → 20% OFF everything\n💰 **SAVE10** → Flat ₹10 OFF\n🎁 **FIRST25** → 25% OFF first order\n🚚 **FREESHIP** → Free shipping\n⭐ **BEST50** → ₹50 OFF bestsellers\n\nAll codes valid until month-end! Apply at checkout. ${
+            conversationContext.userName
+              ? "Shall I help you find products to use these on, " +
+                conversationContext.userName
+              : "Want to see products"
+          }?`;
+          suggestions = [
+            "Show me bestsellers",
+            "Budget products",
+            "New arrivals",
+          ];
         }
-
-        // Goodbye
-        if (
+        // Mood check-ins - empathetic
+        else if (
+          q.includes("feeling") ||
+          q.includes("mood") ||
+          q.includes("emotion")
+        ) {
+          if (conversationContext.sentiment === "negative") {
+            response = `I hear you ${
+              conversationContext.userName || "friend"
+            }. 🫂 It's okay to not feel your best sometimes. Taking care of yourself is important.\n\nWould you like me to suggest some products that might help lift your spirits? Sometimes a calming tea, soothing skincare routine, or comfortable outfit can make a difference.`;
+            suggestions = [
+              "Yes, show me calming products",
+              "Tell me more about self-care",
+              "Just want to talk",
+            ];
+          } else {
+            response = `That's wonderful to hear! 😊 Maintaining positive wellness is just as important. Would you like to explore products that complement your good mood?`;
+            suggestions = [
+              "Yes, show me products",
+              "Tell me about wellness",
+              "Not right now",
+            ];
+          }
+        }
+        // Order tracking
+        else if (q.includes("track") || q.includes("order status")) {
+          response = `📦 **Order Tracking**\n\nTo track your order, I'll need your order number. It's in your confirmation email!\n\nFormat: #ORD12345\n\nAlternatively, you can:\n• Check "My Orders" in your account\n• Use the tracking link from email\n• Share your registered email\n\nHow would you like to proceed?`;
+          suggestions = [
+            "View my account",
+            "Contact support",
+            "Continue shopping",
+          ];
+        }
+        // Goodbye - warm farewell
+        else if (
           q.includes("bye") ||
           q.includes("goodbye") ||
           q.includes("see you")
         ) {
-          return "Goodbye! 👋 Take care and remember to prioritize your wellness. Come back anytime you need help. Have a wonderful day! 🌟";
+          response = `Goodbye${
+            conversationContext.userName
+              ? ", " + conversationContext.userName
+              : ""
+          }! 👋✨\n\nTake care and remember:\n💚 Your wellness matters\n🌸 Self-care isn't selfish\n😊 I'm always here when you need me\n\nHave a wonderful day! Come back anytime! 🌟`;
+          suggestions = [];
+        }
+        // Default conversational response - context-aware
+        else {
+          const responses = [
+            `That's interesting${
+              conversationContext.userName
+                ? ", " + conversationContext.userName
+                : ""
+            }! ${
+              conversationContext.sentiment === "positive"
+                ? "I love your positive energy! 🌟"
+                : conversationContext.sentiment === "negative"
+                ? "I'm here to help! 🫂"
+                : ""
+            } Would you like product recommendations or have questions?`,
+            `I understand! ${
+              conversationContext.sentiment === "negative"
+                ? "If you're looking for something to help, I can suggest products."
+                : "Feel free to ask me about products or wellness!"
+            } 😊`,
+            `Thanks for sharing! ${
+              hasContext ? "Based on our conversation, " : ""
+            }I can help you find products or answer questions. What interests you?`,
+            `I'm listening! ${
+              conversationContext.userName
+                ? conversationContext.userName + ", w"
+                : "W"
+            }hether you want to shop or chat about wellness, I'm here for you! 💚`,
+          ];
+
+          response = responses[Math.floor(Math.random() * responses.length)];
+          suggestions = [
+            "Show me products",
+            "Wellness tips",
+            "Current deals",
+            "Help",
+          ];
         }
 
-        // Default conversational response
-        const responses = [
-          "That's interesting! Tell me more - are you looking for any specific products or just browsing? 🌸",
-          "I'm here to help! Would you like me to recommend some products, or do you have any questions? 😊",
-          "I understand! Feel free to ask me anything about our products or wellness in general. How can I assist? 💚",
-          "Thanks for sharing! If you'd like product recommendations based on how you're feeling, just let me know! ✨",
-        ];
+        // Add message and suggestions
+        addMessageToChat(response, "bot");
 
-        return responses[Math.floor(Math.random() * responses.length)];
+        if (suggestions.length > 0) {
+          setTimeout(() => showQuickSuggestions(suggestions), 400);
+        }
+
+        // Update context
+        conversationContext.currentTopic = "conversation";
+        conversationContext.history.push({
+          role: "assistant",
+          content: response,
+        });
+      }
+
+      // Quick suggestion buttons
+      function showQuickSuggestions(suggestions) {
+        const messagesDiv = document.getElementById("chatMessages");
+
+        // Remove existing suggestions
+        const existing = document.querySelector(".quick-suggestions");
+        if (existing) existing.remove();
+
+        const suggestionsDiv = document.createElement("div");
+        suggestionsDiv.className = "quick-suggestions";
+        suggestionsDiv.style.cssText = `
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    animation: slideUp 0.3s ease-out;
+  `;
+
+        suggestions.forEach((suggestion) => {
+          const button = document.createElement("button");
+          button.textContent = suggestion;
+          button.style.cssText = `
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0.05));
+      border: 1.5px solid rgba(37, 99, 235, 0.3);
+      color: #2563eb;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    `;
+
+          button.onmouseover = () => {
+            button.style.background =
+              "linear-gradient(135deg, #2563eb, #1e40af)";
+            button.style.color = "white";
+            button.style.transform = "translateY(-2px)";
+            button.style.boxShadow = "0 4px 12px rgba(37, 99, 235, 0.3)";
+          };
+
+          button.onmouseout = () => {
+            button.style.background =
+              "linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0.05))";
+            button.style.color = "#2563eb";
+            button.style.transform = "translateY(0)";
+            button.style.boxShadow = "none";
+          };
+
+          button.onclick = () => {
+            document.getElementById("chatInput").value = suggestion;
+            sendMessage();
+          };
+
+          suggestionsDiv.appendChild(button);
+        });
+
+        messagesDiv.appendChild(suggestionsDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
       }
 
       function getProductsForQuery(query) {
@@ -4594,31 +4977,34 @@
         return filtered.slice(0, 6);
       }
 
-      function getProductResponseText(query) {
-        const q = query.toLowerCase();
+      function getProductResponseText(message) {
+        const q = message.toLowerCase();
+        const userName = conversationContext.userName
+          ? conversationContext.userName + ", "
+          : "";
 
         if (q.includes("sad") || q.includes("low") || q.includes("down")) {
-          return "I'm so sorry to hear that you're feeling low. As Aivora, my goal is to help you find the perfect products to lift your spirits. Here are some products that can help:";
+          return `${userName}I'm sorry you're feeling low. 💙 Here are some comforting products that can help lift your spirits:`;
         } else if (q.includes("stress") || q.includes("calm")) {
-          return "Stress can be tough. Let me help you find calming products that can bring peace to your day:";
+          return `${userName}stress can be overwhelming. Let me help you find calming products for peaceful moments:`;
         } else if (q.includes("tired") || q.includes("energy")) {
-          return "Feeling tired? These energizing products will help boost your energy levels:";
+          return `${userName}feeling tired? These energizing products will help you feel refreshed:`;
         } else if (q.includes("tea")) {
-          return "Here are our premium tea collection that can enhance your wellness:";
+          return `${userName}our premium tea collection - perfect for your wellness journey:`;
         } else if (q.includes("skin") || q.includes("face")) {
-          return "For healthy, glowing skin, I recommend these skincare products:";
+          return `${userName}for healthy, glowing skin, I recommend these carefully selected products:`;
         } else if (q.includes("anxious") || q.includes("anxiety")) {
-          return "These products can help ease anxiety and promote calmness:";
+          return `${userName}these soothing products can help ease anxiety and promote calmness:`;
         } else if (q.includes("cheap") || q.includes("budget")) {
-          return "Here are our most affordable yet quality products:";
+          return `${userName}quality doesn't have to be expensive! Here are our best budget-friendly options:`;
         } else if (q.includes("best") || q.includes("recommend")) {
-          return "Based on customer ratings, here are our best products:";
+          return `${userName}based on customer love and ratings, here are our top products:`;
         } else {
-          return "Here are some products I think you'll love:";
+          return `${userName}I think you'll love these handpicked products:`;
         }
       }
 
-      function displayProductCards(text, productList) {
+      function displayProductCards(productList) {
         const messagesDiv = document.getElementById("chatMessages");
         const messageDiv = document.createElement("div");
         messageDiv.className = "message bot-message";
@@ -4628,79 +5014,76 @@
           Math.round(((orig - curr) / orig) * 100);
 
         const cardsHTML = `
-          <div style="margin-bottom: 12px; font-size: 0.95em; line-height: 1.6; color: #334155;">
-            ${text}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 15px;">
+      ${productList
+        .map(
+          (p) => `
+        <div style="background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; border: 1px solid #e2e8f0; cursor: pointer;"
+             onclick="openProductModal(${
+               p.id
+             })" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 24px rgba(37,99,235,0.15)'"
+             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">
+          <div style="position: relative;">
+            <img src="${
+              p.imageUrl
+            }" style="width: 100%; height: 160px; object-fit: cover; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%23667eea\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'20\' fill=\'white\'%3E${encodeURIComponent(
+                   p.name.substring(0, 20)
+                 )}%3C/text%3E%3C/svg%3E'">
+            <div style="position: absolute; top: 10px; left: 10px; background: #10b981; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.7em; font-weight: 800; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);">
+              ${discount(p.originalPrice, p.price)}% OFF
+            </div>
+            <button onclick="toggleWishlist(${
+              p.id
+            }); event.stopPropagation();" style="position: absolute; top: 10px; right: 10px; background: white; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: all 0.2s;"
+                    onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">
+              ❤️
+            </button>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 15px;">
-            ${productList
-              .map(
-                (p) => `
-              <div style="background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; border: 1px solid #e2e8f0; cursor: pointer;"
-                   onclick=\"openProductModal(${
-                     p.id
-                   })\" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 24px rgba(37,99,235,0.15)'"
-                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">
-                <div style="position: relative;">
-                  <img src="${
-                    p.imageUrl
-                  }" style="width: 100%; height: 160px; object-fit: cover; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
-                       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%23667eea\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'20\' fill=\'white\'%3E${encodeURIComponent(
-                         p.name.substring(0, 20)
-                       )}%3C/text%3E%3C/svg%3E'">
-                  <div style="position: absolute; top: 10px; left: 10px; background: #10b981; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.7em; font-weight: 800; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);">
-                    ${discount(p.originalPrice, p.price)}% OFF
-                  </div>
-                  <button onclick="toggleWishlist(${
-                    p.id
-                  }); event.stopPropagation();" style="position: absolute; top: 10px; right: 10px; background: white; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: all 0.2s;"
-                          onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">
-                    ❤️
-                  </button>
-                </div>
-                <div style="padding: 12px;">
-                  <div style="display: inline-block; background: rgba(37, 99, 235, 0.1); color: #2563eb; padding: 3px 8px; border-radius: 10px; font-size: 0.65em; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">
-                    ${p.category}
-                  </div>
-                  <h4 style="font-size: 0.9em; font-weight: 700; color: #1e293b; margin-bottom: 6px; line-height: 1.3; min-height: 36px;">
-                    ${p.name}
-                  </h4>
-                  <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 10px;">
-                    <span style="color: #f59e0b;">⭐</span>
-                    <span style="font-weight: 700; font-size: 0.8em; color: #1e293b;">${
-                      p.rating
-                    }</span>
-                    <span style="color: #94a3b8; font-size: 0.75em;">(${
-                      p.reviews
-                    })</span>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 12px;">
-                    <span style="font-size: 1.3em; font-weight: 800; color: #2563eb;">₹${
-                      p.price
-                    }</span>
-                    <span style="font-size: 0.85em; text-decoration: line-through; color: #94a3b8;">₹${
-                      p.originalPrice
-                    }</span>
-                  </div>
-                  <button onclick="addToCart(${
-                    p.id
-                  }); event.stopPropagation();" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #2563eb, #1e40af); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 0.85em; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px;"
-                          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(37, 99, 235, 0.4)'"
-                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                    🛒 Add to Cart
-                  </button>
-                </div>
-              </div>
-            `
-              )
-              .join("")}
+          <div style="padding: 12px;">
+            <div style="display: inline-block; background: rgba(37, 99, 235, 0.1); color: #2563eb; padding: 3px 8px; border-radius: 10px; font-size: 0.65em; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">
+              ${p.category}
+            </div>
+            <h4 style="font-size: 0.9em; font-weight: 700; color: #1e293b; margin-bottom: 6px; line-height: 1.3; min-height: 36px;">
+              ${p.name}
+            </h4>
+            <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 10px;">
+              <span style="color: #f59e0b;">⭐</span>
+              <span style="font-weight: 700; font-size: 0.8em; color: #1e293b;">${
+                p.rating
+              }</span>
+              <span style="color: #94a3b8; font-size: 0.75em;">(${
+                p.reviews
+              })</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 12px;">
+              <span style="font-size: 1.3em; font-weight: 800; color: #2563eb;">₹${
+                p.price
+              }</span>
+              <span style="font-size: 0.85em; text-decoration: line-through; color: #94a3b8;">₹${
+                p.originalPrice
+              }</span>
+            </div>
+            <button onclick="addToCart(${
+              p.id
+            }); event.stopPropagation();" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #2563eb, #1e40af); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 0.85em; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(37, 99, 235, 0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+              🛒 Add to Cart
+            </button>
           </div>
-          <div style="margin-top: 10px; font-size: 0.75em; color: #94a3b8;">
-            ${new Date().toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </div>
-        `;
+        </div>
+      `
+        )
+        .join("")}
+    </div>
+    <div style="margin-top: 12px; font-size: 0.75em; color: #94a3b8;">
+      ${new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}
+    </div>
+  `;
 
         messageDiv.innerHTML = cardsHTML;
         messagesDiv.appendChild(messageDiv);
@@ -4711,25 +5094,53 @@
         const messagesDiv = document.getElementById("chatMessages");
         const messageDiv = document.createElement("div");
         messageDiv.className = `message ${type}-message`;
+        messageDiv.style.animation = "slideUp 0.3s ease-out";
 
         const timestamp = new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         });
-        messageDiv.innerHTML = `${message}<span class="message-time">${timestamp}</span>`;
+
+        // Format message with line breaks
+        const formattedMessage = message.replace(/\n/g, "<br>");
+
+        messageDiv.innerHTML = `${formattedMessage}<span class="message-time">${timestamp}</span>`;
 
         messagesDiv.appendChild(messageDiv);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
       }
 
       function clearChat() {
+        // Reset conversation context but keep user name
+        const userName = conversationContext.userName;
+        conversationContext = {
+          history: [],
+          userPreferences: {},
+          currentTopic: null,
+          userName: userName,
+          sentiment: "neutral",
+        };
+
         document.getElementById("chatMessages").innerHTML = `
-                <div class="message bot-message">
-                    Chat cleared! How can I help you today? 😊
-                    <span class="message-time">Just now</span>
-                </div>
-            `;
+    <div class="message bot-message">
+      ${
+        userName ? `Welcome back, ${userName}! ` : ""
+      }Chat cleared! 🧹 How can I help you today? 😊
+      <span class="message-time">Just now</span>
+    </div>
+  `;
         showNotification("Chat cleared", "success");
+
+        // Show initial suggestions
+        setTimeout(
+          () =>
+            showQuickSuggestions([
+              "I'm feeling stressed",
+              "Show me products",
+              "Current deals",
+            ]),
+          500
+        );
       }
 
       function speakLastMessage() {
@@ -4751,9 +5162,56 @@
         }
 
         const utterance = new SpeechSynthesisUtterance(lastMessage);
+        utterance.rate = 0.9; // Slightly slower for better clarity
+        utterance.pitch = 1.1; // Slightly higher pitch for friendliness
         synthesis.speak(utterance);
         showNotification("🔊 Speaking...", "success");
       }
+
+      // Add CSS for animations
+      const style = document.createElement("style");
+      style.textContent = `
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .quick-suggestions button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .message {
+    animation: slideUp 0.3s ease-out;
+  }
+`;
+      document.head.appendChild(style);
+
+      // Initialize with a welcoming message
+      window.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          showQuickSuggestions([
+            "I'm feeling stressed",
+            "Show me tea products",
+            "Budget options",
+            "Help",
+          ]);
+        }, 1000);
+      });
 
       // Checkout Functions
       function proceedToCheckout() {
