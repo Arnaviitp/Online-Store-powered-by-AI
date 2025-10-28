@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <title>Wellness Shopping - AI Powered | Aivora</title>
+    <title>Isustain - AI Powered | Aivora</title>
     <style>
                   * {
                     margin: 0;
@@ -2374,7 +2374,7 @@
       <header class="header">
         <div class="logo">
           <div class="logo-icon">🌸</div>
-          <span>Wellness</span>
+          <span>Isustain</span>
         </div>
         <div class="header-actions">
           <div class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">
@@ -3148,7 +3148,7 @@
             <div class="account-avatar" id="accountAvatar">👤</div>
             <div class="account-name" id="accountName">Guest User</div>
             <div class="account-email" id="accountEmail">
-              guest@wellness.com
+              guest@isustain.com
             </div>
             <button
               class="hero-cta"
@@ -4130,8 +4130,8 @@
       }
 
       function loadFromLocalStorage() {
-        const savedCart = localStorage.getItem("wellnessCart");
-        const savedWishlist = localStorage.getItem("wellnessWishlist");
+        const savedCart = localStorage.getItem("IsustainCart");
+        const savedWishlist = localStorage.getItem("IsustainWishlist");
         const savedMood = localStorage.getItem("currentMood");
         const savedTheme = localStorage.getItem("theme");
 
@@ -4148,8 +4148,8 @@
       }
 
       function saveToLocalStorage() {
-        localStorage.setItem("wellnessCart", JSON.stringify(cart));
-        localStorage.setItem("wellnessWishlist", JSON.stringify(wishlist));
+        localStorage.setItem("IsustainCart", JSON.stringify(cart));
+        localStorage.setItem("IsustainWishlist", JSON.stringify(wishlist));
         localStorage.setItem("currentMood", currentMood);
       }
 
@@ -5903,7 +5903,7 @@
           document.getElementById("accountName").textContent =
             user.name || "Guest User";
           document.getElementById("accountEmail").textContent =
-            user.email || "guest@wellness.com";
+            user.email || "guest@isustain.com";
           document.getElementById("accountAvatar").textContent =
             user.avatar || "👤";
         }
@@ -6058,7 +6058,7 @@
           localStorage.removeItem("userData");
           document.getElementById("accountName").textContent = "Guest User";
           document.getElementById("accountEmail").textContent =
-            "guest@wellness.com";
+            "guest@isustain.com";
           closePage("accountPage");
           showHome();
           showNotification("Logged out successfully", "success");
@@ -6125,7 +6125,7 @@
       document.documentElement.style.scrollBehavior = "smooth";
 
       console.log(
-        "%c🌸 Wellness Shopping - Blue Theme Edition 🌸",
+        "%c🌸 Isustain Shopping - Blue Theme Edition 🌸",
         "color: #2563eb; font-size: 24px; font-weight: bold;"
       );
       console.log(
