@@ -6720,7 +6720,482 @@
         .comparison-bar { bottom: 60px; flex-direction: column; gap: 10px; }
         .compare-checkbox { width: 28px; height: 28px; bottom: 8px; right: 8px; }
       }
-    </style>
+    
+
+    /* ==================== SUSTAINABLE PRODUCT COMPARISON STYLES ==================== */
+
+    .sustainability-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.90);
+      z-index: 10000;
+      overflow-y: auto;
+      padding: 20px;
+      backdrop-filter: blur(5px);
+    }
+
+    .sustainability-modal.active {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+      padding-top: 40px;
+    }
+
+    .sustainability-modal-content {
+      background: white;
+      border-radius: 24px;
+      padding: 50px 40px 40px;
+      max-width: 1400px;
+      width: 100%;
+      position: relative;
+      animation: slideUp 0.4s ease;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+      margin: auto;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    body.dark-mode .sustainability-modal-content {
+      background: #1e293b;
+      color: #f1f5f9;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.15);
+      border: 2px solid rgba(239, 68, 68, 0.4);
+      color: #ef4444;
+      font-size: 1.8em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      line-height: 1;
+    }
+
+    .modal-close-btn:hover {
+      background: #ef4444;
+      color: white;
+      transform: rotate(90deg) scale(1.15);
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+    }
+
+    .modal-close-btn:active {
+      transform: rotate(90deg) scale(1.05);
+    }
+
+    .sustainability-card {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(255, 255, 255, 0.05));
+      border: 2px solid rgba(16, 185, 129, 0.25);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
+    }
+
+    body.dark-mode .sustainability-card {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(30, 41, 59, 0.5));
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .product-comparison-section {
+      margin-bottom: 30px;
+    }
+
+    .comparison-product-item {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    body.dark-mode .comparison-product-item {
+      background: #334155;
+    }
+
+    .comparison-product-item img {
+      width: 100%;
+      max-width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 auto 20px;
+      display: block;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .comparison-product-item h3 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: #1e293b;
+      text-align: center;
+    }
+
+    body.dark-mode .comparison-product-item h3 {
+      color: #f1f5f9;
+    }
+
+    .sustainability-metrics {
+      margin-top: 20px;
+    }
+
+    .metric {
+      margin-bottom: 20px;
+    }
+
+    .metric-label {
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 8px;
+      display: block;
+      font-size: 1em;
+    }
+
+    .score-bar {
+      width: 100%;
+      height: 14px;
+      background: #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px 0;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .score-bar {
+      background: #1e293b;
+    }
+
+    .score-fill {
+      height: 100%;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 10px;
+      background: linear-gradient(90deg, #10b981, #059669);
+    }
+
+    .score-value {
+      font-weight: 800;
+      color: #10b981;
+      font-size: 1.4em;
+      display: block;
+      margin-top: 8px;
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .impact-item {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 18px;
+      border-radius: 14px;
+      text-align: center;
+      border: 2px solid rgba(16, 185, 129, 0.25);
+      transition: all 0.3s;
+    }
+
+    .impact-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+      border-color: rgba(16, 185, 129, 0.5);
+    }
+
+    body.dark-mode .impact-item {
+      background: rgba(30, 41, 59, 0.8);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .impact-item .icon {
+      font-size: 2.5em;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .impact-item .label {
+      font-size: 0.85em;
+      color: #64748b;
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .impact-item .value {
+      font-weight: 700;
+      color: #1e293b;
+      font-size: 1.05em;
+    }
+
+    body.dark-mode .impact-item .value {
+      color: #f1f5f9;
+    }
+
+    .recommendation-badge {
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.05em;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .recommendation-badge.green {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+    }
+
+    .recommendation-badge.yellow {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+    }
+
+    .alternatives-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .alternative-card {
+      background: white;
+      border: 2px solid #10b981;
+      border-radius: 18px;
+      padding: 25px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .alternative-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(16, 185, 129, 0.35);
+      border-color: #059669;
+    }
+
+    body.dark-mode .alternative-card {
+      background: #334155;
+      border-color: #10b981;
+    }
+
+    .alternative-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin-bottom: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .eco-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .certifications {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 15px 0;
+    }
+
+    .cert-badge {
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+      padding: 6px 14px;
+      border-radius: 25px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1.5px solid rgba(16, 185, 129, 0.35);
+    }
+
+    body.dark-mode .cert-badge {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .sustainable-features {
+      margin: 18px 0;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    body.dark-mode .feature-item {
+      color: #cbd5e1;
+    }
+
+    .check-icon {
+      color: #10b981;
+      font-weight: bold;
+      font-size: 1.3em;
+    }
+
+    .price-comparison {
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .save-badge {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 0.9em;
+      font-weight: 800;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .premium-badge {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 0.9em;
+      font-weight: 800;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .add-alternative-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 18px;
+      font-size: 1em;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .add-alternative-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5);
+      background: linear-gradient(135deg, #059669, #047857);
+    }
+
+    .add-alternative-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .chat-quick-action {
+      padding: 12px 22px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95em;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .chat-quick-action:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+      background: linear-gradient(135deg, #059669, #047857);
+    }
+
+    .chat-quick-action:active {
+      transform: translateY(-1px);
+    }
+
+    @keyframes fadeIn {
+      from { 
+        opacity: 0;
+        backdrop-filter: blur(0);
+      }
+      to { 
+        opacity: 1;
+        backdrop-filter: blur(5px);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(60px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .alternatives-grid { 
+        grid-template-columns: 1fr; 
+      }
+      .impact-grid { 
+        grid-template-columns: 1fr; 
+      }
+      .sustainability-modal-content { 
+        padding: 50px 20px 20px;
+        margin-top: 10px;
+      }
+      .modal-close-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 1.6em;
+        top: 12px;
+        right: 12px;
+      }
+    }
+
+    .sustainability-modal-content::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .sustainability-modal-content::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+
+    .sustainability-modal-content::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 10px;
+    }
+
+    body.dark-mode .sustainability-modal-content::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+</style>
 
     <!-- Comparison Bar -->
     <div class="comparison-bar" id="comparisonBar">
@@ -7081,7 +7556,409 @@
       console.log('✅ Product Comparison with Quantity Selectors Loaded!');
       console.log('   📍 Compare checkbox: Bottom-Right');
       console.log('   📍 Quantity selector in comparison modal');
-    </script>
+    
+
+      // ==================== SUSTAINABLE PRODUCT COMPARISON SYSTEM ====================
+
+      const sustainableAlternatives = {
+        'Tea': [
+          { 
+            id: 101, 
+            name: 'Organic Green Tea', 
+            price: 299, 
+            ecoScore: 9.5, 
+            carbonFootprint: 'Low', 
+            certifications: ['Organic', 'Fair Trade'],
+            image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400',
+            sustainableFeatures: ['Biodegradable packaging', 'Zero pesticides', 'Carbon neutral'],
+            category: 'Tea',
+            rating: 4.8
+          },
+          { 
+            id: 102, 
+            name: 'Herbal Wellness Tea', 
+            price: 349, 
+            ecoScore: 9.2, 
+            carbonFootprint: 'Very Low', 
+            certifications: ['Organic', 'Rainforest Alliance'],
+            image: 'https://images.unsplash.com/photo-1597318120855-5a53403d609d?w=400',
+            sustainableFeatures: ['Compostable tea bags', 'Locally sourced herbs'],
+            category: 'Tea',
+            rating: 4.7
+          }
+        ],
+        'Skincare': [
+          { 
+            id: 201, 
+            name: 'Vegan Face Cream', 
+            price: 599, 
+            ecoScore: 9.7, 
+            carbonFootprint: 'Low', 
+            certifications: ['Vegan', 'Cruelty-Free', 'B-Corp'],
+            image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400',
+            sustainableFeatures: ['Refillable packaging', 'Ocean-safe ingredients', 'Plastic-free'],
+            category: 'Skincare',
+            rating: 4.9
+          },
+          { 
+            id: 202, 
+            name: 'Bamboo Charcoal Cleanser', 
+            price: 449, 
+            ecoScore: 9.3, 
+            carbonFootprint: 'Low',
+            certifications: ['Natural', 'Zero Waste'],
+            image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400',
+            sustainableFeatures: ['Biodegradable formula', 'Recyclable glass bottle'],
+            category: 'Skincare',
+            rating: 4.6
+          }
+        ],
+        'Outfit': [
+          { 
+            id: 301, 
+            name: 'Organic Cotton T-Shirt', 
+            price: 899, 
+            ecoScore: 8.9, 
+            carbonFootprint: 'Medium', 
+            certifications: ['GOTS', 'Fair Trade'],
+            image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400',
+            sustainableFeatures: ['Water-saving production', 'Ethical labor', 'Recyclable'],
+            category: 'Outfit',
+            rating: 4.5
+          }
+        ]
+      };
+
+      function compareProductsForSustainability(productIds) {
+        console.log('🌱 Starting sustainable product comparison...');
+
+        let selectedProducts = [];
+
+        if (typeof cart !== 'undefined' && cart.length > 0) {
+          selectedProducts = cart;
+        } else if (typeof products !== 'undefined') {
+          selectedProducts = products.slice(0, 3);
+        }
+
+        if (selectedProducts.length < 1) {
+          showNotification('Please add products to cart first to compare sustainability', 'error');
+          return;
+        }
+
+        const comparisonData = selectedProducts.map(product => ({
+          ...product,
+          sustainabilityScore: calculateSustainabilityScore(product),
+          greenAlternatives: findGreenAlternatives(product),
+          environmentalImpact: assessEnvironmentalImpact(product)
+        }));
+
+        displaySustainabilityComparison(comparisonData);
+
+        return comparisonData;
+      }
+
+      function calculateSustainabilityScore(product) {
+        let score = 5;
+
+        const name = product.name.toLowerCase();
+
+        if (product.category === 'Tea' || product.category === 'Skincare') score += 1;
+        if (name.includes('organic')) score += 1.5;
+        if (name.includes('vegan')) score += 1;
+        if (name.includes('natural')) score += 0.8;
+        if (name.includes('eco')) score += 1.2;
+        if (name.includes('herbal')) score += 0.7;
+        if (name.includes('green')) score += 0.9;
+
+        const price = parseFloat(product.price.toString().replace('₹', '').replace(',', ''));
+        if (price < 500) score += 0.5;
+
+        return Math.min(score, 10).toFixed(1);
+      }
+
+      function findGreenAlternatives(product) {
+        const category = product.category;
+        const alternatives = sustainableAlternatives[category] || [];
+
+        const productPrice = parseFloat(product.price.toString().replace('₹', '').replace(',', ''));
+
+        return alternatives.filter(alt => 
+          alt.ecoScore > calculateSustainabilityScore(product) &&
+          Math.abs(alt.price - productPrice) < 400
+        );
+      }
+
+      function assessEnvironmentalImpact(product) {
+        const name = product.name.toLowerCase();
+
+        if (name.includes('organic') || name.includes('natural') || name.includes('herbal')) {
+          return {
+            carbonFootprint: 'Low',
+            packaging: 'Eco-friendly',
+            waterUsage: 'Minimal',
+            recommendation: 'Great sustainable choice! ✅'
+          };
+        } else if (name.includes('premium') || name.includes('luxury')) {
+          return {
+            carbonFootprint: 'Medium-High',
+            packaging: 'Standard',
+            waterUsage: 'Moderate',
+            recommendation: 'Consider greener alternatives 🌿'
+          };
+        }
+
+        return {
+          carbonFootprint: 'Medium',
+          packaging: 'Standard',
+          waterUsage: 'Moderate',
+          recommendation: 'Sustainable alternatives available 🌱'
+        };
+      }
+
+      function displaySustainabilityComparison(comparisonData) {
+        const modal = document.getElementById('sustainabilityModal');
+        const content = document.getElementById('sustainabilityContent');
+
+        let html = `
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="color: #10b981; font-size: 2rem; margin-bottom: 10px;">
+              🌍 Sustainable Product Analysis
+            </h2>
+            <p style="color: #64748b; font-size: 1rem;">
+              Compare environmental impact and discover eco-friendly alternatives
+            </p>
+          </div>
+        `;
+
+        comparisonData.forEach(product => {
+          const alternatives = product.greenAlternatives;
+          const impact = product.environmentalImpact;
+
+          html += `
+            <div class="sustainability-card">
+              <div class="product-comparison-section">
+                <div class="comparison-product-item">
+                  <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x300?text=Product'" />
+                  <h3>${product.name}</h3>
+                  <div style="text-align: center; font-size: 1.3em; color: #2563eb; font-weight: 800; margin: 10px 0;">${product.price}</div>
+
+                  <div class="sustainability-metrics">
+                    <div class="metric">
+                      <span class="metric-label">Sustainability Score</span>
+                      <div class="score-bar">
+                        <div class="score-fill" style="width: ${product.sustainabilityScore * 10}%; 
+                          background: ${product.sustainabilityScore > 7 ? 'linear-gradient(90deg, #10b981, #059669)' : 'linear-gradient(90deg, #f59e0b, #d97706)'}"></div>
+                      </div>
+                      <span class="score-value">${product.sustainabilityScore}/10</span>
+                    </div>
+
+                    <div class="impact-grid">
+                      <div class="impact-item">
+                        <span class="icon">🌡️</span>
+                        <span class="label">Carbon Footprint</span>
+                        <span class="value">${impact.carbonFootprint}</span>
+                      </div>
+                      <div class="impact-item">
+                        <span class="icon">📦</span>
+                        <span class="label">Packaging</span>
+                        <span class="value">${impact.packaging}</span>
+                      </div>
+                      <div class="impact-item">
+                        <span class="icon">💧</span>
+                        <span class="label">Water Usage</span>
+                        <span class="value">${impact.waterUsage}</span>
+                      </div>
+                    </div>
+
+                    <div class="recommendation-badge ${product.sustainabilityScore > 7 ? 'green' : 'yellow'}">
+                      ${impact.recommendation}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              ${alternatives.length > 0 ? `
+                <div class="green-alternatives-section">
+                  <h4 style="color: #10b981; margin: 20px 0 15px; font-size: 1.3rem;">
+                    🌿 Greener Alternatives
+                  </h4>
+                  <div class="alternatives-grid">
+                    ${alternatives.map(alt => `
+                      <div class="alternative-card">
+                        <div class="eco-badge">Eco Score: ${alt.ecoScore}/10</div>
+                        <img src="${alt.image}" alt="${alt.name}" onerror="this.src='https://via.placeholder.com/300x220?text=Alternative'" />
+                        <h5 style="font-size: 1.1em; margin: 10px 0; color: #1e293b;">${alt.name}</h5>
+                        <div style="font-size: 1.3em; color: #10b981; font-weight: 800; text-align: center;">₹${alt.price}</div>
+
+                        <div class="certifications">
+                          ${alt.certifications.map(cert => `
+                            <span class="cert-badge">${cert}</span>
+                          `).join('')}
+                        </div>
+
+                        <div class="sustainable-features">
+                          ${alt.sustainableFeatures.map(feature => `
+                            <div class="feature-item">
+                              <span class="check-icon">✓</span>
+                              <span>${feature}</span>
+                            </div>
+                          `).join('')}
+                        </div>
+
+                        <div class="price-comparison">
+                          ${alt.price < parseFloat(product.price.toString().replace('₹', '').replace(',', '')) ? 
+                            `<span class="save-badge">💰 Save ₹${Math.round(parseFloat(product.price.toString().replace('₹', '').replace(',', '')) - alt.price)}</span>` :
+                            `<span class="premium-badge">Premium +₹${Math.round(alt.price - parseFloat(product.price.toString().replace('₹', '').replace(',', '')))}</span>`
+                          }
+                        </div>
+
+                        <button class="add-alternative-btn" onclick="addAlternativeToCart(${alt.id})">
+                          Add to Cart 🛒
+                        </button>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : '<p style="color: #64748b; text-align: center; margin-top: 20px; font-size: 1.1em;">No greener alternatives found in this category yet. 🌱</p>'}
+            </div>
+          `;
+        });
+
+        content.innerHTML = html;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeSustainabilityModal() {
+        const modal = document.getElementById('sustainabilityModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function addAlternativeToCart(altId) {
+        let alternative = null;
+        for (const category in sustainableAlternatives) {
+          alternative = sustainableAlternatives[category].find(a => a.id === altId);
+          if (alternative) break;
+        }
+
+        if (alternative) {
+          const cartProduct = {
+            ...alternative,
+            price: `₹${alternative.price}`,
+            rating: alternative.ecoScore
+          };
+
+          if (typeof addToCart === 'function') {
+            addToCart(cartProduct);
+          } else if (typeof cart !== 'undefined') {
+            cart.push({ ...cartProduct, quantity: 1 });
+            if (typeof saveToLocalStorage === 'function') saveToLocalStorage();
+            if (typeof updateBadges === 'function') updateBadges();
+          }
+
+          if (typeof showNotification === 'function') {
+            showNotification(`${alternative.name} added to cart 🌱`, 'success');
+          } else {
+            alert(`${alternative.name} added to cart! 🌱`);
+          }
+
+          closeSustainabilityModal();
+        }
+      }
+
+      function addSustainabilityComparisonButton() {
+        const chatInputArea = document.querySelector('.chat-input-area') || document.querySelector('#chatInput')?.parentElement;
+
+        if (chatInputArea && !document.getElementById('sustainabilityQuickBtn')) {
+          const quickBtn = document.createElement('button');
+          quickBtn.id = 'sustainabilityQuickBtn';
+          quickBtn.innerHTML = '🌱 Compare Sustainability';
+          quickBtn.className = 'chat-quick-action';
+          quickBtn.onclick = () => {
+            if (typeof cart !== 'undefined' && cart.length > 0) {
+              compareProductsForSustainability();
+            } else {
+              if (typeof showNotification === 'function') {
+                showNotification('Add products to cart first to compare sustainability', 'error');
+              } else {
+                alert('Add products to cart first!');
+              }
+            }
+          };
+
+          chatInputArea.insertBefore(quickBtn, chatInputArea.firstChild);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          setTimeout(addSustainabilityComparisonButton, 1000);
+          console.log('✅ Sustainable product comparison system loaded');
+        });
+      } else {
+        setTimeout(addSustainabilityComparisonButton, 1000);
+        console.log('✅ Sustainable product comparison system loaded');
+      }
+
+      document.addEventListener('click', (e) => {
+        const modal = document.getElementById('sustainabilityModal');
+        if (e.target === modal) {
+          closeSustainabilityModal();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          const modal = document.getElementById('sustainabilityModal');
+          if (modal.classList.contains('active')) {
+            closeSustainabilityModal();
+          }
+        }
+      });
+
+      const originalSendMessage = typeof sendMessage !== 'undefined' ? sendMessage : null;
+      if (originalSendMessage) {
+        window.sendMessage = function() {
+          const input = document.getElementById('chatInput');
+          const message = input.value.trim().toLowerCase();
+
+          if (message.includes('sustainable') || message.includes('green') || 
+              message.includes('eco') || message.includes('environmental') || 
+              message.includes('carbon') || message.includes('compare')) {
+
+            originalSendMessage.call(this);
+
+            setTimeout(() => {
+              const chatMessages = document.getElementById('chatMessages');
+              const botMsg = document.createElement('div');
+              botMsg.className = 'message bot-message';
+              botMsg.innerHTML = `
+                🌿 Great question about sustainability! I'm analyzing your products for environmental impact and finding eco-friendly alternatives. 
+                Check out the detailed comparison I've prepared for you! 🌍♻️
+                <span class="message-time">${new Date().toLocaleTimeString()}</span>
+              `;
+              chatMessages.appendChild(botMsg);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+
+              setTimeout(() => compareProductsForSustainability(), 800);
+            }, 500);
+          } else {
+            originalSendMessage.call(this);
+          }
+        };
+      }
+
+</script>
+
+
+    <!-- Sustainability Comparison Modal -->
+    <div id="sustainabilityModal" class="sustainability-modal">
+      <div class="sustainability-modal-content">
+        <button class="modal-close-btn" onclick="closeSustainabilityModal()" title="Close">✕</button>
+        <div id="sustainabilityContent"></div>
+      </div>
+    </div>
 
 </body>
 </html>
