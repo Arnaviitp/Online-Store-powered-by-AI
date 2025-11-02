@@ -7822,6 +7822,48 @@
             category: "Tea",
             rating: 4.7,
           },
+          {
+            id: 103,
+            name: "Jasmine Organic Tea",
+            price: 279,
+            ecoScore: 9.0,
+            carbonFootprint: "Low",
+            certifications: ["Organic"],
+            image:
+              "https://images.unsplash.com/photo-1506806732259-39c2d0268443?w=400",
+            sustainableFeatures: ["Compostable pouches", "Locally grown"],
+            category: "Tea",
+            rating: 4.6,
+          },
+          {
+            id: 104,
+            name: "Matcha Organic Powder",
+            price: 499,
+            ecoScore: 9.3,
+            carbonFootprint: "Very Low",
+            certifications: ["Organic", "Single Origin"],
+            image:
+              "https://images.unsplash.com/photo-1510627498534-cf7e9002facc?w=400",
+            sustainableFeatures: [
+              "Minimal processing",
+              "Biodegradable packaging",
+            ],
+            category: "Tea",
+            rating: 4.8,
+          },
+          {
+            id: 105,
+            name: "Fair-Trade Black Tea",
+            price: 349,
+            ecoScore: 8.8,
+            carbonFootprint: "Low",
+            certifications: ["Fair Trade"],
+            image:
+              "https://images.unsplash.com/photo-1505250469679-203ad9ced0cb?w=400",
+            sustainableFeatures: ["Fair wages", "Sustainable farming"],
+            category: "Tea",
+            rating: 4.4,
+          },
         ],
         Skincare: [
           {
@@ -7857,6 +7899,32 @@
             category: "Skincare",
             rating: 4.6,
           },
+          {
+            id: 203,
+            name: "Refillable Serum",
+            price: 799,
+            ecoScore: 9.4,
+            carbonFootprint: "Low",
+            certifications: ["Refillable", "Cruelty-Free"],
+            image:
+              "https://images.unsplash.com/photo-1543322870-6b12c9c5d0d0?w=400",
+            sustainableFeatures: ["Refill stations", "Glass bottle"],
+            category: "Skincare",
+            rating: 4.7,
+          },
+          {
+            id: 204,
+            name: "Eco Night Cream",
+            price: 649,
+            ecoScore: 9.1,
+            carbonFootprint: "Low",
+            certifications: ["Natural", "Organic"],
+            image:
+              "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400",
+            sustainableFeatures: ["Plant-based oils", "Recyclable tube"],
+            category: "Skincare",
+            rating: 4.5,
+          },
         ],
         Outfit: [
           {
@@ -7875,6 +7943,48 @@
             ],
             category: "Outfit",
             rating: 4.5,
+          },
+          {
+            id: 302,
+            name: "Bamboo Comfort Pajamas",
+            price: 1499,
+            ecoScore: 9.0,
+            carbonFootprint: "Low",
+            certifications: ["Sustainable Material"],
+            image:
+              "https://images.unsplash.com/photo-1584293648398-9e52f5bef8f8?w=400",
+            sustainableFeatures: ["Breathable bamboo fabric", "Low water use"],
+            category: "Outfit",
+            rating: 4.7,
+          },
+          {
+            id: 303,
+            name: "Recycled Polyester Jacket",
+            price: 2499,
+            ecoScore: 8.5,
+            carbonFootprint: "Medium-Low",
+            certifications: ["Recycled"],
+            image:
+              "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400",
+            sustainableFeatures: [
+              "Made from recycled bottles",
+              "Durable construction",
+            ],
+            category: "Outfit",
+            rating: 4.4,
+          },
+          {
+            id: 304,
+            name: "Hemp Utility Pants",
+            price: 1799,
+            ecoScore: 9.1,
+            carbonFootprint: "Low",
+            certifications: ["Hemp"],
+            image:
+              "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400",
+            sustainableFeatures: ["Low-impact fiber", "Long-lasting"],
+            category: "Outfit",
+            rating: 4.6,
           },
         ],
       };
@@ -8435,5 +8545,317 @@
         <div id="sustainabilityContent"></div>
       </div>
     </div>
+
+    <!-- Added: Back-to-top button, Shortcuts modal, and UX helpers -->
+    <style>
+      /* Back to Top */
+      #backToTop {
+        position: fixed;
+        right: 18px;
+        bottom: 88px;
+        width: 46px;
+        height: 46px;
+        background: var(--primary-solid, #2563eb);
+        color: #fff;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.18);
+        cursor: pointer;
+        z-index: 1200;
+        opacity: 0;
+        transform: translateY(12px);
+        transition: all 240ms ease;
+      }
+      #backToTop.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Shortcuts Modal */
+      #shortcutsModal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1400;
+        padding: 24px;
+        background: rgba(2, 6, 23, 0.45);
+      }
+      #shortcutsModal.active {
+        display: flex;
+      }
+      .shortcuts-card {
+        width: min(720px, 96%);
+        background: #fff;
+        border-radius: 12px;
+        padding: 18px 20px;
+        box-shadow: 0 18px 40px rgba(2, 6, 23, 0.24);
+        color: #0f172a;
+      }
+      body.dark-mode .shortcuts-card {
+        background: rgba(2, 6, 23, 0.88);
+        color: #e6eef8;
+      }
+      .shortcuts-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 4px;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.04);
+      }
+      .shortcuts-row:last-child {
+        border-bottom: 0;
+      }
+      .kbd {
+        background: rgba(15, 23, 42, 0.06);
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-weight: 700;
+      }
+
+      /* Action notification button styling (for Undo) */
+      .notification .action-btn {
+        margin-left: 12px;
+        padding: 6px 10px;
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 8px;
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        font-weight: 700;
+      }
+    </style>
+
+    <div id="backToTop" title="Back to top" aria-hidden="true">▲</div>
+
+    <div
+      id="shortcutsModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="shortcutsTitle"
+    >
+      <div class="shortcuts-card">
+        <h3 id="shortcutsTitle">Keyboard shortcuts</h3>
+        <div style="margin-top: 8px; font-size: 0.95em; color: #64748b">
+          Use these to speed up navigation
+        </div>
+        <div style="margin-top: 12px">
+          <div class="shortcuts-row">
+            <div>Focus Search</div>
+            <div class="kbd">Ctrl + K</div>
+          </div>
+          <div class="shortcuts-row">
+            <div>Toggle Shortcuts</div>
+            <div class="kbd">Ctrl + /</div>
+          </div>
+          <div class="shortcuts-row">
+            <div>Open Cart</div>
+            <div class="kbd">C</div>
+          </div>
+          <div class="shortcuts-row">
+            <div>Open Wishlist</div>
+            <div class="kbd">W</div>
+          </div>
+          <div class="shortcuts-row">
+            <div>Close Modals / Escape</div>
+            <div class="kbd">Esc</div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 12px">
+          <button
+            onclick="document.getElementById('shortcutsModal').classList.remove('active')"
+            class="pm-btn ghost"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ===================== UX Enhancements =====================
+      (function () {
+        // Back to top
+        const backToTop = document.getElementById("backToTop");
+        if (backToTop) {
+          window.addEventListener("scroll", () => {
+            if (window.scrollY > 360) backToTop.classList.add("visible");
+            else backToTop.classList.remove("visible");
+          });
+          backToTop.addEventListener("click", () =>
+            window.scrollTo({ top: 0, behavior: "smooth" })
+          );
+        }
+
+        // Shortcuts modal toggle (Ctrl+/)
+        const shortcutsModal = document.getElementById("shortcutsModal");
+        window.addEventListener("keydown", (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key === "/") {
+            e.preventDefault();
+            shortcutsModal.classList.toggle("active");
+          }
+          // single-key shortcuts
+          if (
+            !e.ctrlKey &&
+            !e.metaKey &&
+            !e.altKey &&
+            !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)
+          ) {
+            if (e.key.toLowerCase() === "c") {
+              e.preventDefault();
+              if (typeof showCart === "function") showCart();
+            }
+            if (e.key.toLowerCase() === "w") {
+              e.preventDefault();
+              if (typeof showWishlist === "function") showWishlist();
+            }
+          }
+        });
+
+        // Close shortcuts with Escape
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            if (shortcutsModal.classList.contains("active"))
+              shortcutsModal.classList.remove("active");
+          }
+        });
+
+        // Lazy-loading: ensure any product images added dynamically get loading="lazy"
+        const productsGrid = document.querySelector(".products-grid");
+        if (productsGrid) {
+          const setLazy = (node) => {
+            node.querySelectorAll("img").forEach((img) => {
+              if (!img.loading) img.setAttribute("loading", "lazy");
+            });
+          };
+          // initial
+          setLazy(productsGrid);
+          // observe
+          const mo = new MutationObserver(() => setLazy(productsGrid));
+          mo.observe(productsGrid, { childList: true, subtree: true });
+        }
+
+        // Autosave checkout address draft
+        const checkoutFields = [
+          "fullName",
+          "mobile",
+          "address",
+          "city",
+          "state",
+          "pincode",
+        ];
+        function saveCheckoutDraft() {
+          const draft = {};
+          checkoutFields.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) draft[id] = el.value;
+          });
+          localStorage.setItem("checkoutDraft", JSON.stringify(draft));
+        }
+        function loadCheckoutDraft() {
+          const draft = JSON.parse(
+            localStorage.getItem("checkoutDraft") || "{}"
+          );
+          checkoutFields.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el && draft[id]) el.value = draft[id];
+          });
+        }
+        // attach listeners when DOM ready
+        document.addEventListener("DOMContentLoaded", () => {
+          checkoutFields.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener("input", saveCheckoutDraft);
+          });
+        });
+        // load when checkout page is shown
+        const origProceedToCheckout =
+          typeof proceedToCheckout !== "undefined" ? proceedToCheckout : null;
+        window.proceedToCheckout = function () {
+          if (origProceedToCheckout) origProceedToCheckout();
+          setTimeout(loadCheckoutDraft, 120);
+        };
+
+        // Action notification helper (undo actions)
+        window.showActionNotification = function (
+          message,
+          actionText,
+          actionCallback,
+          type = "success"
+        ) {
+          // create notification similar to site's existing style
+          const existing = document.querySelectorAll(".notification");
+          existing.forEach((n) => n.remove());
+          const n = document.createElement("div");
+          n.className = `notification ${type}`;
+          n.style.display = "flex";
+          n.style.alignItems = "center";
+          n.style.gap = "10px";
+          n.textContent = message;
+          const btn = document.createElement("button");
+          btn.className = "action-btn";
+          btn.textContent = actionText;
+          btn.addEventListener("click", () => {
+            try {
+              actionCallback();
+            } catch (e) {
+              console.error(e);
+            }
+            n.remove();
+          });
+          n.appendChild(btn);
+          document.body.appendChild(n);
+          setTimeout(() => {
+            try {
+              n.classList.add("show");
+            } catch (e) {}
+          }, 20);
+          setTimeout(() => {
+            if (n.parentNode) n.remove();
+          }, 7000);
+        };
+
+        // Override removeFromCart to provide undo if original exists
+        const __orig_removeFromCart =
+          typeof removeFromCart !== "undefined" ? removeFromCart : null;
+        if (__orig_removeFromCart) {
+          window.removeFromCart = function (index) {
+            // store snapshot
+            const item =
+              cart && cart[index]
+                ? JSON.parse(JSON.stringify(cart[index]))
+                : null;
+            // call original
+            __orig_removeFromCart(index);
+            if (item) {
+              showActionNotification(
+                `${item.name} removed`,
+                "Undo",
+                () => {
+                  // put item back at same index (or push)
+                  if (!cart) cart = [];
+                  cart.splice(index, 0, item);
+                  try {
+                    saveToLocalStorage();
+                    updateBadges();
+                    loadCartPage();
+                    showNotification("Restored to cart", "success");
+                  } catch (e) {
+                    console.error(e);
+                  }
+                },
+                "error"
+              );
+            }
+          };
+        }
+
+        // Helpful console message
+        console.log(
+          "✅ UX helpers loaded: back-to-top, shortcuts (Ctrl+/), undo remove, autosave checkout, lazy-loading images"
+        );
+      })();
+    </script>
   </body>
 </html>
