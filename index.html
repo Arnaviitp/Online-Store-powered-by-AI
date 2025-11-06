@@ -17,6 +17,9 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <!-- model-viewer for 3D / AR previews -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
     <title>Isustain - AI Powered | Aivora</title>
     <style>
       * {
@@ -598,6 +601,31 @@
         cursor: pointer;
         transition: var(--transition);
         z-index: 10;
+      }
+
+      .model3d-btn {
+        position: absolute;
+        top: 12px;
+        /* place the 3D button to the right side (left of the wishlist) so it doesn't cover the share/send icon */
+        right: 56px;
+        width: 40px;
+        height: 40px;
+        backdrop-filter: var(--blur);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1em;
+        cursor: pointer;
+        transition: var(--transition);
+        z-index: 11;
+      }
+
+      .model3d-btn:hover {
+        transform: scale(1.08);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.15);
       }
 
       .wishlist-btn:hover {
@@ -2895,6 +2923,22 @@
                 />
               </div>
             </div>
+            <!-- Schedule delivery -->
+            <div class="form-group">
+              <label class="form-label">Schedule delivery (optional)</label>
+              <input
+                type="date"
+                class="form-input"
+                id="scheduledDate"
+                placeholder="Select delivery date"
+                onchange="onScheduledDateChange()"
+                aria-label="Schedule delivery date"
+              />
+              <div
+                id="estimatedDeliveryPreview"
+                style="margin-top: 8px; color: #64748b; font-size: 0.95em"
+              ></div>
+            </div>
             <button class="checkout-btn" onclick="proceedToPayment()">
               <span>Continue to Payment</span>
               <span>→</span>
@@ -3213,6 +3257,10 @@
                 <span>Delivery:</span>
                 <span id="confirmDelivery">₹0</span>
               </div>
+              <div class="summary-item">
+                <span>Estimated delivery:</span>
+                <span id="confirmEstimatedDelivery">—</span>
+              </div>
               <div class="summary-divider"></div>
               <div class="summary-total">
                 <span>Total:</span>
@@ -3233,6 +3281,10 @@
               <div class="success-message">Order Placed Successfully!</div>
               <div class="success-submessage">
                 Your order will be delivered soon
+                <div
+                  id="successDeliveryInfo"
+                  style="margin-top: 8px; color: #64748b; font-weight: 600"
+                ></div>
               </div>
               <div
                 style="
@@ -3415,6 +3467,35 @@
           <span class="nav-label">Account</span>
         </div>
       </nav>
+    </div>
+    <style>
+      @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      .modelviewer-loading { pointer-events: none; }
+      .modelviewer-error { color: #ef4444; font-weight: 700; }
+    </style>
+    </div>
+
+    <!-- 3D / AR Model Viewer Modal -->
+    <div id="modelViewerModal" class="product-modal-backdrop hidden" onclick="if(event.target.id==='modelViewerModal'){closeModelViewer()}">
+      <div class="product-modal" role="dialog" aria-modal="true" style="max-width:980px;">
+        <button class="pm-close" onclick="closeModelViewer()" aria-label="Close">×</button>
+        <div style="padding:18px; background:transparent; position:relative;">
+          <div id="modelViewerLoading" class="modelviewer-loading" style="display:none; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:30; background: rgba(255,255,255,0.9); padding:12px 18px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12);">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div class="spinner" style="width:18px; height:18px; border-radius:50%; border:3px solid #e6edf8; border-top-color:#2563eb; animation:spin 1s linear infinite;"></div>
+              <div style="font-weight:700; color:#1f2937;">Loading 3D preview…</div>
+            </div>
+          </div>
+
+          <model-viewer id="modelViewer" src="" alt="3D model" ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate exposure="1" style="width:100%; height:640px; background:#f3f4f6; border-radius:12px; overflow:hidden;">
+            <!-- Fallback content -->
+          </model-viewer>
+
+          <div id="modelViewerError" class="modelviewer-error" style="display:none; margin-top:12px; color:#ef4444; font-weight:700; text-align:center;"></div>
+
+          <div id="modelViewerCaption" style="margin-top:12px; font-weight:700; color:#1e293b;"></div>
+        </div>
+      </div>
     </div>
 
     <script>
@@ -3765,6 +3846,7 @@
               rating: 4.5,
               reviews: 156,
               description: "Organic chamomile for deep relaxation",
+              model3d: "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
             },
             {
               name: "Lavender Dream Tea",
@@ -3773,6 +3855,7 @@
               rating: 4.7,
               reviews: 203,
               description: "French lavender with honey notes",
+              model3d: "https://modelviewer.dev/shared-assets/models/RobotExpressive.glb",
             },
             {
               name: "Stress Relief Herbal Blend",
@@ -3817,6 +3900,7 @@
               rating: 4.5,
               reviews: 189,
               description: "Premium organic cotton",
+              model3d: "https://modelviewer.dev/shared-assets/models/RobotExpressive.glb",
             },
             {
               name: "Bamboo Comfort Pajamas",
@@ -4031,6 +4115,7 @@
               rating: 4.8,
               reviews: 389,
               description: "Instant luminosity",
+              model3d: "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
             },
             {
               name: "Brightening Day Cream",
@@ -4165,6 +4250,7 @@
               rating: 4.5,
               reviews: 167,
               description: "Strong Assam blend",
+              model3d: "https://modelviewer.dev/shared-assets/models/RobotExpressive.glb",
             },
             {
               name: "Athletic Performance Tea",
@@ -4430,6 +4516,10 @@
     })">
       🔗
     </div>
+
+    ${product.model3d ? `
+    <div class="model3d-btn" title="3D / AR Preview" onclick="event.stopPropagation(); openModelViewerById(${product.id})">🔍</div>
+    ` : ''}
     
     <!-- Your existing wishlist button -->
                         <div class="wishlist-btn ${
@@ -5856,7 +5946,125 @@
           document.getElementById("city").value = address.city || "";
           document.getElementById("state").value = address.state || "";
           document.getElementById("pincode").value = address.pincode || "";
+          // scheduledDate was optionally saved with the address
+          if (address.scheduledDate) {
+            const el = document.getElementById("scheduledDate");
+            if (el) el.value = address.scheduledDate;
+          }
         }
+
+        // Ensure date input cannot pick a past date
+        try {
+          const dateEl = document.getElementById("scheduledDate");
+          if (dateEl) {
+            dateEl.min = new Date().toISOString().split("T")[0];
+          }
+        } catch (e) {
+          // ignore if element missing
+        }
+
+        // Update the estimated delivery preview whenever address modal is loaded
+        try {
+          updateEstimatedDeliveryPreview();
+        } catch (e) {
+          // ignore if helper not present yet
+        }
+      }
+
+      // Called when user changes the scheduled date input
+      function onScheduledDateChange() {
+        const el = document.getElementById("scheduledDate");
+        if (!el) return;
+        const val = el.value; // yyyy-mm-dd or empty
+        // persist alongside savedAddress if present
+        try {
+          const saved = localStorage.getItem("savedAddress");
+          const address = saved ? JSON.parse(saved) : {};
+          if (val) address.scheduledDate = val;
+          else delete address.scheduledDate;
+          localStorage.setItem("savedAddress", JSON.stringify(address));
+        } catch (e) {
+          console.warn("Could not persist scheduled date", e);
+        }
+        updateEstimatedDeliveryPreview();
+      }
+
+      // Update the small preview underneath the date input and other screens
+      function updateEstimatedDeliveryPreview() {
+        const preview = document.getElementById("estimatedDeliveryPreview");
+        const scheduled = document.getElementById("scheduledDate")?.value;
+
+        // If user picked a scheduled date, show it as the scheduled delivery
+        if (scheduled) {
+          const d = new Date(scheduled + "T00:00:00");
+          if (isNaN(d.getTime())) {
+            if (preview) preview.textContent = "Invalid date";
+            return;
+          }
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          if (d < today) {
+            if (preview)
+              preview.textContent =
+                "Selected date is in the past — please choose a future date.";
+            return;
+          }
+          if (preview)
+            preview.textContent = `Scheduled for ${formatDateNice(d)}.`;
+
+          // update confirm/success UI if present
+          const confirmEl = document.getElementById("confirmEstimatedDelivery");
+          if (confirmEl) confirmEl.textContent = formatDateNice(d);
+          const successEl = document.getElementById("successDeliveryInfo");
+          if (successEl)
+            successEl.textContent = `Scheduled for ${formatDateNice(d)}`;
+          return;
+        }
+
+        // If not scheduled: show our estimate range (earliest - latest)
+        const range = computeEstimatedDeliveryRange();
+        if (preview)
+          preview.textContent = `Estimated delivery: ${range.earliest} — ${range.latest}`;
+        const confirmEl = document.getElementById("confirmEstimatedDelivery");
+        if (confirmEl)
+          confirmEl.textContent = `${range.earliest} — ${range.latest}`;
+        const successEl = document.getElementById("successDeliveryInfo");
+        if (successEl)
+          successEl.textContent = `Estimated: ${range.earliest} — ${range.latest}`;
+      }
+
+      // Compute a simple estimated delivery range based on today's date and cart size
+      function computeEstimatedDeliveryRange() {
+        const today = new Date();
+        const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+        // base days 2-5; high subtotal or many items might increase slightly
+        let minDays = 2;
+        let maxDays = 5;
+        if (subtotal > 3000) {
+          minDays = 3;
+          maxDays = 6;
+        }
+        if (cart.length >= 6) {
+          maxDays += 2;
+        }
+
+        const earliest = new Date(today);
+        earliest.setDate(earliest.getDate() + minDays);
+        const latest = new Date(today);
+        latest.setDate(latest.getDate() + maxDays);
+
+        return {
+          earliest: formatDateNice(earliest),
+          latest: formatDateNice(latest),
+        };
+      }
+
+      function formatDateNice(d) {
+        if (!d) return "—";
+        const date = d instanceof Date ? d : new Date(d);
+        if (isNaN(date.getTime())) return "—";
+        const opts = { day: "numeric", month: "short" };
+        return date.toLocaleDateString(undefined, opts);
       }
 
       function proceedToPayment() {
@@ -5872,7 +6080,24 @@
           return;
         }
 
+        // include scheduledDate if user selected one
+        const scheduled = document.getElementById("scheduledDate")?.value;
+        if (scheduled) {
+          // validate not in the past
+          const d = new Date(scheduled + "T00:00:00");
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          if (isNaN(d.getTime()) || d < today) {
+            showNotification(
+              "Please choose a valid future date for scheduled delivery",
+              "error"
+            );
+            return;
+          }
+        }
+
         const addressData = { fullName, mobile, address, city, state, pincode };
+        if (scheduled) addressData.scheduledDate = scheduled;
         localStorage.setItem("savedAddress", JSON.stringify(addressData));
 
         currentCheckoutStep = 2;
@@ -6093,11 +6318,15 @@
         const discountAmount = (subtotal * discountPercentage) / 100;
         const total = subtotal - discountAmount + deliveryCharge;
 
+        // include scheduledDate in the order if present in savedAddress
+        const savedAddr =
+          JSON.parse(localStorage.getItem("savedAddress")) || {};
         const order = {
           id: "ORD" + Date.now(),
           date: new Date().toLocaleDateString(),
           items: [...cart],
-          address: JSON.parse(localStorage.getItem("savedAddress")),
+          address: savedAddr,
+          scheduledDate: savedAddr.scheduledDate || null,
           paymentMethod: selectedPaymentMethod,
           emiTenure: selectedEMITenure,
           subtotal: subtotal,
@@ -6244,9 +6473,16 @@
                         <div class="order-header">
                             <div>
                                 <div class="order-id">Order #${order.id}</div>
-                                <div style="color: #64748b; font-size: 0.85em; margin-top: 3px;">${
-                                  order.date
-                                }</div>
+                                <div style="color: #64748b; font-size: 0.85em; margin-top: 3px;">
+                                  ${order.date}
+                                  ${
+                                    order.scheduledDate
+                                      ? ` · Scheduled: ${formatDateNice(
+                                          order.scheduledDate
+                                        )}`
+                                      : ""
+                                  }
+                                </div>
                             </div>
                             <div class="order-status ${statusClass}">${
             order.status
@@ -6709,6 +6945,9 @@
               >
                 Wishlist
               </button>
+              <button class="pm-btn ghost" onclick="openProduct3D()">
+                3D View
+              </button>
               <button
                 class="pm-btn buy"
                 onclick="addToCart(window.__pmId); proceedToCheckout();"
@@ -6846,6 +7085,102 @@
         const modal = document.getElementById("productModal");
         modal.classList.add("hidden");
         document.body.style.overflow = "";
+      }
+
+      // 3D / AR viewer helpers
+      function openModelViewerById(productId) {
+        const product = typeof products !== 'undefined' ? products.find(p => p.id === productId) : null;
+        if (!product || !product.model3d) {
+          showNotification && showNotification('3D model not available for this product', 'error');
+          return;
+        }
+        openModelViewer(product.model3d, product.name);
+      }
+
+      function openModelViewer(modelUrl, title) {
+        try {
+          const modal = document.getElementById('modelViewerModal');
+          const viewer = document.getElementById('modelViewer');
+          const caption = document.getElementById('modelViewerCaption');
+          const loading = document.getElementById('modelViewerLoading');
+          const errorEl = document.getElementById('modelViewerError');
+          if (!viewer || !modal) return;
+
+          // reset UI
+          if (errorEl) {
+            errorEl.style.display = 'none';
+            errorEl.textContent = '';
+          }
+          if (loading) loading.style.display = 'block';
+
+          // show modal immediately
+          modal.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+
+          // cleanup helpers
+          const cleanup = () => {
+            try {
+              viewer.removeEventListener('load', onLoad);
+              viewer.removeEventListener('error', onError);
+            } catch (e) {}
+            if (loading) loading.style.display = 'none';
+          };
+
+          const onLoad = () => {
+            if (loading) loading.style.display = 'none';
+            if (errorEl) errorEl.style.display = 'none';
+            cleanup();
+          };
+
+          const onError = (ev) => {
+            if (loading) loading.style.display = 'none';
+            if (errorEl) {
+              errorEl.style.display = 'block';
+              errorEl.textContent = 'Failed to load 3D model. Try again later.';
+            }
+            cleanup();
+          };
+
+          // ensure listeners are attached before setting src
+          viewer.removeAttribute('src');
+          viewer.addEventListener('load', onLoad);
+          viewer.addEventListener('error', onError);
+
+          // small delay to ensure model-viewer reloads reliably
+          setTimeout(() => viewer.setAttribute('src', modelUrl), 20);
+          caption.textContent = title || '';
+        } catch (e) {
+          console.warn('openModelViewer error', e);
+          showNotification && showNotification('Could not open 3D viewer', 'error');
+        }
+      }
+
+      function closeModelViewer() {
+        const modal = document.getElementById('modelViewerModal');
+        const viewer = document.getElementById('modelViewer');
+        const loading = document.getElementById('modelViewerLoading');
+        const errorEl = document.getElementById('modelViewerError');
+        if (modal) modal.classList.add('hidden');
+        if (viewer) {
+          try {
+            viewer.removeEventListener && viewer.removeEventListener('load', () => {});
+            viewer.removeEventListener && viewer.removeEventListener('error', () => {});
+          } catch (e) {}
+          viewer.removeAttribute('src');
+        }
+        if (loading) loading.style.display = 'none';
+        if (errorEl) errorEl.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+
+      // Called from the product modal "3D View" button
+      function openProduct3D() {
+        const pid = window.__pmId;
+        if (typeof pid === 'undefined' || pid === null) {
+          showNotification && showNotification('Product not available', 'error');
+          return;
+        }
+        openModelViewerById(pid);
       }
 
       // Open sustainability comparison for a single product by id
