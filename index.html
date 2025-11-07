@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,6 +29,8 @@
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
       }
+
+      
 
       :root {
         --primary: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
@@ -4588,7 +4591,7 @@
                         }" style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: 12px 0;"></div>
                     </div>
                 `;
-          card.addEventListener("click", () => openProductModal(product.id));
+          card.addEventListener("click", () => openProductPage(product.id));
 
           grid.appendChild(card);
         });
@@ -5757,7 +5760,7 @@
         .map(
           (p) => `
         <div style="background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; border: 1px solid #e2e8f0; cursor: pointer;"
-             onclick="openProductModal(${
+             onclick="openProductPage(${
                p.id
              })" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 24px rgba(37,99,235,0.15)'"
              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">
@@ -6896,7 +6899,7 @@
               <div class="product-price-wrapper"><span class="current-price">₹${product.price}</span></div>
             </div>
           `;
-          card.onclick = () => openProductModal(product.id);
+          card.onclick = () => openProductPage(product.id);
           grid.appendChild(card);
         });
         container.style.display = "block";
@@ -6936,6 +6939,83 @@
         setTimeout(renderRecentlyViewed, 300)
       );
     </script>
+
+    <!-- Full Product Page (opened when clicking a product) -->
+    <div id="productPage" class="page-container" aria-hidden="true" style="display:none;">
+      <div class="page-header">
+        <button class="back-btn" onclick="closeProductPage();" aria-label="Back">←</button>
+        <h2 class="page-title" id="ppPageTitle">Product</h2>
+      </div>
+      <div style="padding:20px; display:grid; grid-template-columns: 1fr; gap:16px; max-width:1100px; margin: 0 auto;">
+        <div style="display:grid; grid-template-columns: 1fr; gap:12px;">
+          <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start;">
+            <div style="flex: 0 0 360px;">
+              <div style="position:relative; border-radius:12px; overflow:hidden; background:#f8fafc;">
+                <img id="ppImage" src="" alt="" style="width:100%; height:360px; object-fit:cover; display:block;">
+                <div id="ppDiscount" class="pm-discount hidden" style="position:absolute; top:12px; left:12px;"></div>
+              </div>
+            </div>
+            <div style="flex:1; min-width:200px;">
+              <div id="ppCategory" style="color:#64748b; font-size:0.9em; margin-bottom:6px;"></div>
+              <h1 id="ppName" style="margin:0 0 8px 0;"></h1>
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                <div style="font-weight:800; color:#2563eb; font-size:1.25em;" id="ppPrice">₹0</div>
+                <div style="text-decoration:line-through; color:#94a3b8;" id="ppOriginal">₹0</div>
+              </div>
+              <p id="ppDesc" style="color:#334155; line-height:1.5;">Description</p>
+
+              <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+                <button class="pm-btn primary" onclick="addToCart(window.__ppId)">Add to Cart</button>
+                <button class="pm-btn ghost" onclick="toggleWishlist(window.__ppId)">Wishlist</button>
+                <button class="pm-btn ghost" onclick="(function(){ openModelViewerById(window.__ppId); })()">3D View</button>
+                <button class="pm-btn buy" onclick="(function(){ addToCart(window.__ppId); proceedToCheckout(); })()">Buy Now</button>
+              </div>
+
+              <div style="margin-top:18px; border-top:1px dashed rgba(16,24,40,0.06); padding-top:16px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <h4 style="margin:0; font-size:1rem;">💬 Reviews</h4>
+                  <div style="font-size:0.85em; color:#64748b;">Share your thoughts</div>
+                </div>
+
+                <div id="ppReviewsList" style="max-height:360px; overflow:auto; padding:8px; background:rgba(15,23,42,0.02); border-radius:10px;">
+                  <!-- reviews rendered here -->
+                </div>
+
+                <div style="display:flex; gap:8px; margin-top:10px;">
+                  <input id="ppReviewName" placeholder="Your name" style="flex:0 0 140px; padding:8px; border-radius:8px; border:1px solid #e6eefc;" />
+                  <input id="ppReviewText" placeholder="Write a review" style="flex:1; padding:8px; border-radius:8px; border:1px solid #e6eefc;" />
+                  <button class="pm-btn ghost" onclick="addReviewFromPage()">Post</button>
+                </div>
+
+                <div style="height:1px; background:transparent; margin:12px 0;"></div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <label for="ppScheduleDate" style="color:#64748b; font-size:0.95em;">Schedule order:</label>
+                    <input id="ppScheduleDate" type="date" style="padding:8px; border-radius:8px; border:1px solid #e6eefc;" />
+                  </div>
+                  <div style="display:flex; gap:8px;">
+                    <button class="pm-btn primary" onclick="scheduleOrderFromPage()">Order on date</button>
+                    <button class="pm-btn ghost" onclick="document.getElementById('ppScheduleDate').value=''; showNotification('Schedule cleared','info')">Clear</button>
+                  </div>
+                </div>
+              
+                <!-- Greener alternatives -->
+                <div style="margin-top:18px; border-top:1px dashed rgba(16,24,40,0.06); padding-top:16px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h4 style="margin:0; font-size:1rem;">🌿 Greener alternatives</h4>
+                    <div style="font-size:0.85em; color:#64748b;">Eco-friendly options</div>
+                  </div>
+                  <div id="ppAlternativesList" class="alternatives-grid" style="margin-top:10px;">
+                    <!-- alternatives rendered here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Product Detail Modal -->
     <div
@@ -7187,19 +7267,277 @@
             return;
           }
 
-          // Render list
+          // Render list with delete controls
           reviewsContainer.innerHTML = reviews
-            .map(r => `
-              <div style="padding:8px; border-radius:8px; background:rgba(255,255,255,0.95); margin-bottom:8px; border:1px solid rgba(14,165,233,0.04);">
-                <div style="font-weight:700; font-size:0.95em; color:#0f172a;">${escapeHtml(r.name || 'Anonymous')}</div>
-                <div style="color:#334155; font-size:0.9em; margin-top:6px;">${escapeHtml(r.text)}</div>
-                <div style="color:#94a3b8; font-size:0.8em; margin-top:6px;">${new Date(r.date).toLocaleDateString()}</div>
+            .map((r, i) => `
+              <div style="padding:8px; border-radius:8px; background:rgba(255,255,255,0.95); margin-bottom:8px; border:1px solid rgba(14,165,233,0.04); display:flex; gap:8px; align-items:flex-start;">
+                <div style="flex:1;">
+                  <div style="font-weight:700; font-size:0.95em; color:#0f172a;">${escapeHtml(r.name || 'Anonymous')}</div>
+                  <div style="color:#334155; font-size:0.9em; margin-top:6px;">${escapeHtml(r.text)}</div>
+                  <div style="color:#94a3b8; font-size:0.8em; margin-top:6px;">${new Date(r.date).toLocaleDateString()}</div>
+                </div>
+                <div style="flex:0 0 auto; display:flex; flex-direction:column; gap:6px; align-items:flex-end;">
+                  <button onclick="(function(e){ e.stopPropagation(); deleteReview(${product.id}, ${i}); })(event)" style="background:transparent; border:none; color:#ef4444; cursor:pointer; font-weight:700;">Delete</button>
+                </div>
               </div>
             `)
             .join('');
         } catch (e) {
           console.warn('renderReviewsInModal error', e);
         }
+      }
+
+      // Delete a review for a product by index
+      function deleteReview(productId, index) {
+        try {
+          const stored = localStorage.getItem('productReviews');
+          const reviewsMap = stored ? JSON.parse(stored) : {};
+          const arr = reviewsMap[productId] || [];
+          if (!arr || index < 0 || index >= arr.length) {
+            showNotification('Review not found', 'error');
+            return;
+          }
+          // confirm
+          if (!confirm('Delete this review?')) return;
+          arr.splice(index, 1);
+          reviewsMap[productId] = arr;
+          localStorage.setItem('productReviews', JSON.stringify(reviewsMap));
+
+          // re-render modal and product page (if open)
+          const prod = products.find(p => p.id === productId) || { id: productId };
+          renderReviewsInModal(prod);
+          if (document.getElementById('productPage') && document.getElementById('productPage').classList.contains('active')) {
+            renderReviewsInPage(productId);
+          }
+
+          showNotification('Review deleted', 'success');
+        } catch (e) {
+          console.warn('deleteReview error', e);
+          showNotification('Could not delete review', 'error');
+        }
+      }
+
+      // Render reviews into the full product page
+      function renderReviewsInPage(productId) {
+        try {
+          const reviewsContainer = document.getElementById('ppReviewsList');
+          if (!reviewsContainer) return;
+          const stored = localStorage.getItem('productReviews');
+          const reviewsMap = stored ? JSON.parse(stored) : {};
+          const reviews = reviewsMap[productId] || [];
+          if (!reviews || reviews.length === 0) {
+            reviewsContainer.innerHTML = `<div style="color:#64748b; padding:8px;">No reviews yet. Be the first to write one!</div>`;
+            return;
+          }
+          reviewsContainer.innerHTML = reviews
+            .map((r, i) => `
+              <div style="padding:12px; border-radius:10px; background:rgba(255,255,255,0.98); margin-bottom:10px; border:1px solid rgba(14,165,233,0.04); display:flex; gap:12px; align-items:flex-start;">
+                <div style="flex:1;">
+                  <div style="font-weight:800; color:#0f172a;">${escapeHtml(r.name || 'Anonymous')}</div>
+                  <div style="color:#334155; margin-top:8px;">${escapeHtml(r.text)}</div>
+                  <div style="color:#94a3b8; font-size:0.85em; margin-top:8px;">${new Date(r.date).toLocaleDateString()}</div>
+                </div>
+                <div style="flex:0 0 auto;">
+                  <button onclick="deleteReview(${productId}, ${i})" style="background:transparent; border:none; color:#ef4444; cursor:pointer; font-weight:700;">Delete</button>
+                </div>
+              </div>
+            `)
+            .join('');
+        } catch (e) {
+          console.warn('renderReviewsInPage error', e);
+        }
+      }
+
+      function addReviewFromPage() {
+        const nameEl = document.getElementById('ppReviewName');
+        const textEl = document.getElementById('ppReviewText');
+        const name = nameEl ? nameEl.value.trim() : '';
+        const text = textEl ? textEl.value.trim() : '';
+        if (!text) return showNotification('Please write a short review before posting', 'error');
+        const pid = window.__ppId;
+        if (typeof pid === 'undefined' || pid === null) return showNotification('Product not available', 'error');
+        const stored = localStorage.getItem('productReviews');
+        const reviewsMap = stored ? JSON.parse(stored) : {};
+        reviewsMap[pid] = reviewsMap[pid] || [];
+        reviewsMap[pid].unshift({ name: name || 'Anonymous', text, date: new Date().toISOString() });
+        localStorage.setItem('productReviews', JSON.stringify(reviewsMap));
+        renderReviewsInPage(pid);
+        if (nameEl) nameEl.value = '';
+        if (textEl) textEl.value = '';
+        showNotification('Thanks for your review!', 'success');
+      }
+
+      function scheduleOrderFromPage() {
+        const dateEl = document.getElementById('ppScheduleDate');
+        if (!dateEl) return showNotification('Schedule control not found', 'error');
+        const dateVal = dateEl.value;
+        if (!dateVal) return showNotification('Please select a future date', 'error');
+
+        const scheduledDate = new Date(dateVal + 'T00:00:00');
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        if (isNaN(scheduledDate.getTime()) || scheduledDate < today) {
+          return showNotification('Please choose a valid future date', 'error');
+        }
+
+        const pid = window.__ppId;
+        if (typeof pid === 'undefined' || pid === null) {
+          showNotification('Product not available', 'error');
+          return;
+        }
+
+        const product = products.find(p => p.id === pid);
+        if (!product) return showNotification('Product not found', 'error');
+
+        const stored = localStorage.getItem('scheduledOrders');
+        const scheduled = stored ? JSON.parse(stored) : [];
+
+        const entry = {
+          id: 'SCH' + Date.now(),
+          productId: pid,
+          name: product.name,
+          imageUrl: product.imageUrl || product.image || '',
+          price: product.price,
+          quantity: 1,
+          scheduledDate: dateVal,
+          createdAt: new Date().toISOString(),
+          status: 'Scheduled'
+        };
+
+        scheduled.unshift(entry);
+        localStorage.setItem('scheduledOrders', JSON.stringify(scheduled));
+
+        showNotification(`Order scheduled for ${formatDateNice(scheduledDate)}`, 'success');
+      }
+
+      // --- Greener alternatives helpers for full product page ---
+      function getSustainableAltById(id) {
+        if (typeof sustainableAlternatives === 'undefined') return null;
+        for (const cat in sustainableAlternatives) {
+          const found = sustainableAlternatives[cat].find((a) => a.id == id);
+          if (found) return found;
+        }
+        return null;
+      }
+
+      function renderAlternativesInPage(productId) {
+        const container = document.getElementById('ppAlternativesList');
+        if (!container) return;
+        const product = typeof products !== 'undefined' ? products.find((p) => p.id === productId) : null;
+        if (!product) { container.innerHTML = ''; return; }
+        const alts = typeof findGreenAlternatives === 'function' ? findGreenAlternatives(product) : [];
+        if (!alts || alts.length === 0) {
+          container.innerHTML = '<div style="color:#64748b">No greener alternatives found.</div>';
+          return;
+        }
+        container.innerHTML = alts
+          .map((alt) => `
+            <div class="alternative-card" style="background:white; border:1px solid #eef2ff; border-radius:12px; padding:12px; display:flex; gap:12px; align-items:center;">
+              <img src="${alt.image || ''}" onerror="this.src='https://via.placeholder.com/80x80?text=Alt'" style="width:80px;height:80px;object-fit:cover;border-radius:8px;"/>
+              <div style="flex:1">
+                <div style="font-weight:800;">${escapeHtml(alt.name || '')}</div>
+                <div style="color:#10b981; font-weight:800; margin-top:6px;">₹${alt.price}</div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <button class="pm-btn primary" onclick="addSustainableAlternativeToCart(${alt.id})">Add</button>
+                <button class="pm-btn ghost" onclick="viewSustainableAlternative(${alt.id})">View</button>
+              </div>
+            </div>
+          `)
+          .join('');
+      }
+
+      function addSustainableAlternativeToCart(altId) {
+        const alt = getSustainableAltById(altId);
+        if (!alt) return showNotification('Alternative not found', 'error');
+        const existing = cart.find((i) => i.id === altId);
+        if (existing) {
+          existing.quantity++;
+        } else {
+          cart.push({ id: altId, name: alt.name, price: alt.price, image: alt.image || '', quantity: 1 });
+        }
+        saveToLocalStorage();
+        updateBadges();
+        showNotification(`${alt.name} added to cart`, 'success');
+        try { updateAllQuantitySelectors(); } catch (e) {}
+      }
+
+      function viewSustainableAlternative(altId) {
+        const alt = getSustainableAltById(altId);
+        if (!alt) return showNotification('Alternative not found', 'error');
+        // Populate product modal with alternative's info (read-only)
+        try {
+          window.__pmId = altId;
+          const img = document.getElementById('pmImage'); if (img) img.src = alt.image || '';
+          const nameEl = document.getElementById('pmName'); if (nameEl) nameEl.textContent = alt.name || '';
+          const priceEl = document.getElementById('pmPrice'); if (priceEl) priceEl.textContent = '₹' + (alt.price || '0');
+          const origEl = document.getElementById('pmOriginal'); if (origEl) origEl.textContent = '';
+          const catEl = document.getElementById('pmCategory'); if (catEl) catEl.textContent = alt.category || '';
+          const descEl = document.getElementById('pmDesc'); if (descEl) descEl.textContent = (alt.sustainableFeatures && alt.sustainableFeatures.join ? alt.sustainableFeatures.join(', ') : alt.name || '');
+          const discountEl = document.getElementById('pmDiscount'); if (discountEl) discountEl.classList.add('hidden');
+          // Clear and render any stored reviews (likely none)
+          try { renderReviewsInModal({ id: altId }); } catch (e) {}
+          document.getElementById('productModal').classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+        } catch (e) {
+          console.warn('viewSustainableAlternative error', e);
+        }
+      }
+
+      // Open full product page
+      function openProductPage(productId) {
+        const product = typeof products !== 'undefined' ? products.find((p) => p.id === productId) : null;
+        if (!product) return;
+        window.__ppId = productId;
+        // populate fields
+        const page = document.getElementById('productPage');
+        if (!page) return;
+        page.querySelector('#ppImage').src = product.imageUrl || product.image || '';
+        page.querySelector('#ppImage').alt = product.name || '';
+        page.querySelector('#ppCategory').textContent = product.category || '';
+  page.querySelector('#ppName').textContent = product.name || '';
+  const pageTitleEl = page.querySelector('#ppPageTitle');
+  if (pageTitleEl) pageTitleEl.textContent = product.name || '';
+        page.querySelector('#ppDesc').textContent = product.description || '';
+        page.querySelector('#ppPrice').textContent = '₹' + (product.price || '0');
+        page.querySelector('#ppOriginal').textContent = '₹' + (product.originalPrice || '0');
+
+        const discountPct = Math.round(((product.originalPrice - product.price) / (product.originalPrice || 1)) * 100);
+        const ppDiscount = page.querySelector('#ppDiscount');
+        if (ppDiscount) {
+          if (discountPct > 0) { ppDiscount.textContent = discountPct + '% OFF'; ppDiscount.classList.remove('hidden'); }
+          else ppDiscount.classList.add('hidden');
+        }
+
+        // schedule date min
+        const dateEl = document.getElementById('ppScheduleDate');
+        if (dateEl) {
+          dateEl.min = new Date().toISOString().split('T')[0];
+          dateEl.value = '';
+        }
+
+  // Show page: ensure the product page is visible (override any inline display:none)
+  document.querySelectorAll('.page-container').forEach(p => p.classList.remove('active'));
+  document.getElementById('homePage').style.display = 'none';
+  page.style.display = 'block';
+  page.setAttribute('aria-hidden', 'false');
+  page.classList.add('active');
+  renderReviewsInPage(productId);
+  // render greener alternatives section
+  try { renderAlternativesInPage(productId); } catch (e) { console.warn(e); }
+        // record recently viewed
+        try { recordRecentlyViewed(productId); } catch (e) { console.warn(e); }
+      }
+
+      function closeProductPage() {
+        const page = document.getElementById('productPage');
+        if (!page) return;
+        // Hide the full product page and restore home
+        page.classList.remove('active');
+        page.style.display = 'none';
+        page.setAttribute('aria-hidden', 'true');
+        document.getElementById('homePage').style.display = 'block';
+        window.__ppId = null;
       }
 
       function addReviewFromModal() {
