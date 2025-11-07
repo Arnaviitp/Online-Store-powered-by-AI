@@ -570,6 +570,50 @@
         );
       }
 
+      /* Top-right action group inside product image to avoid overlapping buttons */
+      .image-top-actions {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        z-index: 12;
+      }
+
+      .image-top-actions .icon-action {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.95);
+        border: 1px solid rgba(37,99,235,0.12);
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+        font-size: 1em;
+      }
+
+      .image-top-actions .icon-action:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(37,99,235,0.15); }
+
+      /* Ensure existing button classes behave when placed inside .image-top-actions */
+      .image-top-actions .wishlist-btn,
+      .image-top-actions .model3d-btn,
+      .image-top-actions .details-btn {
+        position: static !important;
+        right: auto !important;
+        top: auto !important;
+        width: 38px !important;
+        height: 38px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        font-size: 1.05em !important;
+      }
+
       .product-image {
         position: absolute;
         top: 0;
@@ -4509,26 +4553,19 @@
                         <img src="${product.imageUrl}" alt="${
             product.name
           }" class="product-image" loading="lazy">
-    
-    <!-- ADD THIS SHARE BUTTON -->
-    <div class="share-btn" onclick="event.stopPropagation(); openShareModal(${
-      product.id
-    })">
-      🔗
-    </div>
 
-    ${product.model3d ? `
-    <div class="model3d-btn" title="3D / AR Preview" onclick="event.stopPropagation(); openModelViewerById(${product.id})">🔍</div>
-    ` : ''}
-    
-    <!-- Your existing wishlist button -->
-                        <div class="wishlist-btn ${
-                          isWishlisted ? "active" : ""
-                        }" onclick="event.stopPropagation(); toggleWishlist(${
-            product.id
-          })">
-                            ${isWishlisted ? "❤️" : "🤍"}
+                        <!-- left: share button -->
+                        <div class="share-btn" onclick="event.stopPropagation(); openShareModal(${product.id})">🔗</div>
+
+                        <!-- grouped top-right actions to avoid overlap -->
+                        <div class="image-top-actions">
+                          ${product.model3d ? `
+                            <button class="model3d-btn icon-action" title="3D / AR Preview" onclick="event.stopPropagation(); openModelViewerById(${product.id})">🔍</button>
+                          ` : ''}
+                          <button class="details-btn icon-action" title="View details" onclick="event.stopPropagation(); openProductModal(${product.id})">🔎</button>
+                          <button class="wishlist-btn icon-action ${isWishlisted ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlist(${product.id})">${isWishlisted ? '❤️' : '🤍'}</button>
                         </div>
+
                         <div class="discount-tag">${discount}% OFF</div>
                     </div>
                     <div class="product-info">
@@ -5724,22 +5761,22 @@
                p.id
              })" onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 12px 24px rgba(37,99,235,0.15)'"
              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">
-          <div style="position: relative;">
+            <div style="position: relative;">
             <img src="${
               p.imageUrl
             }" style="width: 100%; height: 160px; object-fit: cover; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
-                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%23667eea\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'20\' fill=\'white\'%3E${encodeURIComponent(
+                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'#667eea\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'20\' fill=\'white\'%3E${encodeURIComponent(
                    p.name.substring(0, 20)
                  )}%3C/text%3E%3C/svg%3E'">
             <div style="position: absolute; top: 10px; left: 10px; background: #10b981; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.7em; font-weight: 800; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);">
               ${discount(p.originalPrice, p.price)}% OFF
             </div>
-            <button onclick="toggleWishlist(${
-              p.id
-            }); event.stopPropagation();" style="position: absolute; top: 10px; right: 10px; background: white; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: all 0.2s;"
-                    onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">
-              ❤️
-            </button>
+
+            <div class="image-top-actions" style="top:10px; right:10px;">
+              ${p.model3d ? `<button class="model3d-btn icon-action" onclick="event.stopPropagation(); openModelViewerById(${p.id})">🔍</button>` : ''}
+              <button class="details-btn icon-action" onclick="event.stopPropagation(); openProductModal(${p.id})" title="View details">🔎</button>
+              <button class="icon-action" onclick="toggleWishlist(${p.id}); event.stopPropagation();">❤️</button>
+            </div>
           </div>
           <div style="padding: 12px;">
             <div style="display: inline-block; background: rgba(37, 99, 235, 0.1); color: #2563eb; padding: 3px 8px; border-radius: 10px; font-size: 0.65em; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">
@@ -6812,8 +6849,8 @@
         // Remove duplicates and add to front
         recentlyViewed = recentlyViewed.filter((id) => id !== productId);
         recentlyViewed.unshift(productId);
-        if (recentlyViewed.length > 12)
-          recentlyViewed = recentlyViewed.slice(0, 12);
+        // Keep only the 8 most recent items
+        if (recentlyViewed.length > 8) recentlyViewed = recentlyViewed.slice(0, 8);
         try {
           localStorage.setItem(
             "recentlyViewed",
@@ -6841,7 +6878,9 @@
         }
 
         grid.innerHTML = "";
-        recentlyViewed.forEach((id) => {
+        // Only render up to the 8 most recent products (safety in case storage changed elsewhere)
+        const recentToShow = (recentlyViewed || []).slice(0, 8);
+        recentToShow.forEach((id) => {
           const product = products.find((p) => p.id === id);
           if (!product) return;
           const card = document.createElement("div");
@@ -6954,6 +6993,36 @@
               >
                 Buy Now
               </button>
+            </div>
+            <!-- Reviews and Schedule Order -->
+            <div id="pmExtra" style="margin-top:18px; border-top:1px dashed rgba(16,24,40,0.06); padding-top:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h4 style="margin:0; font-size:1rem;">💬 Reviews</h4>
+                <div style="font-size:0.85em; color:#64748b;">Share your thoughts</div>
+              </div>
+
+              <div id="pmReviewsList" style="max-height:180px; overflow:auto; padding:8px; background:rgba(15,23,42,0.02); border-radius:10px;">
+                <!-- populated dynamically -->
+              </div>
+
+              <div style="display:flex; gap:8px; margin-top:10px;">
+                <input id="pmReviewName" placeholder="Your name" style="flex:0 0 140px; padding:8px; border-radius:8px; border:1px solid #e6eefc;" />
+                <input id="pmReviewText" placeholder="Write a review" style="flex:1; padding:8px; border-radius:8px; border:1px solid #e6eefc;" />
+                <button class="pm-btn ghost" onclick="addReviewFromModal()">Post</button>
+              </div>
+
+              <div style="height:1px; background:transparent; margin:12px 0;"></div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <label for="pmScheduleDate" style="color:#64748b; font-size:0.95em;">Schedule order:</label>
+                  <input id="pmScheduleDate" type="date" style="padding:8px; border-radius:8px; border:1px solid #e6eefc;" />
+                </div>
+                <div style="display:flex; gap:8px;">
+                  <button class="pm-btn primary" onclick="scheduleOrderFromModal()">Order on date</button>
+                  <button class="pm-btn ghost" onclick="document.getElementById('pmScheduleDate').value=''; showNotification('Schedule cleared','info')">Clear</button>
+                </div>
+              </div>
             </div>
             <!-- Sustainable alternatives section (populated via JS) -->
             <div id="pmAlternatives" style="margin-top: 18px">
@@ -7079,12 +7148,147 @@
         } catch (e) {
           console.warn("Error populating sustainable alternatives:", e);
         }
+
+        // Reviews: render existing reviews and wire schedule date min
+        try {
+          const dateEl = document.getElementById('pmScheduleDate');
+          if (dateEl) {
+            const today = new Date().toISOString().split('T')[0];
+            dateEl.min = today;
+            dateEl.value = '';
+          }
+
+          renderReviewsInModal(product);
+        } catch (e) {
+          console.warn('Error populating reviews or schedule UI', e);
+        }
       }
 
       function closeProductModal() {
         const modal = document.getElementById("productModal");
         modal.classList.add("hidden");
         document.body.style.overflow = "";
+      }
+
+      // --- Reviews & Scheduled Orders helpers for product modal ---
+      function renderReviewsInModal(product) {
+        try {
+          const reviewsContainer = document.getElementById('pmReviewsList');
+          if (!reviewsContainer) return;
+
+          // Load persisted reviews map
+          const stored = localStorage.getItem('productReviews');
+          const reviewsMap = stored ? JSON.parse(stored) : {};
+
+          const reviews = reviewsMap[product.id] || product.reviewsList || [];
+
+          if (!reviews || reviews.length === 0) {
+            reviewsContainer.innerHTML = `<div style="color:#64748b; padding:8px;">No reviews yet. Be the first to write one!</div>`;
+            return;
+          }
+
+          // Render list
+          reviewsContainer.innerHTML = reviews
+            .map(r => `
+              <div style="padding:8px; border-radius:8px; background:rgba(255,255,255,0.95); margin-bottom:8px; border:1px solid rgba(14,165,233,0.04);">
+                <div style="font-weight:700; font-size:0.95em; color:#0f172a;">${escapeHtml(r.name || 'Anonymous')}</div>
+                <div style="color:#334155; font-size:0.9em; margin-top:6px;">${escapeHtml(r.text)}</div>
+                <div style="color:#94a3b8; font-size:0.8em; margin-top:6px;">${new Date(r.date).toLocaleDateString()}</div>
+              </div>
+            `)
+            .join('');
+        } catch (e) {
+          console.warn('renderReviewsInModal error', e);
+        }
+      }
+
+      function addReviewFromModal() {
+        const nameEl = document.getElementById('pmReviewName');
+        const textEl = document.getElementById('pmReviewText');
+        const name = nameEl ? nameEl.value.trim() : '';
+        const text = textEl ? textEl.value.trim() : '';
+
+        if (!text) {
+          showNotification('Please write a short review before posting', 'error');
+          return;
+        }
+
+        const pid = window.__pmId;
+        if (typeof pid === 'undefined' || pid === null) {
+          showNotification('Product not available', 'error');
+          return;
+        }
+
+        const stored = localStorage.getItem('productReviews');
+        const reviewsMap = stored ? JSON.parse(stored) : {};
+        reviewsMap[pid] = reviewsMap[pid] || [];
+        reviewsMap[pid].unshift({ name: name || 'Anonymous', text, date: new Date().toISOString() });
+        localStorage.setItem('productReviews', JSON.stringify(reviewsMap));
+
+        // re-render
+        const product = products.find(p => p.id === pid) || { id: pid };
+        renderReviewsInModal(product);
+
+        if (nameEl) nameEl.value = '';
+        if (textEl) textEl.value = '';
+
+        showNotification('Thanks for your review!', 'success');
+      }
+
+      function scheduleOrderFromModal() {
+        const dateEl = document.getElementById('pmScheduleDate');
+        if (!dateEl) return showNotification('Schedule control not found', 'error');
+        const dateVal = dateEl.value;
+        if (!dateVal) return showNotification('Please select a future date', 'error');
+
+        const scheduledDate = new Date(dateVal + 'T00:00:00');
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        if (isNaN(scheduledDate.getTime()) || scheduledDate < today) {
+          return showNotification('Please choose a valid future date', 'error');
+        }
+
+        const pid = window.__pmId;
+        if (typeof pid === 'undefined' || pid === null) {
+          showNotification('Product not available', 'error');
+          return;
+        }
+
+        const product = products.find(p => p.id === pid);
+        if (!product) return showNotification('Product not found', 'error');
+
+        const stored = localStorage.getItem('scheduledOrders');
+        const scheduled = stored ? JSON.parse(stored) : [];
+
+        // Save a scheduled order entry (basic). Later the app can convert to real orders at the date.
+        const entry = {
+          id: 'SCH' + Date.now(),
+          productId: pid,
+          name: product.name,
+          imageUrl: product.imageUrl || product.image || '',
+          price: product.price,
+          quantity: 1,
+          scheduledDate: dateVal,
+          createdAt: new Date().toISOString(),
+          status: 'Scheduled'
+        };
+
+        scheduled.unshift(entry);
+        localStorage.setItem('scheduledOrders', JSON.stringify(scheduled));
+
+        showNotification(`Order scheduled for ${formatDateNice(scheduledDate)}`, 'success');
+        // Optionally show the scheduled orders in account page in future
+      }
+
+      // small helper to escape HTML when rendering user content
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/\"/g, '&quot;')
+          .replace(/'/g, '&#039;');
       }
 
       // 3D / AR viewer helpers
