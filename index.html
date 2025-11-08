@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -4590,7 +4591,7 @@
                         }" style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: 12px 0;"></div>
                     </div>
                 `;
-          card.addEventListener("click", () => openProductPage(product.id));
+          card.addEventListener("click", (e) => { e.stopPropagation(); openProductModal(product.id); });
 
           grid.appendChild(card);
         });
@@ -7065,6 +7066,9 @@
               </button>
               <button class="pm-btn ghost" onclick="openProduct3D()">
                 3D View
+              </button>
+              <button class="pm-btn ghost" onclick="(function(){ event.stopPropagation(); closeProductModal(); openProductPage(window.__pmId); })()">
+                View details
               </button>
               <button
                 class="pm-btn buy"
