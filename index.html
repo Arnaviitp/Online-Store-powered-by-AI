@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -4535,7 +4534,7 @@
           return;
         }
 
-        grid.innerHTML = "";
+  grid.innerHTML = "";
 
         productList.forEach((product) => {
           const discount = Math.round(
@@ -6889,17 +6888,22 @@
           const card = document.createElement("div");
           card.className = "product-card";
           card.style.cursor = "pointer";
+          // Clicking the card opens the product modal. The small "View" button opens the full product page.
           card.innerHTML = `
             <div class="product-image-wrapper">
               <img src="${product.imageUrl}" alt="${product.name}" class="product-image" loading="lazy">
             </div>
             <div class="product-info">
-              <div class="product-category">${product.category}</div>
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <div class="product-category">${product.category}</div>
+                <button class="pm-btn ghost" style="font-size:0.8rem; padding:6px 10px;" onclick="(function(e){ e.stopPropagation(); closeProductModal(); openProductPage(${product.id}); })(event)">View</button>
+              </div>
               <div class="product-name">${product.name}</div>
               <div class="product-price-wrapper"><span class="current-price">₹${product.price}</span></div>
             </div>
           `;
-          card.onclick = () => openProductPage(product.id);
+          // Open the product modal when the card itself is clicked
+          card.onclick = () => openProductModal(product.id);
           grid.appendChild(card);
         });
         container.style.display = "block";
