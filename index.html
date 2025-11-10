@@ -7591,18 +7591,45 @@
 
       // Open full product page
       function openProductPage(productId) {
-        const product = typeof products !== 'undefined' ? products.find((p) => p.id === productId) : null;
-        if (!product) return;
+        // Try to find the product in the main product list first.
+        let product = typeof products !== 'undefined' ? products.find((p) => p.id === productId) : null;
+        let isAlt = false;
+
+        // If not found, try sustainable alternatives (they live in a different structure)
+        if (!product && typeof getSustainableAltById === 'function') {
+          const alt = getSustainableAltById(productId);
+          if (alt) {
+            isAlt = true;
+            // Map the alternative into a product-shaped object used by the full product page
+            product = {
+              id: alt.id,
+              name: alt.name || '',
+              imageUrl: alt.image || alt.imageUrl || '',
+              image: alt.image || alt.imageUrl || '',
+              category: alt.category || '',
+              price: typeof alt.price !== 'undefined' ? alt.price : 0,
+              originalPrice: typeof alt.originalPrice !== 'undefined' ? alt.originalPrice : (typeof alt.price !== 'undefined' ? alt.price : 0),
+              description: alt.description || (alt.sustainableFeatures ? alt.sustainableFeatures.join(', ') : ''),
+              rating: alt.rating || 0,
+              reviews: alt.reviews || 0,
+            };
+          }
+        }
+
+        if (!product) return; // still not found
+
         window.__ppId = productId;
+        window.__ppIsAlt = !!isAlt;
+
         // populate fields
         const page = document.getElementById('productPage');
         if (!page) return;
         page.querySelector('#ppImage').src = product.imageUrl || product.image || '';
         page.querySelector('#ppImage').alt = product.name || '';
         page.querySelector('#ppCategory').textContent = product.category || '';
-  page.querySelector('#ppName').textContent = product.name || '';
-  const pageTitleEl = page.querySelector('#ppPageTitle');
-  if (pageTitleEl) pageTitleEl.textContent = product.name || '';
+        page.querySelector('#ppName').textContent = product.name || '';
+        const pageTitleEl = page.querySelector('#ppPageTitle');
+        if (pageTitleEl) pageTitleEl.textContent = product.name || '';
         page.querySelector('#ppDesc').textContent = product.description || '';
         page.querySelector('#ppPrice').textContent = '₹' + (product.price || '0');
         page.querySelector('#ppOriginal').textContent = '₹' + (product.originalPrice || '0');
@@ -7621,15 +7648,15 @@
           dateEl.value = '';
         }
 
-  // Show page: ensure the product page is visible (override any inline display:none)
-  document.querySelectorAll('.page-container').forEach(p => p.classList.remove('active'));
-  document.getElementById('homePage').style.display = 'none';
-  page.style.display = 'block';
-  page.setAttribute('aria-hidden', 'false');
-  page.classList.add('active');
-  renderReviewsInPage(productId);
-  // render greener alternatives section
-  try { renderAlternativesInPage(productId); } catch (e) { console.warn(e); }
+        // Show page: ensure the product page is visible (override any inline display:none)
+        document.querySelectorAll('.page-container').forEach(p => p.classList.remove('active'));
+        document.getElementById('homePage').style.display = 'none';
+        page.style.display = 'block';
+        page.setAttribute('aria-hidden', 'false');
+        page.classList.add('active');
+        renderReviewsInPage(productId);
+        // render greener alternatives section (if available)
+        try { renderAlternativesInPage(productId); } catch (e) { console.warn(e); }
         // record recently viewed
         try { recordRecentlyViewed(productId); } catch (e) { console.warn(e); }
       }
