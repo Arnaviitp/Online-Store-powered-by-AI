@@ -4397,7 +4397,31 @@
         const savedMood = localStorage.getItem("currentMood");
         const savedTheme = localStorage.getItem("theme");
 
-        if (savedCart) cart = JSON.parse(savedCart);
+        if (savedCart) {
+          try {
+            cart = JSON.parse(savedCart) || [];
+            // Migration: normalize older cart items that may miss imageUrl, originalPrice or name
+            cart = cart.map((it) => {
+              return {
+                id: it.id,
+                name: typeof it.name !== 'undefined' ? it.name : it.title || '',
+                price: typeof it.price !== 'undefined' ? Number(it.price) : 0,
+                originalPrice: typeof it.originalPrice !== 'undefined' ? Number(it.originalPrice) : (typeof it.price !== 'undefined' ? Number(it.price) : 0),
+                imageUrl: it.imageUrl || it.image || '',
+                image: it.image || it.imageUrl || '',
+                category: it.category || '',
+                rating: it.rating || 0,
+                reviews: it.reviews || 0,
+                description: it.description || '',
+                quantity: typeof it.quantity !== 'undefined' ? Number(it.quantity) : 1
+              };
+            });
+          } catch (e) {
+            // fallback to empty cart if parse failed
+            console.warn('Could not parse saved cart, resetting', e);
+            cart = [];
+          }
+        }
         if (savedWishlist) wishlist = JSON.parse(savedWishlist);
         if (savedRecently) recentlyViewed = JSON.parse(savedRecently);
         if (savedMood) {
@@ -4674,7 +4698,8 @@
       }
 
       function toggleWishlist(productId) {
-        const product = products.find((p) => p.id === productId);
+        // Try to find as a main product first
+        let product = typeof products !== 'undefined' ? products.find((p) => p.id === productId) : null;
         const index = wishlist.findIndex((item) => item.id === productId);
 
         if (index > -1) {
@@ -4714,13 +4739,38 @@
             5000
           );
         } else {
+          // If product not found in main products list, try sustainable alternatives
+          if (!product && typeof getSustainableAltById === 'function') {
+            const alt = getSustainableAltById(productId);
+            if (alt) {
+              product = {
+                id: alt.id,
+                name: alt.name || alt.title || 'Untitled',
+                price: typeof alt.price !== 'undefined' ? alt.price : (alt.currentPrice || 0),
+                originalPrice: typeof alt.originalPrice !== 'undefined' ? alt.originalPrice : (alt.price || 0),
+                imageUrl: alt.imageUrl || alt.image || '',
+                image: alt.image || alt.imageUrl || '',
+                category: alt.category || 'sustainable',
+                rating: typeof alt.rating !== 'undefined' ? alt.rating : 5,
+                reviews: typeof alt.reviews !== 'undefined' ? alt.reviews : 0,
+                description: alt.description || ''
+              };
+            }
+          }
+
+          if (!product) {
+            if (typeof showNotification === 'function') showNotification('Product not found', 'error');
+            return;
+          }
+
           wishlist.push(product);
           saveToLocalStorage();
           updateBadges();
           displayProducts(filteredProducts);
-          showNotification("Added to wishlist! ❤️", "success");
+          showNotification(`${product.name} added to wishlist`, "success");
         }
 
+        // Ensure UI state updated
         saveToLocalStorage();
         updateBadges();
         displayProducts(filteredProducts);
@@ -6793,6 +6843,39 @@
         updateQuantitySelector(productId);
       }
 
+      // Add either a regular product or a sustainable alternative by id
+      function addProductByIdOrAlt(id) {
+        if (typeof id === 'undefined' || id === null) {
+          if (typeof showNotification === 'function') showNotification('Product not available', 'error');
+          return;
+        }
+
+        // Try to find as a main product first
+        const product = typeof products !== 'undefined' ? products.find(p => p.id === id) : null;
+        if (product) {
+          // reuse existing add logic
+          addSingleToCart(id);
+          return;
+        }
+
+        // Fallback: try sustainable alternatives
+        const alt = typeof getSustainableAltById === 'function' ? getSustainableAltById(id) : null;
+        if (alt) {
+          // prefer the helper that already constructs cart items
+          if (typeof addSustainableAlternativeToCart === 'function') {
+            addSustainableAlternativeToCart(id);
+            return;
+          }
+          if (typeof addAlternativeToCart === 'function') {
+            addAlternativeToCart(id);
+            return;
+          }
+        }
+
+        // If we reach here, product not found
+        if (typeof showNotification === 'function') showNotification('Product not found', 'error');
+      }
+
       // Increment quantity in cart
       function incrementQty(productId) {
         const item = cart.find((item) => item.id === productId);
@@ -7059,7 +7142,7 @@
             </div>
             <p class="pm-desc" id="pmDesc"></p>
             <div class="pm-actions">
-              <button class="pm-btn primary" onclick="addToCart(window.__pmId)">
+              <button class="pm-btn primary" onclick="addProductByIdOrAlt(window.__pmId)">
                 Add to Cart
               </button>
               <button
@@ -7076,7 +7159,7 @@
               </button>
               <button
                 class="pm-btn buy"
-                onclick="addToCart(window.__pmId); proceedToCheckout();"
+                onclick="addProductByIdOrAlt(window.__pmId); proceedToCheckout();"
               >
                 Buy Now
               </button>
@@ -7461,7 +7544,22 @@
         if (existing) {
           existing.quantity++;
         } else {
-          cart.push({ id: altId, name: alt.name, price: alt.price, image: alt.image || '', quantity: 1 });
+          // Push an object that matches the main product schema so cart rendering
+          // (which expects properties like imageUrl, name, price, category,
+          // originalPrice) works correctly.
+          cart.push({
+            id: altId,
+            name: alt.name || '',
+            price: typeof alt.price !== 'undefined' ? alt.price : 0,
+            originalPrice: typeof alt.originalPrice !== 'undefined' ? alt.originalPrice : alt.price || 0,
+            imageUrl: alt.image || alt.imageUrl || '',
+            image: alt.image || alt.imageUrl || '',
+            category: alt.category || '',
+            rating: alt.rating || 0,
+            reviews: alt.reviews || 0,
+            description: alt.description || '',
+            quantity: 1,
+          });
         }
         saveToLocalStorage();
         updateBadges();
